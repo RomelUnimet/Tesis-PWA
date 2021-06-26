@@ -1,0 +1,120 @@
+@import '../variables.scss';
+
+.modal-container{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    color: $black-color;
+}
+.modal{
+
+    position: absolute;
+    
+    z-index: 2;
+
+    width: 80%;
+    background-color: white;
+    bottom: 0;
+    margin-bottom: 3rem;
+    border-radius: 12px;
+
+    --animate-duration: 0.5s;
+}
+.modal2{
+
+    
+    position: absolute;
+    
+    z-index: 2;
+
+    width: 80%;
+    background-color: white;
+    bottom: 0;
+    margin-bottom: 3rem;
+    border-radius: 12px;
+
+    --animate-duration: 0.5s;
+
+
+    opacity: 0;
+    transition: visibility 10s, opacity 20s ease-out ;
+    transition-duration: 0.25s;
+}
+.photo-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 0.8rem;
+
+    & h1 {
+        margin-left: 5%;
+        font-size: 1.1rem;
+    }
+    & svg{
+        transform: rotate(-90deg);
+        margin-right: 5%;
+        height: 1.5rem;
+        stroke: $grey-color;
+    }
+    & label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+
+    }
+}
+input[type="file"] {
+    display: none;
+}
+.color-picker{
+    display: flex;
+    align-items:center;
+    flex-direction: column;
+    margin-bottom: 2rem; 
+    margin-top: 0.8rem; 
+}
+.color-title{
+    width: 90%;
+    & h1{
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+
+}
+.colors-container{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+
+    width: 90%;
+}
+.color-icon{
+    height: 2.2rem;
+    width: 2.2rem;
+    border-radius: 100rem;
+    
+}
+
+hr{
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid rgb(233, 233, 233);
+    margin: 1em 0;
+    padding: 0;
+}
+    

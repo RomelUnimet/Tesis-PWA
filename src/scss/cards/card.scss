@@ -1,0 +1,66 @@
+@import '../variables.scss';
+
+
+.card-component{
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    position: relative; 
+    transition-duration: 0.3s;
+}
+.month-title{
+
+    width: min-content;
+    position: relative;
+    top:1rem;
+    left:1.4rem;
+    color: white;
+    & h1 {
+        font-size: 2.4rem;
+    }
+    & h3 {
+        font-size: 1.1rem;
+        font-weight:normal;
+    }
+}
+.progress-edit{ 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+
+    position: absolute;
+    bottom: 0.15rem;
+    left: 10%;
+
+    & svg {
+        fill: white;
+        height: 2rem;
+    }
+}
+.progress-container{
+
+    height: 0.24rem;
+    width: 5rem;
+    background-color: rgba(255, 255, 255, 0.35);
+    border-radius: 100rem;
+}
+.progress-filler{
+    height: 100%;
+    width: 50%;
+    background-color: white;
+    border-radius: inherit;
+}
+.fraction-progress{
+    color: rgba(255, 255, 255, 0.70);
+    font-size: 0.7rem;
+    margin-left: 0.5rem;
+
+    & b {
+        color: white;
+    }
+}
+.bar-container{
+    display: flex;
+    align-items: center;
+}

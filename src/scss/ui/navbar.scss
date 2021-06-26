@@ -1,0 +1,41 @@
+.navbar{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 5.2rem;
+    background-color: white;
+    box-shadow: 0px -3px 10px rgba(196, 196, 196, 0.25);
+    padding-top: 0.8rem;
+}
+.nav-icon-container{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+}
+.nav-bar-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 3.5rem;
+    & svg {
+        height: 1.6rem;
+    }
+}
+.nav-bar-icon-active{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+ 
+}
+.create-entry-icon{
+
+    display: flex;
+    align-items: center;
+    & svg {
+        height: 3.2rem;
+    }
+
+}
