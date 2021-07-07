@@ -1,0 +1,57 @@
+@import '../variables.scss';
+
+.ce-img-carrousel{
+
+    width: 100%;
+    height: 85vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4.4rem;
+
+    svg {
+        background-color: rgba(0, 0, 0, 0.2);
+        fill: white;
+        stroke: white;
+        height: 2rem;
+        width: 2rem;
+        padding: 1rem;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}
+
+.ce-swiper-container {
+    width: 100%;
+    height: 100%;
+  }
+  
+.ce-swiper-slide {
+    width: 100%;
+    height: 100%;
+    top: auto;
+    border-radius: 0px;
+    filter: none; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+}
+
+.ce-slider-icon-container{
+    position: fixed;
+    top:auto;
+    display: flex;
+    z-index: 1;
+}
+
+.swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+.swiper-pagination-bullet-active {
+    background: white;
+}

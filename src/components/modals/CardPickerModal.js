@@ -6,13 +6,10 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
 
     const {cards} = useSelector(state => state.cards) //Esto puede traer un error ya que en una instancia es vacio (Probablemente por el dispatch async) => Tal vez necesita un check
 
-
-
     const years = []
     let aux = []
     let counter=0;
 
-    console.log(cards.length);
     for (let index = 0; index < cards.length; index++) {
         
         aux.push(cards[index]);

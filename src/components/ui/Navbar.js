@@ -3,8 +3,10 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import '../../scss/ui/navbar.scss'
 
-export const Navbar = () => {
+export const Navbar = ({CEModalState, setCEModalState}) => {
     const {pathname} = useLocation();
+
+    
 
     return (
         <nav className="navbar">
@@ -40,13 +42,11 @@ export const Navbar = () => {
             </svg>
 
             }
-              
-
-
             </NavLink>
 
             <div
               className="create-entry-icon"
+              onClick={()=>(setCEModalState(!CEModalState))}
             >
               <svg  viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg"
                 
@@ -78,9 +78,6 @@ export const Navbar = () => {
 
 
               }
-              
-
-
             </NavLink>
 
 

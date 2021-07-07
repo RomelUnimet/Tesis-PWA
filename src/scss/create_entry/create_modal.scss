@@ -1,0 +1,171 @@
+@import '../variables.scss';
+
+.create-entry-container{
+
+    display: block;
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    background-color: white;
+    z-index: 4;
+
+    --animate-duration: 0.45s;
+
+    display: flex;
+    flex-direction: column;
+
+    
+
+}
+.create-entry-container-close{
+
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+    background-color: white;
+    z-index: 4;
+
+    --animate-duration: 0.3s;
+
+    display: flex;
+    flex-direction: column;
+
+    opacity: 0;
+    transition: visibility 10s, opacity 20s ease-out;
+    transition-duration: 0.25s;
+
+}
+.ce-container{
+    overflow-y: auto;
+}
+.ce-toolbar{
+    position: fixed;
+    width: 100%;
+    height: 4.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: white;
+    z-index: 2;
+
+    svg {
+        margin-left:  1rem; 
+        margin-right: 1rem;
+        margin-bottom: 0.7rem;
+
+        height: 2.2rem;
+    }
+    button {
+        margin-bottom: 0.7rem;
+    }
+}
+
+.date-picker-btn{
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 100rem;
+    padding-right: 3rem;
+    padding-left: 3rem;
+    border: 1px solid $grey-color;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: $black-color;
+    height: 1.8rem;
+}
+
+.ce-add-images{
+
+    background-color: #d4d4d4;
+    width: 100%;
+    height: 85vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4.4rem;
+
+    svg {
+        background-color: rgba(0, 0, 0, 0.2);
+        fill: white;
+        stroke: white;
+        height: 2rem;
+        padding: 1rem;
+    }
+}
+
+.input-modal-textarea-container{
+
+    
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.6rem;
+
+    & input{
+        width: 80%;
+        border: none;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+
+        
+        &:focus{
+            outline:none;
+            color: $black-color;
+            
+        }
+    }
+    & textarea{
+        width: 80%;
+        border: none;
+        resize: none;
+        height: 30rem;
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: $black-color;
+        margin-bottom: 1rem;
+
+        &:focus{
+            outline:none;
+            color: $black-color;
+            
+        }
+    }
+
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #a0a0a0;
+        opacity: 1; /* Firefox */
+    }
+}
+
+.ce-modal-container{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 3rem;
+    width: 80%;
+
+    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
+
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    & svg {
+
+        fill: $grey-color;
+        height: 1.6rem;
+
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    
+    
+}

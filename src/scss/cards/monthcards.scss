@@ -31,7 +31,6 @@
   border-radius: 30px;
   filter: drop-shadow(0px 4px 15px rgba(143, 143, 143, 0.25));  
   top: 10%;
-  
 
 }
 .calendar-btn{
@@ -51,4 +50,22 @@
 
     font-size: 0.6rem;
     color: #8d8d8d;
+}
+
+.beginning-arrow{
+  position: absolute;
+  transform: rotate(90deg);
+  stroke: $grey-color;
+  margin-right: 90%;
+  height: 2rem;
+  z-index: 1;
+  
+}
+.end-arrow{
+  position: absolute;
+  transform: rotate(-90deg);
+  stroke: $grey-color;
+  margin-left: 90%;
+  height: 2rem;
+  z-index: 1;
 }

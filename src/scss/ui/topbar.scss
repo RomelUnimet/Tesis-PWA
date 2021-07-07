@@ -1,0 +1,38 @@
+@import '../variables.scss';
+
+.topbar-container {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    height: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.topbar-container-layout{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+}
+.search-svg{
+    height: 2rem;
+    fill: $black-color;
+
+}
+.date-weather-container{
+
+    display: flex;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+
+    & svg {
+        height: 1.4rem;
+        stroke: #f1f1f1;
+        margin-right: 0.5rem;
+    }
+}

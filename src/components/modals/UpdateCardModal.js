@@ -32,24 +32,30 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
 
     const changePhoto = ( e ) => {
 
+
         e.preventDefault();
-        const reader = new FileReader();
-        reader.readAsDataURL(fileInput.current?.files[0])
-        reader.onload = () => {
 
-            setCropperState({
-                ...cropperState,
-                show:true,
-                img: reader.result
-            })
-            setCropperState({
-                ...cropperState,
-                show:true,
-            })
+        if(!!fileInput.current?.files[0]) {
 
-            closeModal();
+            const reader = new FileReader();
+            reader.readAsDataURL(fileInput.current?.files[0])
+            
+            reader.onload = () => {
 
-          };
+                setCropperState({
+                    ...cropperState,
+                    show:true,
+                    img: reader.result
+                })
+                setCropperState({
+                    ...cropperState,
+                    show:true,
+                })
+
+                closeModal();
+            };
+        
+        }
 
         
         //FUNCIONA PERO NO SE SI ES DEMASIADO GRANDE
@@ -74,7 +80,7 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
                         <div className="photo-container"
                         >
                             <label>
-                                <input type="file" id="cardPhotoInput" onChange={changePhoto} ref={fileInput} accept="image/"/>
+                                <input type="file" id="cardPhotoInput" onChange={changePhoto} ref={fileInput} accept="image/*"/>
                                 <h1>PHOTO</h1>
                                 <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125"  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>

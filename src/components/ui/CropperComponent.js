@@ -5,8 +5,6 @@ import '../../scss/ui/cropper.scss'
 import { cardUpdatePhoto } from "../../actions/cards";
 import { useDispatch } from "react-redux";
 
-
-
 //Pendiente con los Known Issues
 export const CropperComponent = ({ cropperState, setCropperState }) => {
 
@@ -20,13 +18,13 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
         const imageElement = cropperRef?.current;
         const cropper = imageElement?.cropper;
       
-        const croppedImg = cropper.getCroppedCanvas().toDataURL();
-
+        const croppedImg = cropper.getCroppedCanvas().toDataURL( 'image/', 1 ); //Numero 1 representa la calidad de la img y va de 0.1 a 1
         
         dispatch(cardUpdatePhoto(croppedImg, cropperState.card));
 
         //AQUI LO GUARDO EN LAS BASES DE DATOS
         //Creo que debo bajarle la resolucion a la imagen en algun punto
+
         cancel();
 
     };
@@ -49,6 +47,7 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
 
     return (
         <div 
+             //Slide Out del Cropper no funciona
              className={ cropperState.show? 'animate__animated animate__fadeIn cropper-container' : 'animate__animated animate__slideOutDown cropper-container-exit' }
         >
 

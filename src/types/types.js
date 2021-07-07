@@ -16,4 +16,8 @@ export const types = {
     cardStore: '[cards] Store cards in state',
     cardUpdate: '[cards] Update cards on statestate',
 
+    //Weather
+    startWeatherStore: '[weather] Start storing cards in state',
+    weatherStore: '[weather] Store weather in state',
+
 }

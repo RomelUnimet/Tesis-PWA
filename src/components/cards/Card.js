@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import '../../scss/cards/card.scss'
 
 
@@ -23,8 +24,9 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
     const daysOfMonth = new Date(year, month,0).getDate()
     const progress = (entries.length / daysOfMonth)*100;
 
-    const showModal = () => {
+    const showModal = (e) => {
 
+        e.stopPropagation();
         setModalState({
             ...modalState,
             show: true,
@@ -36,10 +38,20 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
         })
 
     }
+
+    const history = useHistory();
+
+    const goToCardDetails= (e)=> {
+        e.preventDefault()
+            history.push(`/cards/${cid}`);
+    }
+
     
 
     return (
-        <div className="card-component" style={ hasPhoto? bImgStyles :{backgroundColor:color}}>
+        <div className="card-component" style={ hasPhoto? bImgStyles :{backgroundColor:color}}
+        onClick={goToCardDetails}
+        >
             <div className="month-title">
                 <h1> { month+1 } </h1>
                 <h3> { shortMonthName } </h3>

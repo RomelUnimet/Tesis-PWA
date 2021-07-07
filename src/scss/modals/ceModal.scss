@@ -1,0 +1,139 @@
+@import '../variables.scss';
+
+.modal-container-ce{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 5;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    color: $black-color;
+}
+
+.modal-ce{
+
+    position: absolute;
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    z-index: 6;
+
+    width: 80%;
+    background-color: white;
+    bottom: 0;
+    margin-bottom: 3rem;
+    border-radius: 12px;
+
+    --animate-duration: 0.5s;
+
+    & hr {
+        width: 80%;        
+    }
+}
+.modal-close-ce{
+
+    
+    position: absolute;
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    
+    z-index: 6;
+
+    width: 80%;
+    background-color: white;
+    bottom: 0;
+    margin-bottom: 3rem;
+    border-radius: 12px;
+
+    --animate-duration: 0.5s;
+
+    opacity: 0;
+    transition: visibility 10s, opacity 20s ease-out ;
+    transition-duration: 0.25s;
+
+    & hr {
+        width: 80%;        
+    }
+}
+
+.wheather-container{
+
+    margin-top: 2rem;
+    width: 90%;
+
+    margin-bottom: 0.4rem;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 8px;
+
+    justify-items: center;
+    align-items: center;
+
+    & svg {
+        height: 2.2rem;
+    }
+}
+
+.tag-location-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 80%;
+
+    font-size: 0.8rem;
+
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+
+    & svg {
+        height: 1.2rem;
+        stroke: $grey-color;
+        transform: rotate(-90deg);
+    }
+}
+.icon-styles-none{ 
+    
+    height: 1.9rem;
+    width: 1.9rem;
+    stroke:#757575; 
+    transition: ease-in-out;
+    transition-duration: 0.2s;
+
+    & path{
+        fill: #757575;
+        transition: ease-in-out;
+        transition-duration: 0.2s;
+    }
+}
+.icon-styles-none-selected{ 
+    
+    height: 1.9rem;
+    width: 1.9rem;
+    stroke: $accent-blue; 
+    transition: ease-in-out;
+    transition-duration: 0.2s;
+
+
+    & path{
+        fill: $accent-blue;
+        transition: ease-in-out;
+        transition-duration: 0.2s;
+    }
+}
+
+

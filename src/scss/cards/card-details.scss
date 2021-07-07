@@ -1,0 +1,47 @@
+@import '../variables.scss';
+
+
+.detail-card-container{
+
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+.d-c-topbar{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    height: 4.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: white;
+}
+.d-c-topbar-layout{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 0.4rem;
+
+   
+    font-size: 1.15rem;
+    font-weight: 500;
+    
+
+    & svg{
+        height: 2.1rem;
+        fill: $darker-grey;
+    }
+}
+.no-diaries{
+    color: $darker-grey;
+    letter-spacing: 0.5px;
+}
+
+
