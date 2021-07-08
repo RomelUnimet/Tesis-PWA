@@ -89,7 +89,6 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                 })
 
             setEntryImgState(auxImgArray);       
-                 
             setImgInputIsEmpty(true)
             setImgInputIsEmpty(false)
             
