@@ -9,6 +9,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 4.4rem;
+    position: relative;
 
     svg {
         background-color: rgba(0, 0, 0, 0.2);
@@ -39,7 +40,7 @@
 }
 
 .ce-slider-icon-container{
-    position: fixed;
+    position: absolute;
     top:auto;
     display: flex;
     z-index: 1;

@@ -22,7 +22,8 @@ import { ConfirmModal } from '../modals/ConfirmModal';
 
 
 
-export const ImgCarrousel = ({entryImgState, setEntryImgState, setImgInputIsEmpty}) => {
+export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmpty }) => {
+
 
     const swiperRef = useRef(null);  
     const moreThanOne = entryImgState.length>1
@@ -75,10 +76,10 @@ export const ImgCarrousel = ({entryImgState, setEntryImgState, setImgInputIsEmpt
         if (entryImgState.length===0){
             setImgInputIsEmpty(true);
         }
-        if (entryImgState.length!==0){
-            setImgInputIsEmpty(false);
+        if (entryImgState.length===1){
+            swiperRef.current.swiper.allowTouchMove=false;
         }
-
+        
     }
 
     const [imgPromptState, setImgPromptState] = useState(false)
@@ -117,7 +118,7 @@ export const ImgCarrousel = ({entryImgState, setEntryImgState, setImgInputIsEmpt
                     </label>
 
                     <svg  viewBox="0 0 36 26" fill="none" xmlns="http://www.w3.org/2000/svg" 
-                          onClick={removeImgPrompt}
+                          onClick={removeImg}
                     >
                         <path d="M30 13H6"  strokeWidth="3" strokeLinecap="round"/>
                     </svg>
@@ -135,8 +136,8 @@ export const ImgCarrousel = ({entryImgState, setEntryImgState, setImgInputIsEmpt
                     confirmAction={removeImg}
                     isActive={imgPromptState}
                     setIsActive={setImgPromptState}
-                    
                 />
+                
             </div>
 
         
