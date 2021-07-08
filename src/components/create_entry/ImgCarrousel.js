@@ -26,6 +26,10 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
 
 
     const swiperRef = useRef(null);  
+    //Cambiar nombre a Set SlidesState o algo asi
+    const [state, setstate] = useState(entryImgState)
+    const [activeIndex, setActiveIndex] = useState(state.length-1)
+
     const moreThanOne = entryImgState.length>1
     let auxImgState = entryImgState;
 
@@ -35,7 +39,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
 
     useEffect(() => {
         swiperRef.current?.swiper.slideTo(entryImgState.length,0)
-    }, [entryImgState,setImgInputIsEmpty])
+    }, [entryImgState])
 
     const addImg = () =>{
         if(!!imgInput.current?.files[0] && imgInput.current?.files.length<4 && (imgInput.current?.files.length+entryImgState.length)<=3) {
@@ -62,24 +66,26 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                     thumbnail: false
                 })
 
-            setEntryImgState(auxImgState);       
-            setImgInputIsEmpty(true)
-            setImgInputIsEmpty(false)
+            setstate(auxImgState);       
+            //setImgInputIsEmpty(true)
+            //setImgInputIsEmpty(false)
         };
     }
 
     //CREO QUE EL COMPONENTE NO SE DA CUENTA DE QUE LE FALTAN IMAGENES 
     const removeImg = () =>{
-        auxImgState.splice(0, 1);
-        setEntryImgState(auxImgState)
-        swiperRef.current?.swiper.removeSlide(swiperRef.current?.swiper.activeIndex)
+        console.log(activeIndex)
+        auxImgState.splice(activeIndex, 1); //Esta tomando el ultimo renderizado, debo mantener ese estado
+        setstate(auxImgState)
+        //swiperRef.current?.swiper.removeSlide(swiperRef.current?.swiper.activeIndex)
         if (entryImgState.length===0){
             setImgInputIsEmpty(true);
         }
         if (entryImgState.length===1){
             swiperRef.current.swiper.allowTouchMove=false;
         }
-        
+        swiperRef.current?.swiper.update()
+        setImgPromptState(false)
     }
 
     const [imgPromptState, setImgPromptState] = useState(false)
@@ -89,9 +95,14 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
         setImgPromptState(true)
     }
     
+    const auxActiveIndex = () => {
+        setActiveIndex(swiperRef.current?.swiper.activeIndex-1)
+    }
 
    
     return (
+
+        <>
             <div className="ce-img-carrousel">
                 <Swiper
                     ref={swiperRef}    
@@ -99,9 +110,10 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                     loop={moreThanOne}       
                     pagination={moreThanOne}
                     allowTouchMove={moreThanOne}
+                    onSlideChange={auxActiveIndex}
                 >
                     {
-                        entryImgState.map((img, index)=>(
+                        state.map((img, index)=>(
                                 <SwiperSlide key={index} className='ce-swiper-slide' style={{ backgroundImage: `url(${img.img})` }}>  
                                     
                                 </SwiperSlide>
@@ -118,7 +130,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                     </label>
 
                     <svg  viewBox="0 0 36 26" fill="none" xmlns="http://www.w3.org/2000/svg" 
-                          onClick={removeImg}
+                          onClick={removeImgPrompt}
                     >
                         <path d="M30 13H6"  strokeWidth="3" strokeLinecap="round"/>
                     </svg>
@@ -128,19 +140,21 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                     </svg>
                 </div>
 
-                <ConfirmModal
-                    title={'Do you want to delete this photo?'}
-                    text={''}
-                    rightText={'Delete'} 
-                    leftText={'Cancel'}
-                    confirmAction={removeImg}
-                    isActive={imgPromptState}
-                    setIsActive={setImgPromptState}
-                />
+                
                 
             </div>
 
-        
+            <ConfirmModal
+                title={'Do you want to delete this photo?'}
+                text={''}
+                rightText={'Delete'} 
+                leftText={'Cancel'}
+                confirmAction={removeImg}
+                isActive={imgPromptState}
+                setIsActive={setImgPromptState}
+            />
+
+        </>
 
         
 
