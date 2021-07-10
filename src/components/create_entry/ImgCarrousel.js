@@ -66,9 +66,9 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                     thumbnail: false
                 })
 
-            setstate(auxImgState);       
-            //setImgInputIsEmpty(true)
-            //setImgInputIsEmpty(false)
+            setstate(auxImgState);      
+            setImgInputIsEmpty(true)
+            setImgInputIsEmpty(false)
         };
     }
 

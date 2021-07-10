@@ -7,6 +7,9 @@ import { WeatherFilter } from '../compHelper/WeatherFilter';
 import { useRef } from 'react';
 import { ImgCarrousel } from './ImgCarrousel';
 
+import { generateID } from '../../helpers/generateId'
+import { useSelector } from 'react-redux';
+
 
 export const CreateModal = ({CEModalState, setCEModalState}) => {
 
@@ -52,8 +55,13 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
         })
     }
 
+    const [title, setTitle] = useState('');
+    const [text, setText] = useState('');
+
     const [entryImgState, setEntryImgState] = useState([])
+
     let auxImgArray=[];
+
     const [imgInputIsEmpty, setImgInputIsEmpty] = useState(true)
 
     const imgInput = useRef(null);
@@ -95,6 +103,36 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
         };
     }
 
+    const {cards} = useSelector(state => state.cards);
+     
+    const handleCreateEntry = () => {
+
+        const cardID = cards.filter( (card) => card.month === datePickerState.time.getMonth() && card.year === datePickerState.time.getFullYear())
+        const entry = {
+            e_id : generateID(), //con funcion
+            c_id : cardID[0].cid, //con funcion
+            u_id : cardID[0].uid, //con funcion
+            photos : entryImgState,
+            dateTime : datePickerState.time, //con funcion
+            title : title,
+            text : text,
+            weather : selectedWeather,
+            tags : [],
+            locations: [],
+            trash : false,
+        }
+
+        console.log(entry);
+    }
+
+    const resetValues = () => {
+        setTitle('')
+        setText('')
+        setSelectedWeather('none')
+        setEntryImgState([])
+        setImgInputIsEmpty(true)
+    }   
+
     //EVALUAR PASAR LA BARRA DE ARRIBA A OTRO COMPONENTE PARA QUE SEA MAS LIMPIO
     return (
         <div 
@@ -109,6 +147,7 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                         onClick={()=>{
                             setCEModalState(!CEModalState)
                             setDatePicker({...datePickerState, time: new Date()})
+                            resetValues()
 
                         }}
                         //poner otra vez en la fecha de hoy cuando se renderice 
@@ -136,7 +175,9 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                         cancelText={'Close'} //Hay que cambiar el orden de estos botones
                     />
 
-                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                        onClick={handleCreateEntry}
+                    >
                         <path d="M5.33325 16L13.3333 24L26.6666 8" stroke="#3D3D3D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </div>
@@ -168,6 +209,8 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                     <input 
                         type="text" 
                         placeholder="Title"
+                        value={title}
+                        onChange={event => setTitle(event.target.value)}
                     />
                     <div className="ce-modal-container" 
                         onClick={openModal}
@@ -205,6 +248,8 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                     <textarea 
                         type="textarea" 
                         placeholder="Write about your day..."
+                        value={text}
+                        onChange={event => setText(event.target.value)}
                         
                     />
                 </div>

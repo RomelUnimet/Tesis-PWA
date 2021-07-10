@@ -11,7 +11,8 @@
     align-items: center;
     top: 0;
     z-index: 5;
-    animation-duration: 4s;
+    --animate-duration: 0.2s;
+    
 }
 
 .confirm-modal{
@@ -23,6 +24,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    --animate-duration: 0.2s;
     
     h1 {
         width: 75%;

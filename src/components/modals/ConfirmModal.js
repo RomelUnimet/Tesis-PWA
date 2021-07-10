@@ -12,8 +12,8 @@ export const ConfirmModal = ({title, text, rightText, leftText, confirmAction, i
 
     return (
 
-        <div className="confirm-modal-container" style={isActive? {display:'flex'} : {display:'none'}}>
-            <div className="confirm-modal" style={isActive? {} : {}}>
+        <div className={isActive? "animate__animated animate__fadeIn confirm-modal-container" : "confirm-modal-container"} style={isActive? {display:'flex'} : {display:'none'}}>
+            <div className={isActive? "animate__animated animate__fadeIn confirm-modal" : "confirm-modal"} >
                     <h1>{title}</h1>
                     <p>{text}</p>
                 
