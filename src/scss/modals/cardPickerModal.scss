@@ -24,33 +24,8 @@
     bottom: 0;
     margin-bottom: 3rem;
     border-radius: 12px;
-
-    --animate-duration: 0.3s;
-
     overflow: auto;
 }
-.modal-card2{
-
-    
-    position: absolute;
-    
-    z-index: 2;
-
-    height: 30rem;
-    width: 80%;
-    background-color: white;
-    bottom: 0;
-    margin-bottom: 3rem;
-    border-radius: 12px;
-
-    --animate-duration: 0.5s;
-
-
-    opacity: 0;
-    transition: visibility 10s, opacity 20s ease-out ;
-    transition-duration: 0.25s;
-}
-
 .arrow-1{
 
     display: flex;

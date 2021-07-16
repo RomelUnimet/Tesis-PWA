@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import '../../scss/modals/cardPickerModal.scss'
+import { animated, useSpring, config } from 'react-spring'
+import { useDrag } from 'react-use-gesture'
 
 export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => {
 
@@ -11,36 +13,93 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
     let counter=0;
 
     for (let index = 0; index < cards.length; index++) {
-        
         aux.push(cards[index]);
         counter++;
-
         if(counter===12){
             years.push(aux);
             aux = []
             counter=0;
         }
     }
-
     const closeModal = () =>{
 
-        setModalState({
-            ...modalState,
-            show:false
-        })
+        set({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+        setTimeout(() => {
+            setModalState({
+                ...modalState,
+                show:false
+            })
+        }, 200);
     }
 
     const navigateToCard = ( month, year ) => {
 
-        setModalState({
-            show:false,
-            year:year,
-            month:month
-        })
-
-        navigateCard(month);
-
+        set({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+        setTimeout(() => {
+            setModalState({
+                show:false,
+                year:year,
+                month:month,
+            })
+            navigateCard(month);
+        }, 100);
+        
     }
+
+    //ANIMATIONS & GESTURES
+    /*const transition = useTransition(modalState.show, {
+        //Tal vez poner y que sea quesi la mitad de la pantalla, para que sea mas responsive
+        from: {x:0, y:600},
+        enter: {x:0, y:0},
+        leave: {x:0, y:600},
+    });
+    */    
+    const SCREEN_HEIGHT = window.innerHeight;
+
+    const [{ y }, set] = useSpring(() => ({ y: 0 }));
+    const height = 330;
+    //Hacerlo todo otra vez siguiendo la documentacion y no el video
+
+    
+    const open = () => {
+        // when cancel is true, it means that the user passed the upwards threshold
+        // so we change the spring config to create a nice wobbly effect
+        set({ y: 0, immediate: false, config: config.stiff })
+    }
+    const close = (velocity = 0) => {
+        set({ y: SCREEN_HEIGHT, immediate: false, config: { ...config.stiff, velocity } })
+        setTimeout(() => {
+            closeModal();
+        }, 200);
+        
+    }
+
+    const bind = useDrag(
+        ({ last, vxvy: [, vy], movement: [, my], cancel, canceled }) => {
+          // if the user drags up passed a threshold, then we cancel
+          // the drag so that the sheet resets to its open position
+          if (my < -90) close()
+    
+          // when the user releases the sheet, we check whether it passed
+          // the threshold for it to close, or if we reset it to its open positino
+          if (last) {
+            my > height * 0.5 || vy > 0.5 ? close(vy) : open({ canceled })
+          }
+          // when the user keeps dragging, we just move the sheet according to
+          // the cursor position
+          else set({ y: my, immediate: true })
+        },
+        { initial: () => [0, y.get()], filterTaps: true, bounds: { top: 0 }, rubberband: true }
+      )
+
+    useEffect(() => {
+        if(modalState.show){      
+            open()
+        }
+    }, [modalState])
+    useEffect(() => {
+        set({ y: SCREEN_HEIGHT, immediate: true }) 
+    }, [])
 
     return (
         <>
@@ -49,9 +108,11 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
                 style={ modalState.show? { display:'inline' } :{ display:'none' }}
             >
             </div>
-            <div className={modalState.show? "animate__animated animate__slideInUp modal-card" : "animate__animated animate__slideOutDown modal-card2" }  
-                >
-                    
+
+            {modalState.show?
+            
+            <animated.div className="modal-card" style={{y: y, touchAction: 'none'}} {...bind()} >
+                
                 <div className="arrow-1">
                     <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -83,7 +144,7 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
                                                                 {}
                                                             
                                                             }      
-                                                    onClick={ () => {navigateToCard(card.month, card.year)} }
+                                                            onMouseUp ={ () => {navigateToCard(card.month, card.year)} }
                                                 > 
                                                         <p className="month-picker-name"
                                                         >
@@ -105,10 +166,8 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
                                     })
                                     }
                                 </div>
-
                             </div>
                         )) 
-                    
                     }
                 </div>
 
@@ -118,7 +177,10 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
                     </svg>
                 </div>
 
-            </div>
+            </animated.div>
+            :
+            <></>
+            }
         </>
     )
 }
