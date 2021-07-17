@@ -1,7 +1,9 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import '../../scss/modals/updateCardModal.scss'
 import { cardUpdateColor } from '../../actions/cards'
 import { useDispatch } from 'react-redux'
+import { animated, useSpring, config } from 'react-spring'
+import { useDrag } from 'react-use-gesture'
 
 export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCropperState}) => {
 
@@ -15,15 +17,17 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
                 ]
 
     const closeModal = () =>{
-
-        setModalState({
-            show:false,
-            card:{}
-        })
+        animateClose()
+        setTimeout(() => {
+            setModalState({
+                show:false,
+                card:{}
+            })
+        }, 200);
+        
     }
 
     const changeColor = (color) => {
-
         dispatch(cardUpdateColor(color,modalState.card ));
         closeModal();        
     }
@@ -56,14 +60,51 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
             };
         
         }
-
-        
-        //FUNCIONA PERO NO SE SI ES DEMASIADO GRANDE
-
-        
+        //FUNCIONA PERO NO SE SI ES DEMASIADO GRANDE   
     }
 
    //PODEMOS HACER QUE SEA MENOS JANK LO OTRO
+
+   //ANIMATIONS / GESTURES
+   const SCREEN_HEIGHT = window.innerHeight;
+
+    const [{ y }, api] = useSpring(() => ({ y: 0 }));
+    const height = 330; //CAMBIAR SI ES NECESARIO
+
+    
+    const open = () => {
+        api.start({ y: 0, immediate: false, config: config.stiff })
+    }
+    const close = () => {
+        animateClose()
+        setTimeout(() => {
+            closeModal();
+        }, 200);
+    }
+    const bindModal = useDrag(
+        ({ last, vxvy: [, vy], movement: [, my], canceled }) => {
+          if (my < -40) close() 
+    
+          if (last) {
+            my > height * 0.5 || vy > 0.5 ? close(vy) : open({ canceled })
+          }
+          else api.start({ y: my, immediate: true })
+        },
+        { initial: () => [0, y.get()], filterTaps: true, bounds: { top: 0 }, rubberband: false }
+      )
+
+    const animateClose = () => {
+        api.start({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+    } 
+
+    useEffect(() => {
+        if(modalState.show){      
+            open()
+        }
+    }, [modalState,open])
+    useEffect(() => {
+        api.start({ y: SCREEN_HEIGHT, immediate: true }) 
+    }, [SCREEN_HEIGHT,api])
 
     return (
             <>
@@ -74,40 +115,46 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
                     
                 </div>
 
-                <div className={modalState.show? "animate__animated animate__slideInUp modal" : "animate__animated animate__slideOutDown modal2" }  
-                >
-        
-                        <div className="photo-container"
-                        >
-                            <label>
-                                <input type="file" id="cardPhotoInput" onChange={changePhoto} ref={fileInput} accept="image/*"/>
-                                <h1>PHOTO</h1>
-                                <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125"  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                            </label>
-                        </div>
-        
-                        <hr></hr>
-        
-                        <div className="color-picker">
-                            <div className="color-title">
-                                <h1>COLOR</h1>
+                {modalState.show?
+                    <animated.div className="modal" style={{y: y, touchAction: 'none'}} {...bindModal()}  
+                    >
+            
+                            <div className="photo-container"
+                            >
+                                <label>
+                                    <input type="file" id="cardPhotoInput" onChange={changePhoto} ref={fileInput} accept="image/*"/>
+                                    <h1>PHOTO</h1>
+                                    <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125"  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </label>
                             </div>
-                            
-                            <div className="colors-container">
-                                {colors.map((color)=>(
-                                    <div 
-                                        className="color-icon" 
-                                        style={{backgroundColor:color}}
-                                        key={color}
-                                        onClick={()=>{changeColor(color)}}
-                                    >
-                                    </div>
-                                ))}
+            
+                            <hr></hr>
+            
+                            <div className="color-picker">
+                                <div className="color-title">
+                                    <h1>COLOR</h1>
+                                </div>
+                                
+                                <div className="colors-container">
+                                    {colors.map((color)=>(
+                                        <div 
+                                            className="color-icon" 
+                                            style={{backgroundColor:color}}
+                                            key={color}
+                                            onClick={()=>{changeColor(color)}}
+                                        >
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                    </animated.div>
+                    :
+                    <></>
+            
+                }
+                
             </>
         )
 

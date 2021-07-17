@@ -23,7 +23,7 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
     }
     const closeModal = () =>{
 
-        set({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+        animateClose()
         setTimeout(() => {
             setModalState({
                 ...modalState,
@@ -34,7 +34,7 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
 
     const navigateToCard = ( month, year ) => {
 
-        set({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+        animateClose()
         setTimeout(() => {
             setModalState({
                 show:false,
@@ -56,50 +56,44 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
     */    
     const SCREEN_HEIGHT = window.innerHeight;
 
-    const [{ y }, set] = useSpring(() => ({ y: 0 }));
+    const [{ y }, api] = useSpring(() => ({ y: 0 }));
     const height = 330;
-    //Hacerlo todo otra vez siguiendo la documentacion y no el video
 
     
     const open = () => {
-        // when cancel is true, it means that the user passed the upwards threshold
-        // so we change the spring config to create a nice wobbly effect
-        set({ y: 0, immediate: false, config: config.stiff })
+        api.start({ y: 0, immediate: false, config: config.stiff })
     }
-    const close = (velocity = 0) => {
-        set({ y: SCREEN_HEIGHT, immediate: false, config: { ...config.stiff, velocity } })
+    const close = () => {
+        animateClose()
         setTimeout(() => {
             closeModal();
         }, 200);
-        
     }
 
-    const bind = useDrag(
-        ({ last, vxvy: [, vy], movement: [, my], cancel, canceled }) => {
-          // if the user drags up passed a threshold, then we cancel
-          // the drag so that the sheet resets to its open position
+    const bindModal = useDrag(
+        ({ last, vxvy: [, vy], movement: [, my], canceled }) => {
           if (my < -90) close()
     
-          // when the user releases the sheet, we check whether it passed
-          // the threshold for it to close, or if we reset it to its open positino
           if (last) {
             my > height * 0.5 || vy > 0.5 ? close(vy) : open({ canceled })
           }
-          // when the user keeps dragging, we just move the sheet according to
-          // the cursor position
-          else set({ y: my, immediate: true })
+          else api.start({ y: my, immediate: true })
         },
-        { initial: () => [0, y.get()], filterTaps: true, bounds: { top: 0 }, rubberband: true }
+        { initial: () => [0, y.get()], filterTaps: true, bounds: { top: 0 }, rubberband: false }
       )
+
+    const animateClose = () => {
+        api.start({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+    } 
 
     useEffect(() => {
         if(modalState.show){      
             open()
         }
-    }, [modalState])
+    }, [modalState,open])
     useEffect(() => {
-        set({ y: SCREEN_HEIGHT, immediate: true }) 
-    }, [])
+        api.start({ y: SCREEN_HEIGHT, immediate: true }) 
+    }, [SCREEN_HEIGHT,api])
 
     return (
         <>
@@ -111,7 +105,7 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
 
             {modalState.show?
             
-            <animated.div className="modal-card" style={{y: y, touchAction: 'none'}} {...bind()} >
+            <animated.div className="modal-card" style={{y: y, touchAction: 'none'}} {...bindModal()} >
                 
                 <div className="arrow-1">
                     <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
