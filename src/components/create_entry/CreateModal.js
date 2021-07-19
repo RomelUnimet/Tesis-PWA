@@ -111,11 +111,11 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
 
         const cardID = cards.filter( (card) => card.month === datePickerState.time.getMonth() && card.year === datePickerState.time.getFullYear())
         const entry = {
-            e_id : generateID(), //con funcion
-            c_id : cardID[0].cid, //con funcion
-            u_id : cardID[0].uid, //con funcion
+            e_id : generateID(), 
+            c_id : cardID[0].cid, 
+            u_id : cardID[0].uid, 
             photos : entryImgState,
-            dateTime : datePickerState.time, //con funcion
+            dateTime : datePickerState.time, 
             title : title,
             text : text,
             weather : selectedWeather,
@@ -131,7 +131,6 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
     const SCREEN_HEIGHT = window.innerHeight;
 
     const transition = useTransition(CEModalState, {
-        //Tal vez poner y que sea quesi la mitad de la pantalla, para que sea mas responsive
         from: {x:0, y:SCREEN_HEIGHT},
         enter: {x:0, y:0},
         leave: {x:0, y:SCREEN_HEIGHT},

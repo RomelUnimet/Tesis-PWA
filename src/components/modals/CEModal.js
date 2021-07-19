@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import '../../scss/modals/ceModal.scss'
 import { LocHandleCE } from '../create_entry/LocHandleCE';
 import { TagHandleCE } from '../create_entry/TagHandleCE';
@@ -50,9 +50,10 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
     const height = 330;
 
     
-    const open = () => {
-        api.start({ y: 0, immediate: false, config: config.stiff })
-    }
+    const open = useCallback(() => {
+        api.start({ y: 0, immediate: false, config: config.default })
+    }, [api] )
+    
     const close = () => {
         animateClose()
         setTimeout(() => {
@@ -73,7 +74,7 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
       )
 
     const animateClose = () => {
-        api.start({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+        api.start({ y: SCREEN_HEIGHT, immediate: false, config:config.default })
     } 
 
     useEffect(() => {

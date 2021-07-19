@@ -21,12 +21,13 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
     }
 
     //ESTO SE TIENE QUE CAMBIAR PARA QUE SEAN LAS ENTRADASCON FECHAS DIFERENTES
-    const daysOfMonth = new Date(year, month,0).getDate()
+    const daysOfMonth = new Date(year, month+1, 0).getDate()
     const progress = (entries.length / daysOfMonth)*100;
 
     const showModal = (e) => {
 
         e.stopPropagation();
+
         setModalState({
             ...modalState,
             show: true,

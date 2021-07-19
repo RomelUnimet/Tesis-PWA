@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import '../../scss/create_entry/handlemodals.scss'
 import { animated, useSpring, config } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
@@ -12,22 +12,21 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
                 ...handlerState,
                 show:false,
             })
-        }, 200);
+        }, 300);
     }
     const SCREEN_HEIGHT = window.innerHeight;
 
     const [{ y }, api] = useSpring(() => ({ y: 0 }));
     const height = 330;
 
-    //HACE UN KICKBACK INNECESARIO
-    const open = () => {
-        api.start({ y: 0, immediate: false, config: config.stiff })
-    }
+    const open = useCallback(() => {
+        api.start({ y: 0, immediate: false, config: config.default })
+    }, [api] )
     const close = () => {
         animateClose()
         setTimeout(() => {
             closeHandler();
-        }, 200);
+        }, 250);
     }
 
     const bindModal = useDrag(
@@ -43,7 +42,7 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
       )
 
     const animateClose = () => {
-        api.start({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+        api.start({ y: SCREEN_HEIGHT, immediate: false, config:config.default })
     } 
 
     useEffect(() => {

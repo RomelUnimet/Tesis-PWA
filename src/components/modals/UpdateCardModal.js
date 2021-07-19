@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import '../../scss/modals/updateCardModal.scss'
 import { cardUpdateColor } from '../../actions/cards'
 import { useDispatch } from 'react-redux'
-import { animated, useSpring, config } from 'react-spring'
+import { animated, useSpring } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
 
 export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCropperState}) => {
@@ -71,10 +71,11 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
     const [{ y }, api] = useSpring(() => ({ y: 0 }));
     const height = 330; //CAMBIAR SI ES NECESARIO
 
+    const open = useCallback(() => {
+        api.start({ y: 0, immediate: false, config: {mass: 1, tension: 210, friction: 26} })
+    }, [api] )
     
-    const open = () => {
-        api.start({ y: 0, immediate: false, config: config.stiff })
-    }
+
     const close = () => {
         animateClose()
         setTimeout(() => {
@@ -94,7 +95,7 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
       )
 
     const animateClose = () => {
-        api.start({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+        api.start({ y: SCREEN_HEIGHT, immediate: false, config: {mass: 1, tension: 200, friction: 26} })
     } 
 
     useEffect(() => {

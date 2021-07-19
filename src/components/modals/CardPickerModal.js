@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import '../../scss/modals/cardPickerModal.scss'
 import { animated, useSpring, config } from 'react-spring'
@@ -60,9 +60,10 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
     const height = 330;
 
     
-    const open = () => {
-        api.start({ y: 0, immediate: false, config: config.stiff })
-    }
+    const open = useCallback(() => {
+        api.start({ y: 0, immediate: false, config: config.default })
+    }, [api] )
+    
     const close = () => {
         animateClose()
         setTimeout(() => {
@@ -83,7 +84,7 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
       )
 
     const animateClose = () => {
-        api.start({ y: SCREEN_HEIGHT, immediate: false, config:config.stiff })
+        api.start({ y: SCREEN_HEIGHT, immediate: false, config:config.default })
     } 
 
     useEffect(() => {

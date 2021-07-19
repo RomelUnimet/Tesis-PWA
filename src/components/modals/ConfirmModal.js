@@ -1,5 +1,6 @@
 import React from 'react'
 import '../../scss/modals/confirmModal.scss'
+import { animated, useTransition, config } from 'react-spring'
 
 //FALTALOS ESTILOS DE TEXT
 
@@ -7,22 +8,39 @@ export const ConfirmModal = ({title, text, rightText, leftText, confirmAction, i
 
     
     const handleLeftButton = () => {
+
         setIsActive(false)
+
     }
 
-    return (
+    //ANIMATION
+    const transition = useTransition(isActive, {
+        from: {opacity:0},
+        enter: {opacity:1},
+        leave: {opacity:0},
+        config: config.default
+    });
 
-        <div className={isActive? "animate__animated animate__fadeIn confirm-modal-container" : "confirm-modal-container"} style={isActive? {display:'flex'} : {display:'none'}}>
-            <div className={isActive? "animate__animated animate__fadeIn confirm-modal" : "confirm-modal"} >
-                    <h1>{title}</h1>
-                    <p>{text}</p>
-                
-                <div className="confirm-modal-buttons">
-                    <button className="confirm-modal-left-button" onClick={handleLeftButton}> {leftText} </button>
-                    <button className="confirm-modal-right-button" onClick={()=>{confirmAction()}}> {rightText} </button>
-                </div>
-            </div>
-        </div>
+    return (
+        <>
+            {transition((style, item) =>
+                item?
+                    <animated.div className="confirm-modal-container" style={style}>
+                        <animated.div className="confirm-modal" style={style}>
+                                <h1>{title}</h1>
+                                <p>{text}</p>
+                            <div className="confirm-modal-buttons">
+                                <button className="confirm-modal-left-button" onClick={handleLeftButton}> {leftText} </button>
+                                <button className="confirm-modal-right-button" onClick={()=>{confirmAction()}}> {rightText} </button>
+                            </div>
+                        </animated.div>
+                    </animated.div>
+                    :
+                    ''
+                )}
+            
+
+        </>
 
     )
 }

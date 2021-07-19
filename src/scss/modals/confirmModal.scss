@@ -11,26 +11,37 @@
     align-items: center;
     top: 0;
     z-index: 5;
-    --animate-duration: 0.2s;
     
+}
+
+@keyframes zoominoutsinglefeatured {
+    0% {
+        transform: scale(1.3,1.3);
+    }
+    100% {
+        transform: scale(1,1);
+    }
 }
 
 .confirm-modal{
     background-color: white;
     width: 80%;
-    border-radius: 12px;
+    border-radius: 10px;
     text-align: center;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    --animate-duration: 0.2s;
+    animation: zoominoutsinglefeatured 0.3s ;
+
+    
     
     h1 {
         width: 75%;
         margin-top: 1rem;
     } 
 }
+
 .confirm-modal-buttons{
     width: 100%;
     margin-top: 1rem;
