@@ -10,17 +10,7 @@ import SwiperCore, {
 
 import '../../scss/create_entry/img_carrousel.scss'
 import { ConfirmModal } from '../modals/ConfirmModal';
-
-
-
-
-// HACER LAS COSAS DE SWIPER CON LOS METODOS UNICAMENTE PARA VER QUE PASA
-// SINO TENGO QUE CAMBIAR DE CARRUSEL
-// VER SI PUEDO HACER LOS UPDATES AL SLIDER CON UNICAMENTE METODOS DEL MISMO EN VEZ DE HACER LOS RERENDERS RAROS DEL COMPONETE
-// NO PUEDO USAR UN SETSTATE EN ESTE COMPONENTE PORQUE SINO EXPLOTA
-//LO MAS FACIL SERA CAMBIAR EL CARRUSEL POR OTRO DE LOS QUE VI
-
-
+import { ImgEditCE } from './ImgEditCE';
 
 export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmpty }) => {
 
@@ -29,6 +19,8 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
     //Cambiar nombre a Set SlidesState o algo asi
     const [state, setstate] = useState(entryImgState)
     const [activeIndex, setActiveIndex] = useState(state.length-1)
+
+    const [imgEditorState, setImgEditorState] = useState(false)
 
     const moreThanOne = entryImgState.length>1
     let auxImgState = entryImgState;
@@ -45,7 +37,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
         if(!!imgInput.current?.files[0] && imgInput.current?.files.length<4 && (imgInput.current?.files.length+entryImgState.length)<=3) {
 
             for (let index = 0; index < imgInput.current?.files.length; index++) {
-                auxReader(index);   
+                auxReader(index);
             }
            
         }else if(imgInput.current?.files.length>3 && (imgInput.current?.files.length+entryImgState.length)>3){
@@ -72,7 +64,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
         };
     }
 
-    //CREO QUE EL COMPONENTE NO SE DA CUENTA DE QUE LE FALTAN IMAGENES 
+    //NO ESTA BORRANDO LAS IMAGENES BIEN CUANDO SE SUBEN 3 IMAGENES SEGUIDAS, BORRAS 1 Y DESPUES NO QUIERE BORRAR LAS DEMAS
     const removeImg = () =>{
         console.log(activeIndex)
         auxImgState.splice(activeIndex, 1); //Esta tomando el ultimo renderizado, debo mantener ese estado
@@ -97,6 +89,10 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
     
     const auxActiveIndex = () => {
         setActiveIndex(swiperRef.current?.swiper.activeIndex-1)
+    }
+
+    const goToEditImg = () => {
+        setImgEditorState(true)
     }
 
    
@@ -135,7 +131,9 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                         <path d="M30 13H6"  strokeWidth="3" strokeLinecap="round"/>
                     </svg>
 
-                    <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg"
+                         onClick={goToEditImg}
+                    >
                         <path strokeWidth="1" d="M0.901953 12.3872L20.3844 23.0103C20.5758 23.0923 20.7809 23.1333 20.9996 23.1333C21.109 23.1333 21.2184 23.1196 21.3277 23.0923C21.4371 23.0649 21.5328 23.0376 21.6148 23.0103L41.3434 12.3872C41.8082 12.1411 42.027 11.7446 41.9996 11.1978C41.9996 10.9517 41.9381 10.7261 41.815 10.521C41.692 10.3159 41.5211 10.1587 41.3023 10.0493L21.8199 0.164551C21.4098 -0.0268555 21.0133 -0.0268555 20.6305 0.164551L0.942969 10.0493C0.724219 10.1587 0.546484 10.3159 0.409766 10.521C0.273047 10.7261 0.204688 10.9517 0.204688 11.1978C0.204688 11.7446 0.437109 12.1411 0.901953 12.3872ZM21.2047 2.78955L37.857 11.2798L20.9996 20.3442L4.34727 11.2798L21.2047 2.78955ZM41.0563 19.688L37.1598 17.7192L34.3707 19.2368L37.652 20.9185L20.7945 29.9829L4.14219 20.9185L7.62852 19.1548L4.83945 17.6372L0.696875 19.688C0.232031 19.9341 -0.00722656 20.3237 -0.0208984 20.8569C-0.0345703 21.3901 0.191016 21.7798 0.655859 22.0259L20.1383 32.6489C20.357 32.7583 20.5758 32.813 20.7945 32.813C20.9039 32.813 21.0064 32.7993 21.1021 32.772C21.1979 32.7446 21.3004 32.7036 21.4098 32.6489L41.0973 22.0259C41.5621 21.7798 41.7945 21.3901 41.7945 20.8569C41.7945 20.3237 41.5484 19.9341 41.0563 19.688ZM41.0563 28.8755L37.3648 27.0708L34.5758 28.5884L37.652 30.106L20.7945 39.1704L4.14219 30.106L7.38242 28.6294L4.59336 27.1118L0.696875 28.8755C0.232031 29.1216 -0.00722656 29.5112 -0.0208984 30.0444C-0.0345703 30.5776 0.191016 30.9673 0.655859 31.2134L20.1383 41.8364C20.2203 41.8638 20.2955 41.8911 20.3639 41.9185C20.4322 41.9458 20.5006 41.9663 20.5689 41.98C20.6373 41.9937 20.7125 42.0005 20.7945 42.0005C20.9039 42.0005 21.0064 41.9868 21.1021 41.9595C21.1979 41.9321 21.3004 41.8911 21.4098 41.8364L41.0973 31.2134C41.5621 30.9673 41.7945 30.5776 41.7945 30.0444C41.7945 29.5112 41.5484 29.1216 41.0563 28.8755Z"/>
                     </svg>
                 </div>
@@ -154,10 +152,18 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                 setIsActive={setImgPromptState}
             />
 
+            <ImgEditCE
+                imgEditorState={imgEditorState}
+                setImgEditorState={setImgEditorState}
+                entryImgState={entryImgState}
+                setEntryImgState={setEntryImgState}
+            />
+
         </>
 
         
 
         
     )
+    
 }

@@ -1,0 +1,97 @@
+@import '../variables.scss';
+
+.img-editor-container {
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    background-color: white;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    top: 0px;
+
+}
+
+.img-editor-toolbar{
+    position: fixed;
+    width: 100%;
+    height: 4.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: white;
+    z-index: 3;
+    border-bottom: solid $grey-color 1px;
+
+    padding-bottom: 0.6rem;
+
+    svg {
+        margin-left:  1rem; 
+        margin-right: 1rem;
+        margin-bottom: 0.7rem;
+        height: 2.2rem;
+    }
+}
+
+.img-editor-title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & h1 {
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    & h3 {
+        color: $darker-grey;
+        font-size: 0.7rem;
+        font-weight: 500;
+        margin-top: 0.5rem;
+    }
+}
+
+.editor-images-container{
+    margin-top: 5rem;
+    width: 100%;
+}
+.editor-image-tab{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: solid $grey-color 1px;
+
+    & svg {
+        width: 2rem;
+    }
+    & .img-editor-drag-handle {
+        width: 1.6rem;
+        margin-right: 1rem;
+    }
+   
+    & .img-edit-trash {
+        stroke: $black-color;
+    }
+}
+.editing-buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 66%;
+
+}
+.img-edit{
+    height: 6.8rem;
+    width: 7.8rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & p {
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+}
+

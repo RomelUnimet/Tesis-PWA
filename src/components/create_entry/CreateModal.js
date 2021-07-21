@@ -92,11 +92,20 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
         reader.readAsDataURL(imgInput.current?.files[index])
         reader.onload = () => {
             
+                
                 auxImgArray = entryImgState;
-                auxImgArray.push({
-                    img: reader.result,
-                    thumbnail: false
-                })
+                if(entryImgState.length===0){
+                    auxImgArray.push({
+                        img: reader.result,
+                        thumbnail: true
+                    })
+                }else{
+                    auxImgArray.push({
+                        img: reader.result,
+                        thumbnail: false
+                    })
+                }
+                
 
             setEntryImgState(auxImgArray);       
             setImgInputIsEmpty(true)
