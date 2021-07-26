@@ -186,7 +186,8 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                                     {dateText()} 
                             </button>
                             
-                            <DatePicker //Tengo que separar este componente
+                            
+                            <DatePicker //Tengo que separar este componente //Esto puedo cambiarlo cuando yo quiera ya que es diferente en cada interfaz
                                 value={datePickerState.time}
                                 isOpen={datePickerState.isOpen}
                                 onSelect={handleSelect}
@@ -196,7 +197,7 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                                 max={new Date(2023,0,1)}
                                 showHeader={false}
                                 confirmText={'Done'}
-                                cancelText={'Close'} //Hay que cambiar el orden de estos botones
+                                cancelText={'Close'} 
                             />
 
                             <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" 

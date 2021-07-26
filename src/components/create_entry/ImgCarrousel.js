@@ -22,7 +22,8 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
 
     const [imgEditorState, setImgEditorState] = useState(false)
 
-    const moreThanOne = entryImgState.length>1
+    const [moreThanOne, setMoreThanOne] = useState(entryImgState.length>1)
+   
     let auxImgState = entryImgState;
 
     SwiperCore.use([Pagination]);
@@ -58,26 +59,79 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                     thumbnail: false
                 })
 
-            setstate(auxImgState);      
-            setImgInputIsEmpty(true)
-            setImgInputIsEmpty(false)
+            setstate([...auxImgState]);   
+
+            setMoreThanOne(entryImgState.length>1);
+            if(entryImgState.length>1){
+                swiperRef.current.swiper.allowTouchMove=true;
+            }
+
+            swiperRef.current?.swiper.update()
+
+            setRerenderCaruosel(false)
+            setRerenderCaruosel(true)
+            
+            swiperRef.current?.swiper.slideTo(entryImgState.length,0)
+
         };
     }
 
-    //NO ESTA BORRANDO LAS IMAGENES BIEN CUANDO SE SUBEN 3 IMAGENES SEGUIDAS, BORRAS 1 Y DESPUES NO QUIERE BORRAR LAS DEMAS
-    const removeImg = () =>{
-        console.log(activeIndex)
+    const removeImg = () => {
+
         auxImgState.splice(activeIndex, 1); //Esta tomando el ultimo renderizado, debo mantener ese estado
-        setstate(auxImgState)
-        //swiperRef.current?.swiper.removeSlide(swiperRef.current?.swiper.activeIndex)
+        setstate([...auxImgState])
+        if (entryImgState.length===0){
+            setImgInputIsEmpty(true);
+        }
+        if (entryImgState.length===1){
+            swiperRef.current.swiper.allowTouchMove=false;
+            setMoreThanOne(entryImgState.length>1);
+        }
+        //SI TERMINA EN UN ACTIVEINDEX INVALIDO, LO CAMBIA A 0
+        if(activeIndex>=entryImgState.length){
+            setActiveIndex(0)
+        }
+        swiperRef.current?.swiper.update()
+
+        if(entryImgState.length!==0){
+            auxThumbnail()
+        }
+        
+        setImgPromptState(false)
+    }
+
+    const removeImgInEditor = (image_index) => {
+
+        auxImgState.splice(image_index, 1); //Esta tomando el ultimo renderizado, debo mantener ese estado
+        setstate([...auxImgState])
+
         if (entryImgState.length===0){
             setImgInputIsEmpty(true);
         }
         if (entryImgState.length===1){
             swiperRef.current.swiper.allowTouchMove=false;
         }
+        //SI TERMINA EN UN ACTIVEINDEX INVALIDO, LO CAMBIA A 0
+        if(image_index>=entryImgState.length){
+            setActiveIndex(0)
+        }
+        
         swiperRef.current?.swiper.update()
-        setImgPromptState(false)
+
+        if(entryImgState.length!==0){
+            auxThumbnail()
+        }
+    }
+
+    //Ve que hacer con el thumbnail luego de eliminar una imagen
+    const auxThumbnail = () =>{
+
+        const thumbnailArray = entryImgState.filter( (img) => img.thumbnail === true )
+        if(thumbnailArray.length===0){
+            let auxArray = entryImgState;
+            auxArray[0].thumbnail = true;
+            setEntryImgState([...auxArray]);
+        }
     }
 
     const [imgPromptState, setImgPromptState] = useState(false)
@@ -95,27 +149,34 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
         setImgEditorState(true)
     }
 
+    const [rerenderCaruosel, setRerenderCaruosel] = useState(true)
+
    
     return (
 
         <>
             <div className="ce-img-carrousel">
-                <Swiper
+                {rerenderCaruosel?
+                    <Swiper
                     ref={swiperRef}    
                     className='ce-swiper-container'   
                     loop={moreThanOne}       
                     pagination={moreThanOne}
                     allowTouchMove={moreThanOne}
                     onSlideChange={auxActiveIndex}
-                >
-                    {
-                        state.map((img, index)=>(
-                                <SwiperSlide key={index} className='ce-swiper-slide' style={{ backgroundImage: `url(${img.img})` }}>  
-                                    
-                                </SwiperSlide>
-                            ))
-                    }
-                </Swiper>
+                    >
+                        {
+                            state.map((img, index)=>(
+                                    <SwiperSlide key={index} className='ce-swiper-slide' style={{ backgroundImage: `url(${img.img})` }}>  
+                                        
+                                    </SwiperSlide>
+                                ))
+                        }
+                    </Swiper>
+                    :
+                    <></>
+            }
+                
 
                 <div className="ce-slider-icon-container">
                     <label>
@@ -157,6 +218,9 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                 setImgEditorState={setImgEditorState}
                 entryImgState={entryImgState}
                 setEntryImgState={setEntryImgState}
+                removeImgInEditor={removeImgInEditor}
+                addImg={addImg}
+                imgInput={imgInput}
             />
 
         </>

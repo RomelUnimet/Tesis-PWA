@@ -68,10 +68,14 @@
     & .img-editor-drag-handle {
         width: 1.6rem;
         margin-right: 1rem;
+        fill: $grey-color
     }
-   
     & .img-edit-trash {
         stroke: $black-color;
+    }
+    & .img-edit-thumbnail {
+        transition: ease-in-out;
+        transition-duration: 0.2s;
     }
 }
 .editing-buttons{
