@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../scss/modals/aspectRatio.scss'
-import { animated, useTransition, config } from 'react-spring'
+import { animated, useTransition } from 'react-spring'
 
 
 
@@ -43,7 +43,7 @@ export const AspectRatioModal = ({aspectModal, setAspectModal, cropperRef}) => {
         from: {opacity:0},
         enter: {opacity:1},
         leave: {opacity:0},
-        config: config.default
+        
     });
 
     //ANIMATION
@@ -73,17 +73,32 @@ export const AspectRatioModal = ({aspectModal, setAspectModal, cropperRef}) => {
                             isVertical?
                                 ratios.map((ratio, index) => (
                                     <div key={index}>
-                                        <h1>{ratio.aspect} </h1>
+                                        <div  className="aspect-ratio-item"
+                                            onClick={()=>setAspectModal({show:false, aspect:ratio.aspect })}
+                                        >
+                                            <h3> { ratio.name } </h3>
+                                        </div>
+                                        <hr></hr>
                                     </div>
                                 ))
                                 :
                                 ratiosReverse.map((ratio, index) => (
                                     <div key={index}>
-                                        <h1> {ratio.aspect} </h1>                                 
+                                        <div  className="aspect-ratio-item"
+                                            onClick={()=>setAspectModal({show:false, aspect:ratio.aspect})}
+                                        >
+                                            <h3> { ratio.name } </h3>
+                                        </div>
+                                        <hr></hr>
                                     </div>
                                 ))
 
                         }
+                        <div className="aspect-ratio-item aspect-ratio-item-cancel"
+                             onClick={closeModal}
+                        >
+                            <h3> Cancel </h3>
+                        </div>
                         
                     </animated.div>
                     :

@@ -36,7 +36,7 @@ export const TopBar = ({navigateCard, cardModalState, setCardModalState}) => {
                 >
                     <WeatherFilter
                         selectedWeather={'none'}
-                        style={{height: '1.4rem',fontSize: '1.4rem', fill: '#B6B6B6', marginRight: '0.5rem'}}
+                        style={{height: '1.5rem',fontSize: '1.5rem', fill: '#B6B6B6', marginRight: '0.5rem'}}
                     
                     />
                     <p>{dateText()}</p>
