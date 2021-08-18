@@ -3,13 +3,15 @@ import { useDispatch } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { startCardStore } from '../actions/cards';
 import { startSettingsStore } from '../actions/settings';
+import { startGetWeather } from '../actions/extra';
+import { startTagStore } from '../actions/tag'
 
 import { CardScreen } from '../components/cards/CardScreen';
 import { CreateModal } from '../components/create_entry/CreateModal';
 import { ProfileScreen } from '../components/profile/ProfileScreen';
 import { CardEntries } from '../components/cards/CardEntries';
 import { Navbar } from '../components/ui/Navbar'
-import { startGetWeather } from '../actions/extra';
+
 
 
 
@@ -25,6 +27,7 @@ export const RoutesApp = () => {
         
         dispatch( startSettingsStore() );
         dispatch( startCardStore() );
+        dispatch( startTagStore() );
 
         dispatch( startGetWeather() );
 

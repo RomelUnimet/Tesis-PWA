@@ -17,7 +17,13 @@ export const types = {
     cardUpdate: '[cards] Update cards on statestate',
 
     //Weather
-    startWeatherStore: '[weather] Start storing cards in state',
+    startWeatherStore: '[weather] Start weather cards in state',
     weatherStore: '[weather] Store weather in state',
+
+    //Tags
+    tagsStore: '[tag] Store tags in state',
+    tagUpdate: '[tag] Update a tag in the state',
+    tagCreate: '[tag] Create a new tag in state',
+    tagDelete: '[tag] Delete a tag from the state',
 
 }

@@ -97,14 +97,16 @@
         }
     }
     & textarea{
+
         width: 80%;
         border: none;
         resize: none;
-        height: 30rem;
+        min-height: 20rem;
         font-family: 'Roboto', sans-serif;
         font-size: 1rem;
         color: $black-color;
         margin-bottom: 1rem;
+        margin-top: 0.8rem;
 
         &:focus{
             outline:none;

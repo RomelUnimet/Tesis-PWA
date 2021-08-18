@@ -72,7 +72,6 @@ export const startRegister = ( email, password) => {
               );
 
             await db.collection('cards').delete();
-
             
             for (let index = 0; index < body.cards.length; index++) {
                 
@@ -103,8 +102,11 @@ export const startChecking = () => {
         const isLogged = await db.collection('token').get();
 
         //Aca se muestra como si se hiciera 2 veces pero es mentira
+        //Es donde se crean las colecciones en IndexedDB si no se tienen todavia
         await db.collection('cards').get();
         await db.collection('settings').get();
+        await db.collection('tags').get();
+        await db.collection('locations').get();
 
         if(isLogged.length === 0){
 
