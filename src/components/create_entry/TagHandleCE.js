@@ -6,6 +6,8 @@ import { InputModal } from '../modals/InputModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { generateID } from '../../helpers/generateId'
 import { tagCreate } from '../../actions/tag'
+import { HandlerMenuModal } from '../modals/HandlerMenuModal'
+import { ConfirmModal } from '../modals/ConfirmModal'
 
 
 export const TagHandleCE = ({handlerState, setHandlerState}) => {
@@ -62,15 +64,29 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
         api.start({ y: SCREEN_HEIGHT, immediate: true }) 
     }, [SCREEN_HEIGHT, api])
 
-
+    //New Tag Modal
     const [inputModal, setInputModal] = useState(false)
-
     const [inputValue, setInputValue] = useState('')
+
+    //Update Tag Modal
+    const [updateInputModal, setUpdateInputModal] = useState(false)
+    const [updateInputModalValue, setUpdateInputModalValue] = useState('')
+
+    //Delete Tag Modal
+    const [deleteModal, setDeleteModal] = useState(false)
+
+    const [selectedTags, setSelectedTags] = useState([])
+
+    const [menuModalState, setMenuModalState] = useState({
+        show:false,
+        tag:{},
+    })
 
     const {tags} = useSelector(state => state.tags)
 
     const {uid} = useSelector(state => state.auth);
 
+    //Creo que este proceso puede hacerse en el modal
     const createTag = () => {
 
         const newTag = {
@@ -85,14 +101,52 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
         setInputModal(false)
     }
 
+    const isSelected = (tid) => {
+        return selectedTags.includes(tid)
+    }
+
+    const toggleTagItem = (tid, index) => {
+
+        let auxArray = selectedTags;
+        if (selectedTags.includes(tid)){
+            auxArray.splice(auxArray.indexOf(tid), 1);
+            setSelectedTags([...auxArray])
+        } else {
+            auxArray.push(tid);
+            setSelectedTags([...auxArray])
+        }
+    }
+    const openMenuItem = (e, tag) => {
+
+        e.stopPropagation();
+
+        setMenuModalState({
+            ...menuModalState,
+            show: true,
+            tag:{ ...tag }
+        })
+
+    }
+
+    useEffect(() => {
+        
+        if(menuModalState.show){
+            setUpdateInputModalValue(menuModalState.tag.name)
+        }
+       
+    }, [updateInputModalValue, menuModalState])
+
     return (
         <>
             <div className="handler-container-back"
                 style={ handlerState.show? { display:'inline' } : { display:'none' }}
             >    
-            </div>
 
+            </div>
+            
             { handlerState.show?
+                <>
+                
                 <animated.div 
                 className="handler-container" style={{y: y, touchAction: 'none'}} {...bindModal()}
                 >
@@ -121,6 +175,47 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
                     </div>
                     <hr/>
 
+                    {
+                        tags.map((tag, index)=>(
+                            <div key={tag.tid} className="handler-item-container">
+                                <div className="handler-item" key={index} onClick={()=>toggleTagItem( tag.tid, index )}>
+                                    <div className="handler-check-name">
+
+                                        { isSelected(tag.tid)?      
+                                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect width="32" height="32" rx="16" fill="#3CDAFD"/>
+                                                <path d="M7 16.25L13.25 22.5L23.6666 10" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                        :
+                                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect width="32" height="32" rx="16" fill="#C4C4C4"/>
+                                            </svg>
+                                        }
+                                        
+
+                                        <h2> {tag.name} </h2>
+                                    </div>
+
+                                    <div className="handler-entries-menu">
+                                        <h2> { tag.entries.length } </h2>
+                                        <svg  viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" className="menu-svg-icon"
+                                              onClick={(e)=>openMenuItem(e, tag)}
+                                        >
+                                            <path d="M17.0001 19.8334C18.5649 19.8334 19.8334 18.5649 19.8334 17.0001C19.8334 15.4353 18.5649 14.1667 17.0001 14.1667C15.4353 14.1667 14.1667 15.4353 14.1667 17.0001C14.1667 18.5649 15.4353 19.8334 17.0001 19.8334Z" />
+                                            <path d="M26.9166 19.8334C28.4814 19.8334 29.7499 18.5649 29.7499 17.0001C29.7499 15.4353 28.4814 14.1667 26.9166 14.1667C25.3518 14.1667 24.0833 15.4353 24.0833 17.0001C24.0833 18.5649 25.3518 19.8334 26.9166 19.8334Z" />
+                                            <path d="M7.08333 19.8334C8.64814 19.8334 9.91667 18.5649 9.91667 17.0001C9.91667 15.4353 8.64814 14.1667 7.08333 14.1667C5.51853 14.1667 4.25 15.4353 4.25 17.0001C4.25 18.5649 5.51853 19.8334 7.08333 19.8334Z" />
+                                        </svg>
+                                    </div>
+
+                                </div>
+                                <hr />
+                            </div>
+
+                        ))
+
+                    }
+
+
                     <InputModal
                         title={'New tag'}
                         rightText={'Done'}
@@ -131,8 +226,40 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
                         inputValue ={inputValue}
                         setInputValue={setInputValue}
                     />
-
+                    
+                    
                 </animated.div>
+
+                <HandlerMenuModal
+                    //Esta es la manera de hacerlo pero debo hacer varias modificaciones al SCSS
+                    modalState={menuModalState}
+                    setModalState={setMenuModalState}
+                    updateInputModal={updateInputModal}
+                    setUpdateInputModal={setUpdateInputModal}
+                    deleteModal={deleteModal}
+                    setDeleteModal={setDeleteModal} 
+                />        
+                <InputModal
+                    title={'Edit tag name'}
+                    rightText={'Done'}
+                    leftText={'Cancel'}
+                    //confirmAction={createTag}
+                    isActive ={updateInputModal}
+                    setIsActive={setUpdateInputModal}
+                    inputValue ={updateInputModalValue}
+                    setInputValue={setUpdateInputModalValue}
+                />
+                <ConfirmModal
+                    title={'Delete this tag?'}
+                    text={'It will delete this tag in all tagged diaries. (diaries still exist)'}
+                    rightText={'Delete'} 
+                    leftText={'Cancel'}
+                    //confirmAction={()=>{deleteImgFunction()}}
+                    isActive={deleteModal}
+                    setIsActive={setDeleteModal}       
+                />
+                
+                </>
                 :
                 <></>
             }
@@ -140,4 +267,7 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
         </>
     )
 }
+
+
+
 

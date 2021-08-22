@@ -7,9 +7,7 @@ import { animated, useTransition, config } from 'react-spring'
 export const InputModal = ({title, rightText, leftText, confirmAction, isActive, setIsActive, inputValue, setInputValue}) => {
 
     const handleLeftButton = () => {
-
         setIsActive(false)
-
     }
 
     //ANIMATION
@@ -20,21 +18,21 @@ export const InputModal = ({title, rightText, leftText, confirmAction, isActive,
         config: config.default
     });
 
-   
     return (
         <>
             {transition((style, item) =>
                 item?
-                    <animated.div className="confirm-modal-container" style={style}>
-                        <animated.div className="confirm-modal" style={style}>
+                    <animated.div className="input-modal-container" style={style}>
+                        <animated.div className="input-modal" style={style}>
                                 <h1>{title}</h1>
-                                <input className="input-modal-input" 
+                                <input 
+                                    className="input-modal-input" 
                                     autoFocus 
                                     type="text" 
                                     value={inputValue}
                                     onChange={event => setInputValue(event.target.value)}
                                 />
-                            <div className="confirm-modal-buttons">
+                            <div className="input-modal-buttons">
                                 <button className="input-modal-left-button" onClick={handleLeftButton}> {leftText} </button>
                                 <button className="input-modal-right-button" onClick={()=>{confirmAction()}}> {rightText} </button>
                             </div>
