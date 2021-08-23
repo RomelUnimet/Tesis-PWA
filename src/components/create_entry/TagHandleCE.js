@@ -5,7 +5,7 @@ import { useDrag } from 'react-use-gesture'
 import { InputModal } from '../modals/InputModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { generateID } from '../../helpers/generateId'
-import { tagCreate } from '../../actions/tag'
+import { tagCreate, tagDelete, tagUpdate } from '../../actions/tag'
 import { HandlerMenuModal } from '../modals/HandlerMenuModal'
 import { ConfirmModal } from '../modals/ConfirmModal'
 
@@ -128,13 +128,25 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
 
     }
 
-    useEffect(() => {
+    const editTag = () => {
+
+        dispatch( tagUpdate(updateInputModalValue, menuModalState.tag) )
+        setUpdateInputModal(false)
+        setMenuModalState({
+            ...menuModalState,
+            show:false,
+        })
         
-        if(menuModalState.show){
-            setUpdateInputModalValue(menuModalState.tag.name)
-        }
-       
-    }, [updateInputModalValue, menuModalState])
+    }
+    const deleteTag = () => {
+
+        dispatch( tagDelete(menuModalState.tag) )
+        setDeleteModal(false)
+        setMenuModalState({
+            ...menuModalState,
+            show:false,
+        })
+    }
 
     return (
         <>
@@ -199,7 +211,13 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
                                     <div className="handler-entries-menu">
                                         <h2> { tag.entries.length } </h2>
                                         <svg  viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" className="menu-svg-icon"
-                                              onClick={(e)=>openMenuItem(e, tag)}
+                                              onClick={
+                                                  (e)=>{
+                                                      openMenuItem(e, tag)
+                                                      setUpdateInputModalValue(tag.name)
+                                                }
+                                            
+                                            }
                                         >
                                             <path d="M17.0001 19.8334C18.5649 19.8334 19.8334 18.5649 19.8334 17.0001C19.8334 15.4353 18.5649 14.1667 17.0001 14.1667C15.4353 14.1667 14.1667 15.4353 14.1667 17.0001C14.1667 18.5649 15.4353 19.8334 17.0001 19.8334Z" />
                                             <path d="M26.9166 19.8334C28.4814 19.8334 29.7499 18.5649 29.7499 17.0001C29.7499 15.4353 28.4814 14.1667 26.9166 14.1667C25.3518 14.1667 24.0833 15.4353 24.0833 17.0001C24.0833 18.5649 25.3518 19.8334 26.9166 19.8334Z" />
@@ -218,6 +236,7 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
 
                     <InputModal
                         title={'New tag'}
+                        text={''}
                         rightText={'Done'}
                         leftText={'Cancel'}
                         confirmAction={createTag}
@@ -231,30 +250,32 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
                 </animated.div>
 
                 <HandlerMenuModal
-                    //Esta es la manera de hacerlo pero debo hacer varias modificaciones al SCSS
                     modalState={menuModalState}
                     setModalState={setMenuModalState}
                     updateInputModal={updateInputModal}
                     setUpdateInputModal={setUpdateInputModal}
                     deleteModal={deleteModal}
                     setDeleteModal={setDeleteModal} 
-                />        
+                />   
                 <InputModal
                     title={'Edit tag name'}
+                    text={'It will apply to all tagged diaries.'}
                     rightText={'Done'}
                     leftText={'Cancel'}
-                    //confirmAction={createTag}
+                    confirmAction={editTag}
                     isActive ={updateInputModal}
                     setIsActive={setUpdateInputModal}
                     inputValue ={updateInputModalValue}
                     setInputValue={setUpdateInputModalValue}
                 />
+                    
+                
                 <ConfirmModal
                     title={'Delete this tag?'}
                     text={'It will delete this tag in all tagged diaries. (diaries still exist)'}
                     rightText={'Delete'} 
                     leftText={'Cancel'}
-                    //confirmAction={()=>{deleteImgFunction()}}
+                    confirmAction={()=>{deleteTag()}}
                     isActive={deleteModal}
                     setIsActive={setDeleteModal}       
                 />

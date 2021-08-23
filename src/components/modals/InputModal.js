@@ -4,7 +4,7 @@ import { animated, useTransition, config } from 'react-spring'
 
 //FALTALOS ESTILOS DE TEXT
 
-export const InputModal = ({title, rightText, leftText, confirmAction, isActive, setIsActive, inputValue, setInputValue}) => {
+export const InputModal = ({title, text, rightText, leftText, confirmAction, isActive, setIsActive, inputValue, setInputValue}) => {
 
     const handleLeftButton = () => {
         setIsActive(false)
@@ -25,6 +25,7 @@ export const InputModal = ({title, rightText, leftText, confirmAction, isActive,
                     <animated.div className="input-modal-container" style={style}>
                         <animated.div className="input-modal" style={style}>
                                 <h1>{title}</h1>
+                                <p>{text}</p>
                                 <input 
                                     className="input-modal-input" 
                                     autoFocus 

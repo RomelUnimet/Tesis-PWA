@@ -29,7 +29,7 @@ export const tagCreate = ( tag ) => {
         dispatch(startTagStore())   
     }
 }
-/*
+
 export const tagUpdate = ( newName, tag ) => {
 
     return async (dispatch) => {
@@ -42,23 +42,24 @@ export const tagUpdate = ( newName, tag ) => {
         await db.collection('tags').doc({ tid: tag.tid }).update(newTag)
 
         
-        fetchWithToken(`tag/${newTag.cid}`, newTag, 'PUT');
+        //fetchWithToken(`tag/${newTag.cid}`, newTag, 'PUT');
         
         dispatch(startTagStore())   
     }
 }
+
 export const tagDelete = ( tag ) => {
 
     return async (dispatch) => {
 
         await db.collection('tags').doc({ tid: tag.tid }).delete()
         
-        fetchWithToken(`tag/deletetid`, 'DELETE');
+        //fetchWithToken(`tag/deletetid`, 'DELETE');
         
         dispatch(startTagStore())   
     }
 }
-*/
+
 const finishTagStore = ( tags ) =>{
 
     return {
