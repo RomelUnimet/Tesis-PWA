@@ -26,4 +26,7 @@ export const types = {
     tagCreate: '[tag] Create a new tag in state',
     tagDelete: '[tag] Delete a tag from the state',
 
+    //Locations
+    locationsStore: '[location] Store locations in state',
+
 }

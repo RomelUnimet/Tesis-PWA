@@ -34,7 +34,8 @@
     --animate-duration: 0.4s;
 
     & hr {
-        width: 100%;        
+        width: 100%; 
+        margin: 0px;     
     }
 
 
@@ -77,6 +78,8 @@
 
     font-size: 0.6rem;
 
+    margin-bottom: 1rem;
+
     & h1 {
         color: $black-color;
         display: flex;
@@ -111,21 +114,40 @@
 }
 .handler-item-container{
     width: 100%;
+    height: auto;
     display: flex;
     align-items: center;
     flex-direction: column;
+    
+    :active{
+        background-color: #C4C4C4;
+    }
 }
 .handler-item{
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    width: 90%;
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+ 
     height: 2.8rem;
 
     & h2 {
         margin-left: 0.8rem;
         margin-right: 0.4rem;
+    }    
+    & p {
+        margin-left: 0.9rem;
+        margin-right: 0.4rem;
+        color: #C4C4C4;
+        width: 13rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        font-size: 0.7rem;
     }    
 }
 
@@ -133,6 +155,22 @@
 
     display: flex;
     align-items: center;
+    margin-left: 5%;
+
+    & svg {
+        margin-left: 0.8rem;
+        width: 1.6rem;
+        fill: $accent-blue;
+    }
+}
+
+.handler-check-name-description{
+
+    display: flex;
+    align-items: center;
+    margin-left: 5%;
+
+    
 
     & svg {
         margin-left: 0.8rem;
@@ -145,6 +183,8 @@
 
     display: flex;
     align-items: center;
+    margin-right: 5%;
+
 
     & svg {
         fill: $black-color;

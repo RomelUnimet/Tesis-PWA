@@ -3,7 +3,7 @@ import { animated, useSpring } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import '../../scss/modals/handlerMenu.scss';
 
-export const HandlerMenuModal = ({modalState, setModalState, updateInputModal, setUpdateInputModal, deleteModal, setDeleteModal}) => {
+export const HandlerMenuModal = ({modalState, setModalState, setUpdateInputModal, setDeleteModal}) => {
 
     const closeModal = () =>{
         animateClose()

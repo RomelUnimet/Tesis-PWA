@@ -5,6 +5,7 @@ import { startCardStore } from '../actions/cards';
 import { startSettingsStore } from '../actions/settings';
 import { startGetWeather } from '../actions/extra';
 import { startTagStore } from '../actions/tag'
+import { startLocationStore } from '../actions/location'
 
 import { CardScreen } from '../components/cards/CardScreen';
 import { CreateModal } from '../components/create_entry/CreateModal';
@@ -28,6 +29,7 @@ export const RoutesApp = () => {
         dispatch( startSettingsStore() );
         dispatch( startCardStore() );
         dispatch( startTagStore() );
+        dispatch( startLocationStore() );
 
         dispatch( startGetWeather() );
 

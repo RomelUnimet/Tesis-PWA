@@ -64,6 +64,8 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
         api.start({ y: SCREEN_HEIGHT, immediate: true }) 
     }, [SCREEN_HEIGHT, api])
 
+    //Logica Funcional
+
     //New Tag Modal
     const [inputModal, setInputModal] = useState(false)
     const [inputValue, setInputValue] = useState('')
@@ -86,7 +88,7 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
 
     const {uid} = useSelector(state => state.auth);
 
-    //Creo que este proceso puede hacerse en el modal
+    
     const createTag = () => {
 
         const newTag = {
@@ -153,7 +155,6 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
             <div className="handler-container-back"
                 style={ handlerState.show? { display:'inline' } : { display:'none' }}
             >    
-
             </div>
             
             { handlerState.show?
@@ -252,9 +253,7 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
                 <HandlerMenuModal
                     modalState={menuModalState}
                     setModalState={setMenuModalState}
-                    updateInputModal={updateInputModal}
                     setUpdateInputModal={setUpdateInputModal}
-                    deleteModal={deleteModal}
                     setDeleteModal={setDeleteModal} 
                 />   
                 <InputModal

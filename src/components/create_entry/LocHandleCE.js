@@ -1,7 +1,10 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import '../../scss/create_entry/handlemodals.scss'
 import { animated, useSpring, config } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
+import { useSelector } from 'react-redux'
+import { HandlerMenuModal } from '../modals/HandlerMenuModal'
+import { generateID } from '../../helpers/generateId'
 
 export const LocHandleCE = ({handlerState, setHandlerState}) => {
 
@@ -55,6 +58,116 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
         api.start({ y: SCREEN_HEIGHT, immediate: true }) 
     }, [SCREEN_HEIGHT,api])
 
+    //Logica Funcional
+
+    const [selectedLocation, setSelectedLocation] = useState('')
+
+    //Update Tag Modal
+    const [updateInputModal, setUpdateInputModal] = useState(false)
+
+    //Delete Tag Modal
+    const [deleteModal, setDeleteModal] = useState(false)
+
+    const [menuModalState, setMenuModalState] = useState({
+        show:false,
+        tag:{},
+    })
+
+    //const {locations} = useSelector(state => state.locations)
+    const {uid} = useSelector(state => state.auth);
+
+    const locations = [
+        {
+            lid: 'LocationID',
+            uid: uid,
+            name: 'Test Location 1', //Name value
+            description: 'This is a test location', //De la direccion
+            latitude: '123', //Del location dado por el mapa
+            longitude: '1213', //Del location dado por el mapa
+            entries: [],
+        },
+        {
+            lid: 'LocationID 2',
+            uid: uid,
+            name: 'Test Location 2', //Name value
+            description: 'This is a test locationadvasdvasdkjvaosidvboaisudbvouasdbvoiausdvoiuasdvoiuabsdoiuvbaosiudvbaoisudbvoiasu', //De la direccion
+            latitude: '123', //Del location dado por el mapa
+            longitude: '1213', //Del location dado por el mapa
+            entries: [],
+        },
+    ]
+
+
+    /*
+    const createLocation = () => {
+
+        const newLocation = {
+            lid: generateID(),
+            uid: uid,
+            name: '', //Name value
+            description: '', //De la direccion
+            latitude: '', //Del location dado por el mapa
+            longitude: '', //Del location dado por el mapa
+            entries: [],
+        }
+
+        //dispatch( tagCreate(newTag) );
+
+        //setInputModal(false)
+    }
+    */
+    
+    const isSelected = (lid) => {
+        return selectedLocation===lid
+    }
+    
+    const toggleLocation = (lid) => {
+
+        if (selectedLocation===lid){
+
+            setSelectedLocation('')
+        } else {
+            setSelectedLocation(lid)
+        }
+
+        console.log(selectedLocation)
+    }
+    
+    
+    const openMenuItem = (e, location) => {
+
+        e.stopPropagation();
+
+        setMenuModalState({
+            ...menuModalState,
+            show: true,
+            location:{ ...location }
+        })
+
+    }
+    
+    /*
+    const editTag = () => {
+
+        dispatch( tagUpdate(updateInputModalValue, menuModalState.tag) )
+        setUpdateInputModal(false)
+        setMenuModalState({
+            ...menuModalState,
+            show:false,
+        })
+        
+    }
+    const deleteTag = () => {
+
+        dispatch( tagDelete(menuModalState.tag) )
+        setDeleteModal(false)
+        setMenuModalState({
+            ...menuModalState,
+            show:false,
+        })
+    }
+    */
+
 
     return (
         <>
@@ -62,7 +175,9 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
                 style={ handlerState.show? { display:'inline' } : { display:'none' }}
             >    
             </div>
+
             {handlerState.show?
+                <>
                 <animated.div className="handler-container" style={{y: y, touchAction: 'none'}} {...bindModal()}
                 >
                     <div className="handler-top-bar">
@@ -74,7 +189,7 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
                             <path d="M25.3333 14.6667H9.51992L14.3599 8.85338C14.5862 8.58109 14.6951 8.23005 14.6626 7.87748C14.6301 7.52491 14.4589 7.19969 14.1866 6.97338C13.9143 6.74706 13.5633 6.63817 13.2107 6.67068C12.8581 6.70319 12.5329 6.87442 12.3066 7.14671L5.63992 15.1467C5.59507 15.2103 5.55496 15.2772 5.51992 15.3467C5.51992 15.4134 5.51992 15.4534 5.42659 15.52C5.36615 15.6729 5.33451 15.8357 5.33325 16C5.33451 16.1644 5.36615 16.3272 5.42659 16.48C5.42659 16.5467 5.42659 16.5867 5.51992 16.6534C5.55496 16.7229 5.59507 16.7897 5.63992 16.8534L12.3066 24.8534C12.4319 25.0039 12.5889 25.1249 12.7664 25.2079C12.9438 25.2908 13.1374 25.3337 13.3333 25.3334C13.6448 25.334 13.9467 25.2255 14.1866 25.0267C14.3216 24.9148 14.4332 24.7773 14.515 24.6222C14.5968 24.467 14.6472 24.2973 14.6633 24.1227C14.6794 23.948 14.6609 23.7719 14.6088 23.6045C14.5568 23.437 14.4722 23.2814 14.3599 23.1467L9.51992 17.3334H25.3333C25.6869 17.3334 26.026 17.1929 26.2761 16.9429C26.5261 16.6928 26.6666 16.3537 26.6666 16C26.6666 15.6464 26.5261 15.3073 26.2761 15.0572C26.026 14.8072 25.6869 14.6667 25.3333 14.6667Z" fill="#555555"/>
                         </svg>
     
-                        <h1>Location<p>3</p> </h1>
+                        <h1>Location<p> {locations.length} </p> </h1>
     
                         <div className="handler-add-order">
                             <svg  viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,9 +202,68 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
                         </div>
                     </div>
                     <hr/>
+
+                    {
+                        locations.map((location, index)=>(
+                            <div key={location.lid} className="handler-item-container">
+                                <div className="handler-item" key={index} 
+                                    onClick={()=>toggleLocation( location.lid )}
+                                >
+                                    <div className="handler-check-name-description">
+                                    
+                                        
+                                            { isSelected(location.lid)?      
+                                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <rect width="32" height="32" rx="16" fill="#3CDAFD"/>
+                                                    <path d="M7 16.25L13.25 22.5L23.6666 10" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                                                </svg>
+                                            :
+                                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <rect width="32" height="32" rx="16" fill="#C4C4C4"/>
+                                                </svg>
+                                            }
+                                            
+                                            <div>
+                                                <h2> {location.name} </h2>
+                                                <p> {location.description} </p>
+                                            </div>
+                                    </div>
+
+                                    <div className="handler-entries-menu">
+                                        <h2> { location.entries.length } </h2>
+                                        <svg  viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" className="menu-svg-icon"
+                                              onClick={
+                                                  (e)=>{
+                                                      openMenuItem(e, location)
+                                                }
+                                              }
+                                              
+                                        >
+                                            <path d="M17.0001 19.8334C18.5649 19.8334 19.8334 18.5649 19.8334 17.0001C19.8334 15.4353 18.5649 14.1667 17.0001 14.1667C15.4353 14.1667 14.1667 15.4353 14.1667 17.0001C14.1667 18.5649 15.4353 19.8334 17.0001 19.8334Z" />
+                                            <path d="M26.9166 19.8334C28.4814 19.8334 29.7499 18.5649 29.7499 17.0001C29.7499 15.4353 28.4814 14.1667 26.9166 14.1667C25.3518 14.1667 24.0833 15.4353 24.0833 17.0001C24.0833 18.5649 25.3518 19.8334 26.9166 19.8334Z" />
+                                            <path d="M7.08333 19.8334C8.64814 19.8334 9.91667 18.5649 9.91667 17.0001C9.91667 15.4353 8.64814 14.1667 7.08333 14.1667C5.51853 14.1667 4.25 15.4353 4.25 17.0001C4.25 18.5649 5.51853 19.8334 7.08333 19.8334Z" />
+                                        </svg>
+                                    </div>
+
+                                </div>
+                                <hr />
+                            </div>
+
+                        ))
+
+                    }
     
                     
                 </animated.div>
+
+                <HandlerMenuModal
+                    modalState={menuModalState}
+                    setModalState={setMenuModalState}
+                    setUpdateInputModal={setUpdateInputModal}
+                    setDeleteModal={setDeleteModal} 
+                />   
+
+                </>
                 :
                 <></>
             }

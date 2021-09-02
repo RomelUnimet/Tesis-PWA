@@ -38,9 +38,7 @@ const fetchWithToken = async ( endpoint, data, method='GET' ) => {
     }else{
         token = tokenData[0].token
     }
-    
-     
-
+         
     const url = `${ baseUrl }/${ endpoint }`;
 
     if (method === 'GET' ) {

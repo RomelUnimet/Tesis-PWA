@@ -1,4 +1,4 @@
-//import { fetchWithToken } from '../helpers/fetch';  
+import { fetchWithToken } from '../helpers/fetch';  
 import { types } from '../types/types'
 
 import Localbase from 'localbase';
@@ -24,7 +24,7 @@ export const tagCreate = ( tag ) => {
 
         await db.collection('tags').add( tag )
 
-        //fetchWithToken(`tag/add`, tag , 'POST');
+        fetchWithToken(`tag/new`, tag , 'POST');
         
         dispatch(startTagStore())   
     }
@@ -42,7 +42,7 @@ export const tagUpdate = ( newName, tag ) => {
         await db.collection('tags').doc({ tid: tag.tid }).update(newTag)
 
         
-        //fetchWithToken(`tag/${newTag.cid}`, newTag, 'PUT');
+        fetchWithToken(`tag/${newTag.tid}`, newTag, 'PUT');
         
         dispatch(startTagStore())   
     }
@@ -53,8 +53,10 @@ export const tagDelete = ( tag ) => {
     return async (dispatch) => {
 
         await db.collection('tags').doc({ tid: tag.tid }).delete()
+
+        //Aplicar Logica del Delete dentro de la IndexedDB (Igual entre Location y Tag)
         
-        //fetchWithToken(`tag/deletetid`, 'DELETE');
+        fetchWithToken(`tag/delete/${tag.tid}`,{}, 'DELETE');
         
         dispatch(startTagStore())   
     }

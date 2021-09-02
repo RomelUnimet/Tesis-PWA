@@ -5,6 +5,7 @@ import { cardReducer } from './cardReducer';
 import { settingsReducer } from './settingsReducer';
 import { weatherReducer } from './weatherReducer';
 import { tagReducer } from './tagReducer';
+import { locationReducer } from './locationReducer';
 
 
 export const rootReducer = combineReducers({
@@ -14,5 +15,6 @@ export const rootReducer = combineReducers({
     settings: settingsReducer,
     weather: weatherReducer,
     tags: tagReducer,
+    locations: locationReducer,
 
 });
