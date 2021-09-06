@@ -145,7 +145,6 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
         leave: {x:0, y:SCREEN_HEIGHT},
     });
 
-    //CREO QUE NO LO NECESITARE
     const resetValues = () => {
         setTitle('')
         setText('')
@@ -165,9 +164,7 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                     
                 >
                     <div className="ce-container">
-                        <div className="ce-toolbar"
-                            
-                        >
+                        <div className="ce-toolbar">
                             <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
                                 onClick={()=>{
                                     setCEModalState(!CEModalState)

@@ -13,7 +13,7 @@ export const locationReducer = ( state = initialState, action ) => {
 
             return {
                 ...state,
-                tags: action.payload,
+                locations: action.payload,
             }
 
         default:

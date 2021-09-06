@@ -2,9 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react'
 import '../../scss/create_entry/handlemodals.scss'
 import { animated, useSpring, config } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { HandlerMenuModal } from '../modals/HandlerMenuModal'
 import { generateID } from '../../helpers/generateId'
+import { MapModal } from '../modals/MapModal'
+import { locationCreate, locationDelete, locationUpdate } from '../../actions/location'
+import { ConfirmModal } from '../modals/ConfirmModal'
 
 export const LocHandleCE = ({handlerState, setHandlerState}) => {
 
@@ -70,52 +73,36 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
 
     const [menuModalState, setMenuModalState] = useState({
         show:false,
-        tag:{},
+        location:{},
     })
 
-    //const {locations} = useSelector(state => state.locations)
+    const [mapModalState, setMapModalState] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const {locations} = useSelector(state => state.locations)
     const {uid} = useSelector(state => state.auth);
 
-    const locations = [
-        {
-            lid: 'LocationID',
-            uid: uid,
-            name: 'Test Location 1', //Name value
-            description: 'This is a test location', //De la direccion
-            latitude: '123', //Del location dado por el mapa
-            longitude: '1213', //Del location dado por el mapa
-            entries: [],
-        },
-        {
-            lid: 'LocationID 2',
-            uid: uid,
-            name: 'Test Location 2', //Name value
-            description: 'This is a test locationadvasdvasdkjvaosidvboaisudbvouasdbvoiausdvoiuasdvoiuabsdoiuvbaosiudvbaoisudbvoiasu', //De la direccion
-            latitude: '123', //Del location dado por el mapa
-            longitude: '1213', //Del location dado por el mapa
-            entries: [],
-        },
-    ]
 
 
-    /*
-    const createLocation = () => {
+    
+    const createLocation = (name, description, lat, lng) => {
 
         const newLocation = {
             lid: generateID(),
             uid: uid,
-            name: '', //Name value
-            description: '', //De la direccion
-            latitude: '', //Del location dado por el mapa
-            longitude: '', //Del location dado por el mapa
+            name: name, 
+            description: description, 
+            latitude: lat, 
+            longitude: lng, 
             entries: [],
         }
 
-        //dispatch( tagCreate(newTag) );
+        dispatch( locationCreate(newLocation) );
 
-        //setInputModal(false)
+        setMapModalState(false)
     }
-    */
+    
     
     const isSelected = (lid) => {
         return selectedLocation===lid
@@ -157,16 +144,17 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
         })
         
     }
-    const deleteTag = () => {
+    */
+    const deleteLocation = () => {
 
-        dispatch( tagDelete(menuModalState.tag) )
+        dispatch( locationDelete(menuModalState.location) )
         setDeleteModal(false)
         setMenuModalState({
             ...menuModalState,
             show:false,
         })
     }
-    */
+    
 
 
     return (
@@ -192,7 +180,9 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
                         <h1>Location<p> {locations.length} </p> </h1>
     
                         <div className="handler-add-order">
-                            <svg  viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg  viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                onClick={()=>{setMapModalState(true)}}
+                            >
                                 <path d="M29.9999 17H18.9999V6C18.9999 5.73478 18.8946 5.48043 18.707 5.29289C18.5195 5.10536 18.2651 5 17.9999 5C17.7347 5 17.4804 5.10536 17.2928 5.29289C17.1053 5.48043 16.9999 5.73478 16.9999 6V17H5.99992C5.73471 17 5.48035 17.1054 5.29282 17.2929C5.10528 17.4804 4.99992 17.7348 4.99992 18C4.99499 18.13 5.01797 18.2595 5.06732 18.3798C5.11667 18.5001 5.19124 18.6085 5.286 18.6976C5.38076 18.7867 5.49352 18.8544 5.61667 18.8962C5.73983 18.938 5.87051 18.953 5.99992 18.94H16.9999V30C16.9999 30.2652 17.1053 30.5196 17.2928 30.7071C17.4804 30.8946 17.7347 31 17.9999 31C18.2651 31 18.5195 30.8946 18.707 30.7071C18.8946 30.5196 18.9999 30.2652 18.9999 30V19H29.9999C30.2651 19 30.5195 18.8946 30.707 18.7071C30.8946 18.5196 30.9999 18.2652 30.9999 18C30.9999 17.7348 30.8946 17.4804 30.707 17.2929C30.5195 17.1054 30.2651 17 29.9999 17Z" fill="#555555"/>
                             </svg>
     
@@ -261,6 +251,20 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
                     setModalState={setMenuModalState}
                     setUpdateInputModal={setUpdateInputModal}
                     setDeleteModal={setDeleteModal} 
+                />
+                <MapModal
+                    mapModalState={mapModalState} 
+                    setMapModalState={setMapModalState}
+                    addLocation={createLocation}
+                />
+                <ConfirmModal
+                    title={'Delete this location?'}
+                    text={'It will delete this location in all related diaries. (diaries still exist)'}
+                    rightText={'Delete'} 
+                    leftText={'Cancel'}
+                    confirmAction={()=>{deleteLocation()}}
+                    isActive={deleteModal}
+                    setIsActive={setDeleteModal}       
                 />   
 
                 </>
@@ -271,3 +275,4 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
         </>
     )
 }
+

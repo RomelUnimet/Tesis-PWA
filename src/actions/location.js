@@ -60,7 +60,7 @@ export const locationDelete = ( location ) => {
 const finishLocationStore = ( locations ) =>{
 
     return {
-        type: types.tagsStore,
+        type: types.locationsStore,
         payload: locations
     }
 }
