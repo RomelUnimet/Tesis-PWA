@@ -16,9 +16,7 @@ import "@reach/combobox/styles.css";
 
 const libraries = ["places"]
 
-export const MapModal = ({mapModalState, setMapModalState, addLocation}) => {
-
-
+export const MapModal = ({mapModalState, setMapModalState, addLocation, updateData={lid:'', latitude:0, longitude:0, name:'', description:'', update:false}, setUpdateData}) => {
 
     //ANIMATION
     const SCREEN_HEIGHT = window.innerHeight;
@@ -29,7 +27,7 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation}) => {
         leave: {x:0, y:SCREEN_HEIGHT},
     });
 
-    const [mapInputValue, setMapInputValue] = useState('')
+    const [mapInputValue, setMapInputValue] = useState(updateData.name)
 
     const [showSearch, setShowSearch] = useState(false)
 
@@ -42,9 +40,9 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation}) => {
     });
 
     //Maps
-    const [center, setCenter] = useState({lat:0,lng:0})
+    const [center, setCenter] = useState({lat: updateData.latitude, lng: updateData.longitude})
 
-    const [mapCurrentAddress, setMapCurrentAddress] = useState('')
+    const [mapCurrentAddress, setMapCurrentAddress] = useState(updateData.description)
 
     const options = {
         disableDefaultUI: true
@@ -56,44 +54,63 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation}) => {
     });
     
     
-
-
-    const setCoordinatesCenter = async () => {
-        await navigator.geolocation.getCurrentPosition( async (position) => {
-            setCenter({
-                ...center,
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            })
+    const setCoordinatesCenter = useCallback( 
         
+        async () => {
 
-        });
-    }
-    const reverseGeocoding = async () => {
+            await navigator.geolocation.getCurrentPosition( async (position) => {
+                if(!updateData.update){
+                    setCenter({
+                        ...center,
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    })
+                }
+            })
+        },
+        [center, updateData.update],
+    )
 
-        let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${mapRef.current?.getCenter().lat()},${mapRef.current?.getCenter().lng()}&key=${process.env.REACT_APP_MAP_API_KEY}`;
+    const reverseGeocoding = useCallback(
+        async () => {
+        
+            let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${mapRef.current?.getCenter().lat()},${mapRef.current?.getCenter().lng()}&key=${process.env.REACT_APP_MAP_API_KEY}`;
+                    
+
+            fetch(url)
+                .then(response => response.json())
+                    .then(data => {
+                     
+                        setMapCurrentAddress(data.results[1].formatted_address)
                 
-        fetch(url)
-            .then(response => response.json())
-                .then(data => {
+                    })
+                .catch(err => console.warn(err.message));
+        },
+        [],
+    )
+    const panTo = useCallback(({ lat, lng})=> {
+        mapRef.current?.panTo({ lat, lng });
+        mapRef.current?.setZoom(17);
+        reverseGeocoding()
+    }, [reverseGeocoding])
 
-                    setMapCurrentAddress(data.results[1].formatted_address)
-            
-                })
-            .catch(err => console.warn(err.message));
-    }
+    
 
     const mapRef = useRef(null);
+
     const onMapLoad = useCallback((map)=> {
         mapRef.current = map;
         reverseGeocoding()
-    }, []);
+        
+    }, [reverseGeocoding]);
 
     useEffect(() => {
 
         setCoordinatesCenter() 
+        
+    }, [setCoordinatesCenter, reverseGeocoding, updateData])
 
-    }, [setCoordinatesCenter, reverseGeocoding])
+   
 
     const handleAdd = () => {
 
@@ -107,24 +124,22 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation}) => {
         }else {
             console.log('El location debe tener un nombre')
         }
+
+        if(updateData.update){
+            setTimeout(() => {
+                setUpdateData({
+                    ...updateData,
+                    update:false
+                })
+            }, 200);
+        }
     }
 
     const goToLocation = () => {
         mapRef.current?.panTo(center)
         mapRef.current?.setZoom(17);
     }
-
-    const panTo = useCallback(({ lat, lng})=> {
-        mapRef.current?.panTo({ lat, lng });
-        mapRef.current?.setZoom(17);
-        reverseGeocoding()
-    }, [])
-
-    
-
-
-    
-    return (
+    return ( 
         <>
         {transition((style, item) => 
             item?
@@ -137,6 +152,16 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation}) => {
                             <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
                                 onClick={()=>{
                                     setMapModalState(!mapModalState)
+                                    if(updateData.update){
+
+                                        setTimeout(() => {
+                                            setUpdateData({
+                                                ...updateData,
+                                                update:false
+                                            })
+                                        }, 200);
+                                        
+                                    }
                                 }}
                             >
                                 <path d="M19.41 17.9999L27.7 9.70994C27.8638 9.51864 27.9494 9.27256 27.9397 9.02089C27.93 8.76921 27.8256 8.53047 27.6475 8.35238C27.4694 8.17428 27.2307 8.06995 26.979 8.06023C26.7274 8.05051 26.4813 8.13612 26.29 8.29994L18 16.5899L9.70997 8.28994C9.52167 8.10164 9.26627 7.99585 8.99997 7.99585C8.73367 7.99585 8.47828 8.10164 8.28997 8.28994C8.10167 8.47825 7.99588 8.73364 7.99588 8.99994C7.99588 9.26624 8.10167 9.52164 8.28997 9.70994L16.59 17.9999L8.28997 26.2899C8.18529 26.3796 8.10027 26.4899 8.04025 26.614C7.98022 26.738 7.94649 26.8732 7.94117 27.0109C7.93586 27.1486 7.95906 27.2859 8.00934 27.4143C8.05961 27.5426 8.13587 27.6591 8.23332 27.7566C8.33078 27.854 8.44732 27.9303 8.57565 27.9806C8.70398 28.0309 8.84131 28.0541 8.97903 28.0487C9.11675 28.0434 9.25188 28.0097 9.37594 27.9497C9.50001 27.8896 9.61033 27.8046 9.69997 27.6999L18 19.4099L26.29 27.6999C26.4813 27.8638 26.7274 27.9494 26.979 27.9397C27.2307 27.9299 27.4694 27.8256 27.6475 27.6475C27.8256 27.4694 27.93 27.2307 27.9397 26.979C27.9494 26.7273 27.8638 26.4812 27.7 26.2899L19.41 17.9999Z" fill="#3D3D3D"/>
@@ -145,7 +170,10 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation}) => {
                         <h1>New location</h1>
 
                         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" 
-                            onClick={handleAdd}
+                            onClick={()=>{
+                                    handleAdd()
+                                    setMapInputValue('')
+                                }}
                         >
                             <path d="M5.33325 16L13.3333 24L26.6666 8" stroke="#3D3D3D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
@@ -242,6 +270,7 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation}) => {
             )}
             </>
     )
+    
 }
 
 function Search( {panTo, setShowSearch, setMapInputValue} ) {

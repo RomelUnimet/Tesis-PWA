@@ -9,7 +9,7 @@ import { MapModal } from '../modals/MapModal'
 import { locationCreate, locationDelete, locationUpdate } from '../../actions/location'
 import { ConfirmModal } from '../modals/ConfirmModal'
 
-export const LocHandleCE = ({handlerState, setHandlerState}) => {
+export const LocHandleCE = ({handlerState, setHandlerState, locationCE, setLocationCE}) => {
 
     const closeHandler = () =>{
         animateClose();
@@ -63,17 +63,25 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
 
     //Logica Funcional
 
-    const [selectedLocation, setSelectedLocation] = useState('')
-
     //Update Tag Modal
-    const [updateInputModal, setUpdateInputModal] = useState(false)
+    const [updateModal, setUpdateModal] = useState(false)
+
+    const [locUpdateState, setLocUpdateState] = useState({})
 
     //Delete Tag Modal
     const [deleteModal, setDeleteModal] = useState(false)
 
     const [menuModalState, setMenuModalState] = useState({
         show:false,
-        location:{},
+        location:{
+            lid: '',
+            uid: '',
+            name: '', 
+            description: '', 
+            latitude: 0, 
+            longitude: 0, 
+            entries: [],
+        },
     })
 
     const [mapModalState, setMapModalState] = useState(false)
@@ -82,10 +90,43 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
 
     const {locations} = useSelector(state => state.locations)
     const {uid} = useSelector(state => state.auth);
-
-
-
     
+    
+    const isSelected = (lid) => {
+        return locationCE===lid
+    }
+    
+    const toggleLocation = (lid) => {
+
+        if (locationCE===lid){
+
+            setLocationCE('')
+        } else {
+            setLocationCE(lid)
+        }
+    }
+    
+    
+    const openMenuItem = (e, location) => {
+
+        e.stopPropagation();
+        setMenuModalState({
+            ...menuModalState,
+            show: true,
+            location:{ 
+                        ...location,
+                        latitude: parseFloat(location.latitude),
+                        longitude: parseFloat(location.longitude),
+                        }
+        })
+        setLocUpdateState({
+            ...location,
+            latitude: parseFloat(location.latitude),
+            longitude: parseFloat(location.longitude),
+            update:true
+        })
+    }
+
     const createLocation = (name, description, lat, lng) => {
 
         const newLocation = {
@@ -104,48 +145,34 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
     }
     
     
-    const isSelected = (lid) => {
-        return selectedLocation===lid
-    }
-    
-    const toggleLocation = (lid) => {
+    const editLocation = ( name, description, lat, lng ) => {
 
-        if (selectedLocation===lid){
-
-            setSelectedLocation('')
-        } else {
-            setSelectedLocation(lid)
+        const updatedLocation = {
+            lid: menuModalState.location.lid,
+            uid: menuModalState.location.uid,
+            name: name, 
+            description: description, 
+            latitude: lat, 
+            longitude: lng, 
+            entries: menuModalState.location.entries,
         }
-
-        console.log(selectedLocation)
-    }
-    
-    
-    const openMenuItem = (e, location) => {
-
-        e.stopPropagation();
-
-        setMenuModalState({
-            ...menuModalState,
-            show: true,
-            location:{ ...location }
-        })
-
-    }
-    
-    /*
-    const editTag = () => {
-
-        dispatch( tagUpdate(updateInputModalValue, menuModalState.tag) )
-        setUpdateInputModal(false)
+        
+        dispatch( locationUpdate(menuModalState.location, updatedLocation ) )
+        setUpdateModal(false)
         setMenuModalState({
             ...menuModalState,
             show:false,
         })
         
+        
+        
     }
-    */
+    
     const deleteLocation = () => {
+
+        if(locationCE===menuModalState.location.lid){
+            setLocationCE('')
+        }
 
         dispatch( locationDelete(menuModalState.location) )
         setDeleteModal(false)
@@ -246,17 +273,28 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
                     
                 </animated.div>
 
-                <HandlerMenuModal
-                    modalState={menuModalState}
-                    setModalState={setMenuModalState}
-                    setUpdateInputModal={setUpdateInputModal}
-                    setDeleteModal={setDeleteModal} 
-                />
+                
                 <MapModal
                     mapModalState={mapModalState} 
                     setMapModalState={setMapModalState}
                     addLocation={createLocation}
                 />
+                
+                { locUpdateState.update &&
+                    <MapModal
+                        mapModalState={updateModal} 
+                        setMapModalState={setUpdateModal}
+                        addLocation={editLocation}
+                        updateData={locUpdateState}
+                        setUpdateData={setLocUpdateState}
+                    />
+                }
+                    
+                    
+                
+                
+                
+               
                 <ConfirmModal
                     title={'Delete this location?'}
                     text={'It will delete this location in all related diaries. (diaries still exist)'}
@@ -264,8 +302,18 @@ export const LocHandleCE = ({handlerState, setHandlerState}) => {
                     leftText={'Cancel'}
                     confirmAction={()=>{deleteLocation()}}
                     isActive={deleteModal}
-                    setIsActive={setDeleteModal}       
-                />   
+                    setIsActive={setDeleteModal}     
+                />  
+                
+                
+                    <HandlerMenuModal
+                        modalState={menuModalState}
+                        setModalState={setMenuModalState}
+                        setUpdateInputModal={setUpdateModal}
+                        setDeleteModal={setDeleteModal} 
+                    />
+                
+                 
 
                 </>
                 :

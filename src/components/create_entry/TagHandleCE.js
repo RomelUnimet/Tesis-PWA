@@ -10,7 +10,7 @@ import { HandlerMenuModal } from '../modals/HandlerMenuModal'
 import { ConfirmModal } from '../modals/ConfirmModal'
 
 
-export const TagHandleCE = ({handlerState, setHandlerState}) => {
+export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) => {
 
     const dispatch = useDispatch();
 
@@ -77,8 +77,6 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
     //Delete Tag Modal
     const [deleteModal, setDeleteModal] = useState(false)
 
-    const [selectedTags, setSelectedTags] = useState([])
-
     const [menuModalState, setMenuModalState] = useState({
         show:false,
         tag:{},
@@ -91,6 +89,7 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
     
     const createTag = () => {
 
+        
         const newTag = {
             tid: generateID(),
             uid: uid,
@@ -98,24 +97,26 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
             entries: [],
         }
 
+        setInputValue('')
+
         dispatch( tagCreate(newTag) );
 
         setInputModal(false)
     }
 
     const isSelected = (tid) => {
-        return selectedTags.includes(tid)
+        return tagsCE.includes(tid)
     }
 
     const toggleTagItem = (tid, index) => {
 
-        let auxArray = selectedTags;
-        if (selectedTags.includes(tid)){
+        let auxArray = tagsCE;
+        if (tagsCE.includes(tid)){
             auxArray.splice(auxArray.indexOf(tid), 1);
-            setSelectedTags([...auxArray])
+            setTagsCE([...auxArray])
         } else {
             auxArray.push(tid);
-            setSelectedTags([...auxArray])
+            setTagsCE([...auxArray])
         }
     }
     const openMenuItem = (e, tag) => {
@@ -142,6 +143,15 @@ export const TagHandleCE = ({handlerState, setHandlerState}) => {
     }
     const deleteTag = () => {
 
+        //Chequear si esta adentro al ser borrado
+        if(tagsCE.includes(menuModalState.tag.tid)){
+            let aux = tagsCE
+
+            aux.splice(aux.indexOf(menuModalState.tag.tid),1)
+            
+            setTagsCE(aux)
+        }
+        
         dispatch( tagDelete(menuModalState.tag) )
         setDeleteModal(false)
         setMenuModalState({

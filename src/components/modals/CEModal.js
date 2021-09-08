@@ -6,8 +6,9 @@ import { animated, useSpring, config } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
 
 import { WiDaySunny, WiDayCloudy, WiCloud, WiRain, WiSnow,  WiThunderstorm, WiCloudyGusts, WiCloudyWindy, WiDust, WiTornado, WiSnowflakeCold } from "react-icons/wi";
+import { useSelector } from 'react-redux';
 
-export const CEModal = ({modalState, setModalState, selectedWeather, setSelectedWeather}) => {
+export const CEModal = ({modalState, setModalState, selectedWeather, setSelectedWeather, tagsCE, setTagsCE, locationCE, setLocationCE}) => {
 
     const iconStyles = { fontSize:'2.4rem', height:'2.4rem', width:'2.4rem', fill:'#757575', transition: 'ease-in-out', transitionDuration: '0.2s'} 
     const iconStylesSmall = { fontSize:'2rem', height:'2rem', width:'2.4rem', fill:'#757575', transition: 'ease-in-out', transitionDuration: '0.2s' }
@@ -28,7 +29,6 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
     }
 
     const selectWeather = (weather) =>{
-        //EL SET SE DEBERIA HACER CUANDO SE CIERRE EL MODAL
         setSelectedWeather(weather)
     }
 
@@ -41,6 +41,14 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
         show:false,
         locations:[],
     })
+    
+    const {locations} = useSelector(state => state.locations)
+    const {tags} = useSelector(state => state.tags);
+
+    const filteredTags = tags.filter( (tag)=> tagsCE.includes(tag.tid) )
+    const filteredLocations = locations.filter( (location)=> locationCE.includes(location.lid) )
+
+    const tagsString = filteredTags.map((tag)=>tag.name).join(', ')
 
     // GESTURE / ANIMATION
 
@@ -149,9 +157,12 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
                            onClick={()=>{setTagState({...tagState, show:true})}}
                        >
                            <h3>Tag</h3>
-                           <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                               <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125"  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                           </svg>
+                           <div className="item-names">
+                               <p> {tagsString} </p>
+                                <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125"  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                           </div>
                    </div>
    
                        <hr></hr>
@@ -160,9 +171,13 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
                            onClick={()=>{setLocationState({...locationState, show:true})}}
                        >
                            <h3>Location</h3>
-                           <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                               <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125"  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                           </svg>
+                           
+                           <div className="item-names">
+                                <p> {filteredLocations[0]?.name} </p>
+                                <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125"  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                           </div>
                    </div>
                </animated.div>
 
@@ -170,14 +185,17 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
                 <></>
         
             }
-         
             <TagHandleCE
                 handlerState={tagState}
                 setHandlerState={setTagState}
+                tagsCE={tagsCE}
+                setTagsCE={setTagsCE}
             />
             <LocHandleCE
                 handlerState={locationState}
                 setHandlerState={setLocationState}
+                locationCE={locationCE}
+                setLocationCE={setLocationCE}
             />
         </>
     )

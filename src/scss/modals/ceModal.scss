@@ -137,4 +137,19 @@
     }
 }
 
+.item-names{
+    display: flex;
+    align-items: center;
+
+    & p{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 9rem;
+        color: $black-color;
+        font-weight: 500;
+        text-align: end;
+    }
+}
+
 
