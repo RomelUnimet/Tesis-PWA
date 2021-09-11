@@ -44,7 +44,7 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
 
     const goToCardDetails= (e)=> {
         e.preventDefault()
-            history.push(`/cards/${cid}`);
+            history.push(`/detailedcard/${cid}`);
     }
 
     

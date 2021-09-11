@@ -20,6 +20,9 @@ export const types = {
     startWeatherStore: '[weather] Start weather cards in state',
     weatherStore: '[weather] Store weather in state',
 
+    //Routes - Paths
+    lastPathStore: '[routes-path] Store las path/route in state',
+
     //Tags
     tagsStore: '[tag] Store tags in state',
     tagUpdate: '[tag] Update a tag in the state',

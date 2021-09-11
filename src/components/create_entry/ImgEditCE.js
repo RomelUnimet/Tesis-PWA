@@ -62,7 +62,6 @@ export const ImgEditCE = ({imgEditorState, setImgEditorState, entryImgState, set
     };
 
     const onSortOver = () => {
-    
         if (window.navigator && window.navigator.vibrate) {
             navigator.vibrate(100);
          } else {
@@ -166,6 +165,7 @@ export const ImgEditCE = ({imgEditorState, setImgEditorState, entryImgState, set
                             helperClass="sortableHelper" 
                             lockAxis={'y'}
                             onSortOver={onSortOver}
+                            
                         >
                             {
                                 entryImgState.map((img, index)=>(

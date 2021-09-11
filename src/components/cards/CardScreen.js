@@ -13,8 +13,11 @@ import { CardPickerModal } from '../modals/CardPickerModal';
 import { CropperComponent } from '../ui/CropperComponent';
 import { TopBar } from '../ui/TopBar';
 
+import { motion } from "framer-motion"
 
-export const CardScreen = () => {
+
+export const CardScreen = ( {prevPath} ) => {
+
 
     const [modalState, setModalState] = useState({
         show: false,
@@ -151,12 +154,14 @@ export const CardScreen = () => {
             })
         }
     }
-    
 
-
-    //console.log('Doble render puede ser causado por la falta de un loading')
-    //console.log('El Doble get de Localbase es normal')
-    //console.log('Poner Loading en la screen')
+    //Esto deberia de cambiar si se hace click a la pestaña de Perfil
+    //Debo hacer un cambio de 'variants' dependiendo de la ruta a la que se le de click
+    const variants = {
+        initial:{x:-40},
+        in:{ x:0},
+        out:{x:-40}
+    }
 
     
     if (cards.length===0){
@@ -171,100 +176,108 @@ export const CardScreen = () => {
 
     return (
 
-        
-        <div className="card-screen-container">
-
-        
-            <TopBar 
-                navigateCard={navigateCard}
-                cardModalState={cardModalState} 
-                setCardModalState={setCardModalState}
-            />
-
-            <div className="month-selector"
-                onClick={showCardModal}
+        <motion.div
+            variants={variants}
+            initial="initial"
+            animate="in"
+            exit="out"
+            transition={{duration:0.3}}
+        >
+            <div 
+            className="card-screen-container"
             >
-                <h1>{cardModalState.year}</h1>
-                <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" stroke="#333333" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-            </div>
-                <Swiper
-                    ref={swiperRef}
-                    spaceBetween={40}
-                    slidesPerView={'auto'} 
-                    centeredSlides={true}
-                    onSlideChangeTransitionEnd={checkEnd}
-                   // onSwiper={() => swiperRef.current?.swiper.slideTo(cardModalState.month,0)}
-                    >
 
-                    {
-                        months.map((month, index)=>(
+                <TopBar 
+                    navigateCard={navigateCard}
+                    cardModalState={cardModalState} 
+                    setCardModalState={setCardModalState}
+                />
 
-                            <SwiperSlide key={index} > 
-                                <Card
-                                    cid={ month.cid }
-                                    color={ month.color }
-                                    entries={ month.entries }
-                                    month={ month.month }
-                                    photo={ month.photo }
-                                    uid={ month.uid }
-                                    year={ month.year }
-                                    modalState={modalState} 
-                                    setModalState={setModalState}
-                                    cropperState={cropperState}
-                                    setCropperState={setCropperState}
-                                />
-                            </SwiperSlide>
-                        ))
+                <div className="month-selector"
+                    onClick={showCardModal}
+                >
+                    <h1>{cardModalState.year}</h1>
+                    <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" stroke="#333333" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                </div>
+                    <Swiper
+                        ref={swiperRef}
+                        spaceBetween={40}
+                        slidesPerView={'auto'} 
+                        centeredSlides={true}
+                        onSlideChangeTransitionEnd={checkEnd}
+                    // onSwiper={() => swiperRef.current?.swiper.slideTo(cardModalState.month,0)}
+                        >
+
+                        {
+                            months.map((month, index)=>(
+
+                                <SwiperSlide key={index} > 
+                                    <Card
+                                        cid={ month.cid }
+                                        color={ month.color }
+                                        entries={ month.entries }
+                                        month={ month.month }
+                                        photo={ month.photo }
+                                        uid={ month.uid }
+                                        year={ month.year }
+                                        modalState={modalState} 
+                                        setModalState={setModalState}
+                                        cropperState={cropperState}
+                                        setCropperState={setCropperState}
+                                    />
+                                </SwiperSlide>
+                            ))
+                        }
+
+
+                    </Swiper>
+
+                    <button className="calendar-btn">CALENDAR</button>
+                
+                    <UpdateCardModal
+                        modalState={modalState} 
+                        setModalState={setModalState}
+                        cropperState={cropperState}
+                        setCropperState={setCropperState}
+                    />
+                    <CardPickerModal
+                        modalState={cardModalState} 
+                        setModalState={setCardModalState}
+                        navigateCard={navigateCard}
+                    />
+                    <CropperComponent
+                        cropperState={cropperState}
+                        setCropperState={setCropperState}
+                    />
+
+                    
+                    {swiperPosition.isBeginning?
+                        <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            className="animate__animated animate__fadeIn beginning-arrow"
+                            onClick={prevYear}
+                        >
+                            <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        :
+                        <>
+                        </>
+                    }
+                    {swiperPosition.isEnd?
+                        <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            className="animate__animated animate__fadeIn end-arrow"
+                            onClick={nextYear}
+                        >
+                            <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        :
+                        <>
+                        </>
                     }
 
-
-                </Swiper>
-
-                <button className="calendar-btn">CALENDAR</button>
-            
-                <UpdateCardModal
-                    modalState={modalState} 
-                    setModalState={setModalState}
-                    cropperState={cropperState}
-                    setCropperState={setCropperState}
-                />
-                <CardPickerModal
-                    modalState={cardModalState} 
-                    setModalState={setCardModalState}
-                    navigateCard={navigateCard}
-                />
-                <CropperComponent
-                    cropperState={cropperState}
-                    setCropperState={setCropperState}
-                />
-
-                
-                {swiperPosition.isBeginning?
-                    <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        className="animate__animated animate__fadeIn beginning-arrow"
-                        onClick={prevYear}
-                    >
-                        <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    :
-                    <>
-                    </>
-                }
-                {swiperPosition.isEnd?
-                    <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        className="animate__animated animate__fadeIn end-arrow"
-                        onClick={nextYear}
-                    >
-                        <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    :
-                    <>
-                    </>
-                }
-
-        </div>
+            </div>
+        </motion.div>
 
         
     )

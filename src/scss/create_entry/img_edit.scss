@@ -100,5 +100,7 @@
 }
 
 .sortableHelper{
-    z-index: 10;
+    z-index: 4;
+    opacity: 0.7;
+    border-top: solid $grey-color 1px;
 }

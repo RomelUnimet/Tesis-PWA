@@ -6,6 +6,7 @@ import { settingsReducer } from './settingsReducer';
 import { weatherReducer } from './weatherReducer';
 import { tagReducer } from './tagReducer';
 import { locationReducer } from './locationReducer';
+import { pathReducer } from './pathReducer';
 
 
 export const rootReducer = combineReducers({
@@ -16,5 +17,6 @@ export const rootReducer = combineReducers({
     weather: weatherReducer,
     tags: tagReducer,
     locations: locationReducer,
+    lastPath: pathReducer,
 
 });

@@ -1,11 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState} from 'react'
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { useLastLocation } from 'react-router-last-location';
 import { useDispatch } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { startCardStore } from '../actions/cards';
-import { startSettingsStore } from '../actions/settings';
-import { startGetWeather } from '../actions/extra';
-import { startTagStore } from '../actions/tag'
-import { startLocationStore } from '../actions/location'
+import { storeLastPath } from '../actions/lastRoute';
 
 import { CardScreen } from '../components/cards/CardScreen';
 import { CreateModal } from '../components/create_entry/CreateModal';
@@ -15,29 +12,25 @@ import { Navbar } from '../components/ui/Navbar'
 
 
 
-
 export const RoutesApp = () => {
 
-    //DISPATCH PARA GURDAR EN REDUX LOS SETTINGS, CARDS Y 
-    const dispatch = useDispatch();
+    //CAMBIE LOS STORES DE ESTA RUTA A LA RUTA PRINCIPAL PARA QUE NO SE LLAMARAN TANTO
+    //SI HAY UN ERROR CON ESO ES MUY PROBABLE QUE SEA AHI
 
     const [CEModalState, setCEModalState] = useState(false);
+    const dispatch = useDispatch()
+    const lastLocation = useLastLocation();
 
-    useEffect( () => {
+    useEffect(() => {
+
+        if(lastLocation){
+            dispatch( storeLastPath(lastLocation.pathname) )
+        }
         
-        
-        dispatch( startSettingsStore() );
-        dispatch( startCardStore() );
-        dispatch( startTagStore() );
-        dispatch( startLocationStore() );
 
-        dispatch( startGetWeather() );
+    }, [dispatch])
 
 
-        console.log('Problema es falta de loading')
-        console.log('Para no tener el doble localbase puedo hacer lo de poner el ?')
-        
-    },[dispatch,])
 
     return (
         <>
@@ -47,28 +40,34 @@ export const RoutesApp = () => {
                 setCEModalState={setCEModalState}
             />
         
-            <div style={{position:'relative'}}>
-                <Switch>
-                    <Route
-                        exact
-                        path="/cards" 
-                        component= { CardScreen }
-                    />
+            <div 
+                style={{width:'100vw', height:'100vh', overflow:'hidden', position:'absolute'}}
+            >
+                
+                    <Switch >
+                        <Route
+                            exact
+                            path="/cards" 
+                            component= { CardScreen }
+                        />
+                           
+                        <Route
+                            exact
+                            path="/detailedcard/:id" 
+                            component= { CardEntries }
+                        />
+                            
+                        <Route
+                            exact
+                            path="/profile" 
+                            component= { ProfileScreen }
+                        />
+                            
+                        
 
-                    <Route
-                        exact
-                        path="/profile" 
-                        component= { ProfileScreen }
-                    />
-                    <Route
-                        exact
-                        path="/cards/:id" 
-                        component= { CardEntries }
-                    />
+                        <Redirect to="/cards"/>
 
-                    <Redirect to="/cards"/>
-
-                </Switch>
+                    </Switch>
             </div>    
 
             <Navbar

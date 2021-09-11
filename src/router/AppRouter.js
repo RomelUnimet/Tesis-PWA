@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {
-    BrowserRouter as Router,
     Switch,
-    Redirect
+    Redirect,
+    useLocation
   } from 'react-router-dom';
   
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,15 @@ import { PrivateRoute } from './PrivateRoute';
 import { RegisterScreen } from '../components/auth/RegisterScreen'
 import { startChecking } from '../actions/auth';
 import { RoutesApp } from './RoutesApp';
+
+import { AnimatePresence } from "framer-motion";
+
+import { startCardStore } from '../actions/cards';
+import { startSettingsStore } from '../actions/settings';
+import { startGetWeather } from '../actions/extra';
+import { startTagStore } from '../actions/tag'
+import { startLocationStore } from '../actions/location'
+
 
 
 
@@ -25,41 +34,54 @@ export const AppRouter = () => {
     useEffect( () => {
     
         dispatch( startChecking() );
+        dispatch( startSettingsStore() );
+        dispatch( startCardStore() );
+        dispatch( startTagStore() );
+        dispatch( startLocationStore() );
+
+        dispatch( startGetWeather() );
         
         
     }, [dispatch])
 
     const { checking, uid } = useSelector( state => state.auth);
   
+    const location = useLocation();
+
+
     if ( checking ) {
         return (<h5>Espere...</h5>);
         //Componente de espera
     }
-    
-    
 
     return (
-        <Router>
+        
             <div>
-                <Switch>
+                <AnimatePresence
+                    
+                    initial={false}
+                >
 
-                    <PublicRoute 
-                        exact 
-                        path="/auth" 
-                        component={ RegisterScreen }
-                        isAuthenticated={ !!uid }
-                    />
+                    <Switch location={location} key={location.pathname}>
 
-                    <PrivateRoute 
-                        exact 
-                        path="" 
-                        component={ RoutesApp }  
-                        isAuthenticated={ !!uid }
-                    />
+                        <PublicRoute 
+                            exact 
+                            path="/auth" 
+                            isAuthenticated={ !!uid }
+                            component={RegisterScreen}
+                        />
 
-                    <Redirect to="" />   
-                </Switch>
+                        <PrivateRoute 
+                            exact 
+                            path="" 
+                            isAuthenticated={ !!uid }
+                            component={RoutesApp}
+                        />
+                        <Redirect to="" />   
+                    </Switch>
+                </AnimatePresence>
+
             </div>
-        </Router>
+        
     )
 }
