@@ -175,7 +175,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                     </Swiper>
                     :
                     <></>
-            }
+                }
                 
 
                 <div className="ce-slider-icon-container">
@@ -221,6 +221,9 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                 removeImgInEditor={removeImgInEditor}
                 addImg={addImg}
                 imgInput={imgInput}
+                swiperRef={swiperRef}
+                imgInSwiperState={state} 
+                setImgInSwiperState={setstate}
             />
 
         </>

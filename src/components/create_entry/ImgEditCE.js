@@ -3,8 +3,14 @@ import '../../scss/create_entry/img_edit.scss'
 import { ConfirmModal } from '../modals/ConfirmModal'
 import { ImgEditor } from '../ui/ImgEditor'
 
-//SI SE BORRAN TODAS LAS IMAGENES ESTE DEBERIA PERMANECER
-export const ImgEditCE = ({imgEditorState, setImgEditorState, entryImgState, setEntryImgState, removeImgInEditor, addImg, imgInput}) => {
+import {
+    sortableContainer,
+    sortableElement,
+    sortableHandle,
+  } from 'react-sortable-hoc';
+import {arrayMoveImmutable} from 'array-move';
+
+export const ImgEditCE = ({imgEditorState, setImgEditorState, entryImgState, setEntryImgState, removeImgInEditor, addImg, imgInput, swiperRef, imgInSwiperState, setImgInSwiperState}) => {
 
     const [removeImgPrompt, setRemoveImgPrompt] = useState(false)
     const [imgClicked, setImgClicked] = useState(0)
@@ -48,6 +54,86 @@ export const ImgEditCE = ({imgEditorState, setImgEditorState, entryImgState, set
                     })
     }
 
+    const onSortEnd = ({oldIndex, newIndex}) => {
+        let aux = arrayMoveImmutable(entryImgState, oldIndex, newIndex)
+        setEntryImgState([...aux]);
+        setImgInSwiperState([...aux]);
+        swiperRef.current?.swiper.update()
+    };
+
+    const onSortOver = () => {
+    
+        if (window.navigator && window.navigator.vibrate) {
+            navigator.vibrate(100);
+         } else {
+            console.log('vibrar')
+         }
+    }
+
+    //Definicion de los componentes del sortable
+    const SortableItem = sortableElement(({img, indexImg}) => {
+    return(
+        <div className="editor-image-tab">
+
+            <div className="editing-buttons">
+                <div className="img-edit"
+                     style = {{
+                                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${img.img})`,
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundSize: 'cover',   
+                            }}
+                     onClick={()=>openImgEditorModal(img.img, indexImg)}
+                >
+                                    
+                     <p>Edit</p>
+                                    
+                </div>
+                                    
+                <svg viewBox="0 0 44 45" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                     className="img-edit-thumbnail"
+                     style={img.thumbnail? {fill:'#3CDAFD'} : {fill:'#B6B6B6'} }
+                     onClick={()=>toggleThumbnail(indexImg)}
+                >
+                    <path d="M3.66675 35.625H40.3334V39.375H3.66675V35.625ZM3.66675 9.375L12.8334 15.9375L22.0001 3.75L31.1667 15.9375L40.3334 9.375V31.875H3.66675V9.375ZM7.33341 16.5769V28.125H36.6667V16.5769L30.3967 21.0656L22.0001 9.9L13.6034 21.0656L7.33341 16.575V16.5769Z" />
+                </svg>
+                <svg viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                     className="img-edit-trash"      
+                     onClick={()=>deleteImg(indexImg)}
+                >
+                    <path d="M14.625 7.3125L15.8438 2.4375H23.1562L24.375 7.3125M34.125 7.3125H7.3125L9.75 36.5625H29.25L31.6875 7.3125H4.875H34.125ZM19.5 14.625V29.25V14.625ZM25.5938 14.625L24.375 29.25L25.5938 14.625ZM13.4062 14.625L14.625 29.25L13.4062 14.625Z"  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+
+            </div>
+
+            <DragHandle/>
+                                
+
+            <ConfirmModal
+                title={'Do you want to delete this photo?'}
+                text={''}
+                rightText={'Delete'} 
+                leftText={'Cancel'}
+                confirmAction={()=>{deleteImgFunction()}}
+                isActive={removeImgPrompt}
+                setIsActive={setRemoveImgPrompt}
+            />
+
+        </div>
+      )});
+      
+    const SortableContainer = sortableContainer(({children}) => {
+        return <ul>{children}</ul>;
+    });
+    const DragHandle = sortableHandle(() => (
+        <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg" 
+              className="img-editor-drag-handle"
+              style={{stroke:'none'}}
+        >
+            <path d="M35 10.9375H0V8.75H35V10.9375ZM35 28.4375H0V26.25H35V28.4375ZM35 19.67H0V17.5H35V19.67Z" />
+        </svg>
+    ))
+
     return (
         <> 
             {imgEditorState?
@@ -73,61 +159,20 @@ export const ImgEditCE = ({imgEditorState, setImgEditorState, entryImgState, set
                         </label>
                     </div>
                     <div className="editor-images-container">
-                        {entryImgState.map((img, index)=>(
 
-                            <div key={index} className="editor-image-tab">
-
-                                <div className="editing-buttons">
-                                    <div className="img-edit"
-                                         style = {{
-                                            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${img.img})`,
-                                            backgroundPosition: 'center',
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundSize: 'cover',   
-                                            }}
-                                         onClick={()=>openImgEditorModal(img.img, index)}
-                                    >
-                                    
-                                        <p>Edit</p>
-                                    
-                                    </div>
-                                    
-                                    <svg viewBox="0 0 44 45" fill="none" xmlns="http://www.w3.org/2000/svg" 
-                                         className="img-edit-thumbnail"
-                                         style={img.thumbnail? {fill:'#3CDAFD'} : {fill:'#B6B6B6'} }
-                                         onClick={()=>toggleThumbnail(index)}
-                                    >
-                                        <path d="M3.66675 35.625H40.3334V39.375H3.66675V35.625ZM3.66675 9.375L12.8334 15.9375L22.0001 3.75L31.1667 15.9375L40.3334 9.375V31.875H3.66675V9.375ZM7.33341 16.5769V28.125H36.6667V16.5769L30.3967 21.0656L22.0001 9.9L13.6034 21.0656L7.33341 16.575V16.5769Z" />
-                                    </svg>
-                                    <svg viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg" 
-                                         className="img-edit-trash"      
-                                         onClick={()=>deleteImg(index)}
-                                    >
-                                        <path d="M14.625 7.3125L15.8438 2.4375H23.1562L24.375 7.3125M34.125 7.3125H7.3125L9.75 36.5625H29.25L31.6875 7.3125H4.875H34.125ZM19.5 14.625V29.25V14.625ZM25.5938 14.625L24.375 29.25L25.5938 14.625ZM13.4062 14.625L14.625 29.25L13.4062 14.625Z"  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-
-                                </div>
-
-
-                                <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg" 
-                                      className="img-editor-drag-handle"
-                                      style={{stroke:'none'}}
-                                >
-                                    <path d="M35 10.9375H0V8.75H35V10.9375ZM35 28.4375H0V26.25H35V28.4375ZM35 19.67H0V17.5H35V19.67Z" />
-                                </svg>
-
-                                <ConfirmModal
-                                    title={'Do you want to delete this photo?'}
-                                    text={''}
-                                    rightText={'Delete'} 
-                                    leftText={'Cancel'}
-                                    confirmAction={()=>{deleteImgFunction()}}
-                                    isActive={removeImgPrompt}
-                                    setIsActive={setRemoveImgPrompt}
-                                />
-
-                            </div>
-                        ))}
+                        <SortableContainer  
+                            onSortEnd={onSortEnd} 
+                            useDragHandle 
+                            helperClass="sortableHelper" 
+                            lockAxis={'y'}
+                            onSortOver={onSortOver}
+                        >
+                            {
+                                entryImgState.map((img, index)=>(
+                                    <SortableItem key={`item-${index}`} img={img} index={index} indexImg={index}/>
+                                ))
+                            }
+                        </SortableContainer>
                     </div>
                     <ImgEditor
                         editorState={editorState} 
