@@ -20,67 +20,15 @@ export const startEntryStore = () => {
     }
 }
 
+//Ver que funcione con la nueva funcion
 export const entryCreate = ( entry ) => {
 
     return async (dispatch) => {
 
         await db.collection('entries').add( entry )
 
-
-        //Añadir eid a todos los arrays de entries de los tags seleccionados
-        if(entry.tags.length!==0) {
-            //Traer y filtrar los Tags
-            const tags = await db.collection('tags').get()
-            let tagsInEntry = tags.filter( tag => entry.tags.includes(tag.tid));
-
-            //Por cada tag en el Entry creado se le añade el eid al arreglo de entries 
-            for (let index = 0; index < tagsInEntry.length; index++) {
-                
-                //Añadirlo al arreglo y hacer update del valor en IndexedDB
-                tagsInEntry[index].entries.push( entry.eid )
-
-                await db.collection('tags').doc({ tid: tagsInEntry[index].tid }).update({
-                    entries: tagsInEntry[index].entries,
-                })
-
-            }
-
-            dispatch(startTagStore())
-        }
-          
-        //Añadir eid al array de entries del location seleccionado
-        if(entry.location!==''){
-            //Traer y filtrar el location que esta asociado al Entry
-            const locations = await db.collection('locations').get();
-            let locationInEntry = locations.filter( loc => entry.location===loc.lid); //Esto tal vez devuelve un arreglo
-
-            //Añadirlo al arreglo y hacer update del valor en IndexedDB
-            locationInEntry[0].entries.push( entry.eid )
-
-            await db.collection('locations').doc({ lid: entry.location }).update({
-                entries: locationInEntry[0].entries,
-            })
-
-            dispatch(startLocationStore()) 
-        }
-    
-          
-        //Añadir eid al array de entries de la Card a la que pertenece
-
-        //Traer y filtrar la card que esta asociado al Entry 
-        const cards = await db.collection('cards').get();
-        let cardOfEntry = cards.filter( card => entry.cid===card.cid);
-
-        //Añadirlo al arreglo y hacer update del valor en IndexedDB
-        cardOfEntry[0].entries.push( entry.eid )
-
-        await db.collection('cards').doc({ cid: entry.cid }).update({
-            entries: cardOfEntry[0].entries,
-        })
-
-        dispatch(startCardStore())
-
-          
+        await addEidToCardTagLocation()
+ 
         fetchWithToken(`entry/new`, entry , 'POST');
         
         dispatch(startEntryStore())      
@@ -209,13 +157,125 @@ export const entryUpdate = ( oldEntry, newEntry ) => {
     }
 }
 
+//Testear que funciona con la nueva funciona
 export const entryDelete = ( entry ) => {
 
     return async (dispatch) => {
 
         await db.collection('entries').doc({ eid: entry.eid }).delete()
 
-        //Aplicar Logica del Delete en los tags locations y cards
+        await deleteEidFromCardTagLocation( entry )
+        
+        fetchWithToken(`entry/delete/${entry.eid}`, {}, 'DELETE');
+        
+        dispatch(startEntryStore())   
+    }
+}
+
+export const trashEntry = ( entry ) => {
+
+    return async ( dispatch ) => {
+
+        await db.collection('entries').doc({ eid: entry.eid }).update({
+            trash: true,
+        })
+
+        await deleteEidFromCardTagLocation( entry )
+
+        fetchWithToken(`entry/trash/${entry.eid}`, entry, 'PUT');
+        
+        dispatch(startEntryStore())   
+
+    }
+}
+
+export const unTrashEntry = ( entry ) => {
+
+    return async ( dispatch ) => {
+
+        await db.collection('entries').doc({ eid: entry.eid }).update({
+            trash: false,
+        })
+
+        await addEidToCardTagLocation( entry )
+
+        fetchWithToken(`entry/untrash/${entry.eid}`, entry, 'PUT');
+        
+        dispatch(startEntryStore())   
+
+    }
+}
+
+const finishEntryStore = ( locations ) =>{
+
+    return {
+        type: types.entriesStore,
+        payload: locations
+    }
+}
+
+
+const addEidToCardTagLocation = async (entry) =>{
+
+    //Añadir eid a todos los arrays de entries de los tags seleccionados
+    if(entry.tags.length!==0) {
+        //Traer y filtrar los Tags
+        const tags = await db.collection('tags').get()
+        let tagsInEntry = tags.filter( tag => entry.tags.includes(tag.tid));
+
+        //Por cada tag en el Entry creado se le añade el eid al arreglo de entries 
+        for (let index = 0; index < tagsInEntry.length; index++) {
+            
+            //Añadirlo al arreglo y hacer update del valor en IndexedDB
+            tagsInEntry[index].entries.push( entry.eid )
+
+            await db.collection('tags').doc({ tid: tagsInEntry[index].tid }).update({
+                entries: tagsInEntry[index].entries,
+            })
+
+        }
+
+        dispatch(startTagStore())
+    }
+      
+    //Añadir eid al array de entries del location seleccionado
+    if(entry.location!==''){
+        //Traer y filtrar el location que esta asociado al Entry
+        const locations = await db.collection('locations').get();
+        let locationInEntry = locations.filter( loc => entry.location===loc.lid); //Esto tal vez devuelve un arreglo
+
+        //Añadirlo al arreglo y hacer update del valor en IndexedDB
+        locationInEntry[0].entries.push( entry.eid )
+
+        await db.collection('locations').doc({ lid: entry.location }).update({
+            entries: locationInEntry[0].entries,
+        })
+
+        dispatch(startLocationStore()) 
+    }
+
+      
+    //Añadir eid al array de entries de la Card a la que pertenece
+
+    //Traer y filtrar la card que esta asociado al Entry 
+    const cards = await db.collection('cards').get();
+    let cardOfEntry = cards.filter( card => entry.cid===card.cid);
+
+    //Añadirlo al arreglo y hacer update del valor en IndexedDB
+    cardOfEntry[0].entries.push( entry.eid )
+
+    await db.collection('cards').doc({ cid: entry.cid }).update({
+        entries: cardOfEntry[0].entries,
+    })
+
+    dispatch(startCardStore())
+}
+
+
+
+const deleteEidFromCardTagLocation = async ( entry ) => {
+
+//Aplicar Logica del Delete en los tags locations y cards
 
         //Quitar el eid del arreglo de entries de los tags asociados
         if(entry.tags.length!==0) {
@@ -267,22 +327,10 @@ export const entryDelete = ( entry ) => {
         })
 
         dispatch(startCardStore())
-        
-        fetchWithToken(`entry/delete/${entry.eid}`, {}, 'DELETE');
-        
-        dispatch(startEntryStore())   
-    }
-}
 
-const finishEntryStore = ( locations ) =>{
-
-    return {
-        type: types.entriesStore,
-        payload: locations
-    }
 }
 
 
-//1821be8f-29f2-45fa-bcfe-2c019b670db6 CID
-//28af7a1a-6adf-4fe0-a9f3-eabd91e20f5b EID
+
+
 
