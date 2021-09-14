@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react'
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { useLastLocation } from 'react-router-last-location';
 import { useDispatch } from 'react-redux';
 import { storeLastPath } from '../actions/lastRoute';
@@ -26,9 +26,8 @@ export const RoutesApp = () => {
         if(lastLocation){
             dispatch( storeLastPath(lastLocation.pathname) )
         }
-        
-
-    }, [dispatch])
+    
+    }, [dispatch, lastLocation])
 
 
 

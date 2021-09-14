@@ -25,7 +25,7 @@ export const ImgEditor = ({ editorState, setEditorState, entryImgState, setEntry
         
         let auxArray = entryImgState
 
-        auxArray[editorState.index].img = croppedImg
+        auxArray[editorState.index].photo = croppedImg
 
         setEntryImgState([...auxArray])
 

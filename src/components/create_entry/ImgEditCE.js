@@ -77,12 +77,12 @@ export const ImgEditCE = ({imgEditorState, setImgEditorState, entryImgState, set
             <div className="editing-buttons">
                 <div className="img-edit"
                      style = {{
-                                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${img.img})`,
+                                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${img.photo})`,
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundSize: 'cover',   
                             }}
-                     onClick={()=>openImgEditorModal(img.img, indexImg)}
+                     onClick={()=>openImgEditorModal(img.photo, indexImg)}
                 >
                                     
                      <p>Edit</p>

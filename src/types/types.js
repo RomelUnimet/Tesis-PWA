@@ -32,4 +32,7 @@ export const types = {
     //Locations
     locationsStore: '[location] Store locations in state',
 
+    //Entries
+    entriesStore: '[entry] Store entries in state',
+
 }

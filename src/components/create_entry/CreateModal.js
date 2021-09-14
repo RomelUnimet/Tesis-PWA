@@ -8,9 +8,10 @@ import { useRef } from 'react';
 import { ImgCarrousel } from './ImgCarrousel';
 
 import { generateID } from '../../helpers/generateId'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { animated, useTransition } from 'react-spring'
+import { entryCreate } from '../../actions/entry';
 
 
 export const CreateModal = ({CEModalState, setCEModalState}) => {
@@ -66,6 +67,8 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
 
     const [entryImgState, setEntryImgState] = useState([])
 
+    const dispatch = useDispatch()
+
     let auxImgArray=[];
 
     const [imgInputIsEmpty, setImgInputIsEmpty] = useState(true)
@@ -100,12 +103,12 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                 auxImgArray = entryImgState;
                 if(entryImgState.length===0){
                     auxImgArray.push({
-                        img: reader.result,
+                        photo: reader.result,
                         thumbnail: true
                     })
                 }else{
                     auxImgArray.push({
-                        img: reader.result,
+                        photo: reader.result,
                         thumbnail: false
                     })
                 }
@@ -122,13 +125,14 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
      
     const handleCreateEntry = () => {
 
+        
         const cardID = cards.filter( (card) => card.month === datePickerState.time.getMonth() && card.year === datePickerState.time.getFullYear())
         const entry = {
-            e_id : generateID(), 
-            c_id : cardID[0].cid, 
-            u_id : cardID[0].uid, 
-            photos : entryImgState,
-            dateTime : datePickerState.time, 
+            eid : generateID(), 
+            cid : cardID[0].cid, 
+            uid : cardID[0].uid, 
+            photos : entryImgState, 
+            date : datePickerState.time, 
             title : title,
             text : text,
             weather : selectedWeather,
@@ -136,8 +140,9 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
             location: locationCE,
             trash : false,
         }
-
-        console.log(entry);
+        
+        dispatch( entryCreate( entry ) )
+        
     }
 
     //ANIMATION

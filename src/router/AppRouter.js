@@ -21,6 +21,7 @@ import { startSettingsStore } from '../actions/settings';
 import { startGetWeather } from '../actions/extra';
 import { startTagStore } from '../actions/tag'
 import { startLocationStore } from '../actions/location'
+import { startEntryStore } from '../actions/entry'
 
 
 
@@ -38,6 +39,7 @@ export const AppRouter = () => {
         dispatch( startCardStore() );
         dispatch( startTagStore() );
         dispatch( startLocationStore() );
+        dispatch( startEntryStore() );
 
         dispatch( startGetWeather() );
         

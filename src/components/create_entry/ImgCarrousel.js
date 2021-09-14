@@ -55,7 +55,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
             
                 auxImgState = entryImgState;
                 auxImgState.push({
-                    img: reader.result,
+                    photo: reader.result,
                     thumbnail: false
                 })
 
@@ -126,7 +126,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
     //Ve que hacer con el thumbnail luego de eliminar una imagen
     const auxThumbnail = () =>{
 
-        const thumbnailArray = entryImgState.filter( (img) => img.thumbnail === true )
+        const thumbnailArray = entryImgState.filter( (photo) => photo.thumbnail === true )
         if(thumbnailArray.length===0){
             let auxArray = entryImgState;
             auxArray[0].thumbnail = true;
@@ -167,7 +167,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                     >
                         {
                             state.map((img, index)=>(
-                                    <SwiperSlide key={index} className='ce-swiper-slide' style={{ backgroundImage: `url(${img.img})` }}>  
+                                    <SwiperSlide key={index} className='ce-swiper-slide' style={{ backgroundImage: `url(${img.photo})` }}>  
                                         
                                     </SwiperSlide>
                                 ))
