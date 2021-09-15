@@ -27,11 +27,14 @@ export const entryCreate = ( entry ) => {
 
         await db.collection('entries').add( entry )
 
-        await addEidToCardTagLocation()
+        await addEidToCardTagLocation( entry )
  
         fetchWithToken(`entry/new`, entry , 'POST');
         
-        dispatch(startEntryStore())      
+        dispatch( startCardStore() )
+        dispatch( startLocationStore() )
+        dispatch( startTagStore() )
+        dispatch( startEntryStore() )      
            
     }
 }
@@ -168,6 +171,9 @@ export const entryDelete = ( entry ) => {
         
         fetchWithToken(`entry/delete/${entry.eid}`, {}, 'DELETE');
         
+        dispatch( startCardStore() )
+        dispatch( startLocationStore() )
+        dispatch( startTagStore() )
         dispatch(startEntryStore())   
     }
 }
@@ -180,10 +186,13 @@ export const trashEntry = ( entry ) => {
             trash: true,
         })
 
-        await deleteEidFromCardTagLocation( entry )
+        await deleteEidFromCardTagLocation( entry, dispatch )
 
         fetchWithToken(`entry/trash/${entry.eid}`, entry, 'PUT');
         
+        dispatch( startCardStore() )
+        dispatch( startLocationStore() )
+        dispatch( startTagStore() )
         dispatch(startEntryStore())   
 
     }
@@ -197,25 +206,28 @@ export const unTrashEntry = ( entry ) => {
             trash: false,
         })
 
-        await addEidToCardTagLocation( entry )
+        await addEidToCardTagLocation( entry, dispatch )
 
         fetchWithToken(`entry/untrash/${entry.eid}`, entry, 'PUT');
         
-        dispatch(startEntryStore())   
+        dispatch( startCardStore() )
+        dispatch( startLocationStore() )
+        dispatch( startTagStore() )
+        dispatch(startEntryStore())  
 
     }
 }
 
-const finishEntryStore = ( locations ) =>{
+const finishEntryStore = ( entries ) =>{
 
     return {
         type: types.entriesStore,
-        payload: locations
+        payload: entries
     }
 }
 
 
-const addEidToCardTagLocation = async (entry) =>{
+const addEidToCardTagLocation = async ( entry ) =>{
 
     //Añadir eid a todos los arrays de entries de los tags seleccionados
     if(entry.tags.length!==0) {
@@ -235,7 +247,6 @@ const addEidToCardTagLocation = async (entry) =>{
 
         }
 
-        dispatch(startTagStore())
     }
       
     //Añadir eid al array de entries del location seleccionado
@@ -251,7 +262,6 @@ const addEidToCardTagLocation = async (entry) =>{
             entries: locationInEntry[0].entries,
         })
 
-        dispatch(startLocationStore()) 
     }
 
       
@@ -268,12 +278,11 @@ const addEidToCardTagLocation = async (entry) =>{
         entries: cardOfEntry[0].entries,
     })
 
-    dispatch(startCardStore())
 }
 
 
 
-const deleteEidFromCardTagLocation = async ( entry ) => {
+const deleteEidFromCardTagLocation = async ( entry, dispatch ) => {
 
 //Aplicar Logica del Delete en los tags locations y cards
 
@@ -295,7 +304,6 @@ const deleteEidFromCardTagLocation = async ( entry ) => {
 
             }
 
-            dispatch(startTagStore())
         }
 
         //Quitar el eid del arreglo de entries del locaiton seleccionado
@@ -311,7 +319,6 @@ const deleteEidFromCardTagLocation = async ( entry ) => {
                 entries: locationInEntry[0].entries,
             })
 
-            dispatch(startLocationStore()) 
         }
 
         //Quitar el eid del arreglo de entries de la card asociada
@@ -326,7 +333,6 @@ const deleteEidFromCardTagLocation = async ( entry ) => {
             entries: cardOfEntry[0].entries,
         })
 
-        dispatch(startCardStore())
 
 }
 

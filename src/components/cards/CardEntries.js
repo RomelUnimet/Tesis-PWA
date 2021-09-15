@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import '../../scss/cards/card-details.scss'
 
 import { motion } from "framer-motion"
+import { EntryTab } from './EntryTab';
 
 
 
@@ -13,6 +14,10 @@ export const CardEntries = () => {
     const { id } = useParams();
     const {cards} = useSelector(state => state.cards)
     const [card] = cards.filter( (card) => card.cid === id )
+
+    const {entries} = useSelector(state => state.entries)
+    const filteredEntries = entries.filter( (entry) => card.cid === entry.cid )
+
 
     const monthName = new Date(card.year,card.month)
     const shortMonthName = monthName.toLocaleString('en-US', { month: 'long' }).toUpperCase()
@@ -77,7 +82,22 @@ export const CardEntries = () => {
                     </div>
                 </div>
 
-                        <h2 className="no-diaries">No diaries yet.</h2>
+
+            {filteredEntries.length!==0?
+
+                <div className="entrie-tabs-container">
+                    { filteredEntries.map((entry)=>(
+
+                        <EntryTab entry={entry} key={entry.eid} />
+                    ))
+                    }
+                </div>
+                :
+                <div className="no-diaries-container">
+                    <h2 className="no-diaries">No diaries yet.</h2>
+                </div>
+            }                
+
 
 
             </motion.div>
