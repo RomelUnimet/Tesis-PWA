@@ -15,6 +15,9 @@ import { TopBar } from '../ui/TopBar';
 
 import { motion } from "framer-motion"
 
+import { useLastLocation } from 'react-router-last-location';
+
+
 
 export const CardScreen = ( {prevPath} ) => {
 
@@ -155,15 +158,36 @@ export const CardScreen = ( {prevPath} ) => {
         }
     }
 
-    //Esto deberia de cambiar si se hace click a la pestaña de Perfil
-    //Debo hacer un cambio de 'variants' dependiendo de la ruta a la que se le de click
-    const variants = {
-        initial:{x:-40},
-        in:{ x:0},
-        out:{x:-40}
-    }
+    const lastLocation = useLastLocation();
+       
+    const [variants, setvariants] = useState(()=>{
 
-    
+        if(lastLocation?.pathname.includes('/detailed')){
+        
+            return {
+                    initial:{x:-40, transition:{duration:0.2} },
+                    in:{x:0, transition:{duration:0.2} },
+                    out:{x:-40, transition:{duration:0.2} }
+                    }
+        }else {
+            return {
+                    initial:{x:0, transition:{duration:0} },
+                    in:{x:0, transition:{duration:0} },
+                    out:{x:0, transition:{duration:0} }
+                    }
+        }
+    })
+
+    useEffect(() => {
+        setvariants({
+            
+            initial:{x:0, transition:{duration:0} },
+            in:{x:0, transition:{duration:0} },
+            out:{x:0, transition:{duration:0} }
+        })
+        
+    }, [])
+
     if (cards.length===0){
         return(
                 //Puedo poner un esqueleto
@@ -181,7 +205,6 @@ export const CardScreen = ( {prevPath} ) => {
             initial="initial"
             animate="in"
             exit="out"
-            transition={{duration:0.3}}
         >
             <div 
             className="card-screen-container"
@@ -226,6 +249,7 @@ export const CardScreen = ( {prevPath} ) => {
                                         setModalState={setModalState}
                                         cropperState={cropperState}
                                         setCropperState={setCropperState}
+                                        setvariants={setvariants}
                                     />
                                 </SwiperSlide>
                             ))

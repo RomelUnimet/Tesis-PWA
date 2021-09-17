@@ -4,7 +4,7 @@ import '../../scss/cards/card.scss'
 
 
 
-export const Card = ( {cid, color, entries, month, photo, uid, year, modalState, setModalState, cropperState, setCropperState} ) => {
+export const Card = ( {cid, color, entries, month, photo, uid, year, modalState, setModalState, cropperState, setCropperState, setvariants} ) => {
 
     const monthName = new Date(year,month)
     const shortMonthName = monthName.toLocaleString('en-US', { month: 'short' }).toUpperCase()
@@ -44,7 +44,12 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
 
     const goToCardDetails= (e)=> {
         e.preventDefault()
-            history.push(`/detailedcard/${cid}`);
+        setvariants({
+            initial:{x:-40, transition:{duration:0.35} },
+            in:{ x:0,transition:{duration:0.35}},
+            out:{x:-40,transition:{duration:0.35}}
+        })
+        history.push(`/detailedcard/${cid}`);
     }
 
     

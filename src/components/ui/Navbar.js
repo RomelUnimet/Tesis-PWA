@@ -4,9 +4,8 @@ import { NavLink, useLocation } from 'react-router-dom';
 import '../../scss/ui/navbar.scss'
 
 export const Navbar = ({CEModalState, setCEModalState}) => {
-    const {pathname} = useLocation();
-
     
+    const {pathname} = useLocation();
 
     return (
         <nav className="navbar">

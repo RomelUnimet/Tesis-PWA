@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from "react-router-dom";
 import '../../scss/cards/card-details.scss'
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import { EntryTab } from './EntryTab';
+import { ConfirmModal } from './../modals/ConfirmModal'
+import { useLastLocation } from 'react-router-last-location';
 
+import {
+    SwipeableList,
+    SwipeableListItem,
+    SwipeAction,
+    TrailingActions,
+    Type as ListType
+  } from 'react-swipeable-list';
+import 'react-swipeable-list/dist/styles.css';
+import { trashEntry } from '../../actions/entry';
 
 
 export const CardEntries = () => {
@@ -16,16 +27,19 @@ export const CardEntries = () => {
     const [card] = cards.filter( (card) => card.cid === id )
 
     const {entries} = useSelector(state => state.entries)
-    const filteredEntries = entries.filter( (entry) => card.cid === entry.cid )
-
+    const [ filteredEntries, setFilteredEntries ] = useState(entries.filter( (entry) => (card.cid === entry.cid && entry.trash===false) ))
 
     const monthName = new Date(card.year,card.month)
     const shortMonthName = monthName.toLocaleString('en-US', { month: 'long' }).toUpperCase()
 
+    const [confirmModal, setConfirmModal] = useState(false)
+    const [selectedEntry, setselectedEntry] = useState('')
 
     const [orderAscend, setOrderAscend] = useState(true);
+
     const changeOrder = () => {
         setOrderAscend(!orderAscend);
+        setFilteredEntries([...filteredEntries.reverse()])
     }
     const history = useHistory();
 
@@ -34,18 +48,80 @@ export const CardEntries = () => {
         history.goBack();
     }
 
+    const dispatch = useDispatch()
+
+
     const SCREEN_WIDTH = window.innerWidth;
 
-    const variants = {
-        initial:{x:SCREEN_WIDTH},
-        in:{x:0},
-        out:{x:SCREEN_WIDTH}
+    //Tengo que buscar una manera de que cuando se le de click a la navbar cambie la a imacion de salida de esto a otra
+    //GUARDAR LA ULTIMA RUTA QUE SE ACCEDIO DE LAS ENTRIES Y QUE LA NEVEHACION SEA DIRECTO A ESA RUTA
+    //COMO AHORA VA A TENER ALGUNA COSA DE PROFILE SE PUEDE HACER EL FILTRO MAS FACIL
+
+    const lastLocation = useLastLocation();
+       
+    const [variants, setvariants] = useState(()=>{
+
+        if(lastLocation?.pathname.includes('/profile')){
+        
+            return  {
+                    initial:{x:0, transition:{duration:0} },
+                    in:{x:0, transition:{duration:0} },
+                    out:{x:0, transition:{duration:0} }
+                    }
+        }else {
+            return  {
+                    initial:{x:SCREEN_WIDTH},
+                    in:{x:0},
+                    out:{x:SCREEN_WIDTH}
+                    }
+        }
+    })
+
+    useEffect(() => {
+        setvariants({
+            initial:{x:SCREEN_WIDTH},
+            in:{x:0},
+            out:{x:SCREEN_WIDTH}
+        })
+        
+    }, [SCREEN_WIDTH])
+
+    useEffect(() => {
+        console.log('Se borro')
+        setFilteredEntries(entries.filter( (entry) => (card.cid === entry.cid && entry.trash===false) ))
+    }, [entries])
+
+    //SWIPE TO DELETE
+    const trailingActions = ( entry ) => (
+        <TrailingActions>
+          <SwipeAction
+            destructive={false}
+            onClick={() => {
+
+                setConfirmModal(true)
+                setselectedEntry(entry)
+            }}
+            style={{backgroundColor: 'red'}}
+          >
+              <div className="entry-delete-swipe">
+                    Delete
+              </div>
+          </SwipeAction>
+        </TrailingActions>
+      );
+
+
+    const sendEntrytoTrash = () => {
+        
+        dispatch( trashEntry(selectedEntry) )
+        setConfirmModal(false)
     }
+    
 
     if(!card){
         return(<>Espere</>)
     }
-
+    
     return (
        
             <motion.div className="detail-card-container"
@@ -53,7 +129,7 @@ export const CardEntries = () => {
                 initial="initial"
                 animate="in"
                 exit="out"
-                transition={{duration:0.35, ease:'easeOut'}}
+                transition={{ ease:'easeOut'}}
             >
                 <div className="d-c-topbar">
                     <div className="d-c-topbar-layout">
@@ -86,11 +162,20 @@ export const CardEntries = () => {
             {filteredEntries.length!==0?
 
                 <div className="entrie-tabs-container">
-                    { filteredEntries.map((entry)=>(
-
-                        <EntryTab entry={entry} key={entry.eid} />
-                    ))
-                    }
+                     <SwipeableList
+                        fullSwipe={true}
+                        type={ListType.IOS}
+                     >
+                        { filteredEntries.map((entry)=>(
+                            <SwipeableListItem
+                                key={entry.eid}
+                                trailingActions={trailingActions( entry )} 
+                            >
+                                <EntryTab entry={entry}  />
+                            </SwipeableListItem>
+                        ))
+                        }
+                     </SwipeableList>
                 </div>
                 :
                 <div className="no-diaries-container">
@@ -98,8 +183,16 @@ export const CardEntries = () => {
                 </div>
             }                
 
-
-
+            <ConfirmModal
+                title={'Are you sure you want to delete this diary entry?'}
+                text={'Deleted diaries are kept in the trash. (Settings > Data > Trash)'}
+                rightText={'Delete'} 
+                leftText={'Cancel'}
+                confirmAction={sendEntrytoTrash}
+                isActive={confirmModal}
+                setIsActive={setConfirmModal}
+            />
+            
             </motion.div>
     )
 

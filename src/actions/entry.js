@@ -13,10 +13,12 @@ export const startEntryStore = () => {
 
     return async (dispatch) => {
 
-        //Considerar añadir un mensaje de error
+        
         const entries = await db.collection('entries').get();
 
-        dispatch( finishEntryStore( entries ) );
+        const orderedEntries = entries.sort(( a, b ) => b.date - a.date)
+
+        dispatch( finishEntryStore( orderedEntries ) );
     }
 }
 

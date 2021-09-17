@@ -1,8 +1,6 @@
-import React, { useEffect, useState} from 'react'
+import React, { useState} from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { useLastLocation } from 'react-router-last-location';
-import { useDispatch } from 'react-redux';
-import { storeLastPath } from '../actions/lastRoute';
+
 
 import { CardScreen } from '../components/cards/CardScreen';
 import { CreateModal } from '../components/create_entry/CreateModal';
@@ -18,17 +16,6 @@ export const RoutesApp = () => {
     //SI HAY UN ERROR CON ESO ES MUY PROBABLE QUE SEA AHI
 
     const [CEModalState, setCEModalState] = useState(false);
-    const dispatch = useDispatch()
-    const lastLocation = useLastLocation();
-
-    useEffect(() => {
-
-        if(lastLocation){
-            dispatch( storeLastPath(lastLocation.pathname) )
-        }
-    
-    }, [dispatch, lastLocation])
-
 
 
     return (
