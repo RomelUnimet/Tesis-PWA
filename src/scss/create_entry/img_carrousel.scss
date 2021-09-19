@@ -3,13 +3,13 @@
 .ce-img-carrousel{
 
     width: 100%;
-    height: 85vw;
-
+    height:40vh;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 4.4rem;
     position: relative;
+    background-color: black;
 
     svg {
         background-color: rgba(0, 0, 0, 0.2);
@@ -26,17 +26,38 @@
 .ce-swiper-container {
     width: 100%;
     height: 100%;
+
+    & svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        fill: $back-color;
+        background-color: rgba(0, 0, 0, 0);
+        z-index: 1;
+    }
   }
   
 .ce-swiper-slide {
+    
     width: 100%;
     height: 100%;
     top: auto;
     border-radius: 0px;
     filter: none; 
+    
+    
+}
+
+.ce-swiper-img-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover; 
+    background-size: cover;
+
 }
 
 .ce-slider-icon-container{

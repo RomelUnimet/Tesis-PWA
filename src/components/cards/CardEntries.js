@@ -87,9 +87,8 @@ export const CardEntries = () => {
     }, [SCREEN_WIDTH])
 
     useEffect(() => {
-        console.log('Se borro')
         setFilteredEntries(entries.filter( (entry) => (card.cid === entry.cid && entry.trash===false) ))
-    }, [entries])
+    }, [entries, card])
 
     //SWIPE TO DELETE
     const trailingActions = ( entry ) => (

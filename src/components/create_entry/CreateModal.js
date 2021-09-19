@@ -35,6 +35,8 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
 
     const [locationCE, setLocationCE] = useState('');
 
+    const [fullscreen, setfullscreen] = useState(false)
+
     const handleClick = () => {
         setDatePicker({...datePickerState, isOpen: true });
     }
@@ -176,6 +178,7 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                     
                 >
                     <div className="ce-container">
+                        
                         <div className="ce-toolbar">
                             <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
                                 onClick={()=>{
@@ -234,12 +237,16 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                                 entryImgState={entryImgState}
                                 setEntryImgState={setEntryImgState}
                                 setImgInputIsEmpty={setImgInputIsEmpty}
+                                fullscreen={fullscreen}
+                                setfullscreen={setfullscreen}
                             />
                         }
 
                         
 
-                        <div className="input-modal-textarea-container">
+                        <div className="input-modal-textarea-container"
+                            style={fullscreen?{marginTop:'110vw'}:{}}
+                        >
                             <input 
                                 type="text" 
                                 placeholder="Title"
