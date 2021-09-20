@@ -19,11 +19,21 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',   
     }
-
+  
     //ESTO SE TIENE QUE CAMBIAR PARA QUE SEAN LAS ENTRADASCON FECHAS DIFERENTES
     const daysOfMonth = new Date(year, month+1, 0).getDate()
-    const progress = (entries.length / daysOfMonth)*100;
 
+    const dateArray = entries.map((e)=> e.edate?.getDate())
+
+    const onlyUnique = (value, index, self) => {
+        return self.indexOf(value) === index;
+    }
+
+    const uniqueDateArray  = dateArray.filter(onlyUnique)
+
+    const progress = (uniqueDateArray.length / daysOfMonth)*100;
+    
+ 
     const showModal = (e) => {
 
         e.stopPropagation();
@@ -53,6 +63,7 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
     }
 
     
+    
 
     return (
         <div className="card-component" style={ hasPhoto? bImgStyles :{backgroundColor:color}}
@@ -71,7 +82,7 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
                         </div> 
                     </div>
 
-                    <p className="fraction-progress"> <b> {entries.length} </b>/{daysOfMonth} </p>
+                    <p className="fraction-progress"> <b> {uniqueDateArray.length} </b>/{daysOfMonth} </p>
 
                 </div>
 

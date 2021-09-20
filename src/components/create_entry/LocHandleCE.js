@@ -290,11 +290,6 @@ export const LocHandleCE = ({handlerState, setHandlerState, locationCE, setLocat
                     />
                 }
                     
-                    
-                
-                
-                
-               
                 <ConfirmModal
                     title={'Delete this location?'}
                     text={'It will delete this location in all related diaries. (diaries still exist)'}

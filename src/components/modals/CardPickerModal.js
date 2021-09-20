@@ -47,13 +47,7 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
     }
 
     //ANIMATIONS & GESTURES
-    /*const transition = useTransition(modalState.show, {
-        //Tal vez poner y que sea quesi la mitad de la pantalla, para que sea mas responsive
-        from: {x:0, y:600},
-        enter: {x:0, y:0},
-        leave: {x:0, y:600},
-    });
-    */    
+
     const SCREEN_HEIGHT = window.innerHeight;
 
     const [{ y }, api] = useSpring(() => ({ y: 0 }));

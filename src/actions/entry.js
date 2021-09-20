@@ -139,14 +139,14 @@ export const entryUpdate = ( oldEntry, newEntry ) => {
             let newEntryCard = cards.filter( card => newEntry.cid===card.cid)
 
             //OLDCARD Eliminarlo del arreglo y hacer update del valor en IndexedDB
-            oldEntryCard[0].entries.splice( oldEntryCard[0].entries.indexOf(oldEntry.eid), 1 )
+            oldEntryCard[0].entries.splice( oldEntryCard[0].entries.indexOf({eid:oldEntry.eid, edate:oldEntry.date}), 1 )
 
             await db.collection('cards').doc({ cid: oldEntry.cid }).update({
                 entries: oldEntryCard[0].entries,
             })
 
             //NEWCARD Añadirlo al arreglo y hacer update del valor en IndexedDB
-            newEntryCard[0].entries.push( newEntry.eid )
+            newEntryCard[0].entries.push( {eid:newEntry.eid, edate:newEntry.date} )
 
             await db.collection('cards').doc({ cid: newEntry.cid }).update({
                 entries: newEntryCard[0].entries,
@@ -169,13 +169,13 @@ export const entryDelete = ( entry ) => {
 
         await db.collection('entries').doc({ eid: entry.eid }).delete()
 
-        await deleteEidFromCardTagLocation( entry )
+        //await deleteEidFromCardTagLocation( entry ) //Creo que esto no es necesario
         
         fetchWithToken(`entry/delete/${entry.eid}`, {}, 'DELETE');
         
-        dispatch( startCardStore() )
-        dispatch( startLocationStore() )
-        dispatch( startTagStore() )
+        //dispatch( startCardStore() )
+        //dispatch( startLocationStore() )
+        //dispatch( startTagStore() )
         dispatch(startEntryStore())   
     }
 }
@@ -274,7 +274,10 @@ const addEidToCardTagLocation = async ( entry ) =>{
     let cardOfEntry = cards.filter( card => entry.cid===card.cid);
 
     //Añadirlo al arreglo y hacer update del valor en IndexedDB
-    cardOfEntry[0].entries.push( entry.eid )
+    cardOfEntry[0].entries.push( {
+        eid: entry.eid,
+        edate: entry.date
+    })
 
     await db.collection('cards').doc({ cid: entry.cid }).update({
         entries: cardOfEntry[0].entries,
@@ -284,7 +287,7 @@ const addEidToCardTagLocation = async ( entry ) =>{
 
 
 
-const deleteEidFromCardTagLocation = async ( entry, dispatch ) => {
+const deleteEidFromCardTagLocation = async ( entry ) => {
 
 //Aplicar Logica del Delete en los tags locations y cards
 
@@ -329,7 +332,7 @@ const deleteEidFromCardTagLocation = async ( entry, dispatch ) => {
         let cardOfEntry = cards.filter( card => entry.cid===card.cid);
 
         //Eliminarlo del arreglo y hacer update del valor en IndexedDB
-        cardOfEntry[0].entries.splice( cardOfEntry[0].entries.indexOf(entry.eid), 1 )
+        cardOfEntry[0].entries.splice( cardOfEntry[0].entries.indexOf({eid:entry.eid, edate:entry.date}), 1 )
 
         await db.collection('cards').doc({ cid: entry.cid }).update({
             entries: cardOfEntry[0].entries,

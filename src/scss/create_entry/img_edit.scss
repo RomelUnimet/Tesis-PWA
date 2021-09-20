@@ -104,3 +104,9 @@
     opacity: 0.7;
     border-top: solid $grey-color 1px;
 }
+
+.img-edit-drag-handle{
+    position: fixed;
+    width: 8vw;
+    height: 100vh;
+}
