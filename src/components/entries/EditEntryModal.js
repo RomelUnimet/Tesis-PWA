@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../scss/create_entry/create_modal.scss'
 
 import DatePicker from 'react-mobile-datepicker';
@@ -15,7 +15,7 @@ import { entryUpdate } from '../../actions/entry';
 export const EditEntryModal = ({EditModalState, setEditModalState, entry}) => {
      
     const [datePickerState, setDatePicker] = useState({
-        time: entry.date,
+        time: entry?.date,
         isOpen: false
     });
 
@@ -26,11 +26,11 @@ export const EditEntryModal = ({EditModalState, setEditModalState, entry}) => {
         show:false,
     })
 
-    const [selectedWeather, setSelectedWeather] = useState(entry.weather);
+    const [selectedWeather, setSelectedWeather] = useState(entry?.weather);
 
-    const [tagsCE, setTagsCE] = useState([...entry.tags]);
+    const [tagsCE, setTagsCE] = useState(entry?.tags);
 
-    const [locationCE, setLocationCE] = useState(entry.location);
+    const [locationCE, setLocationCE] = useState(entry?.location);
 
     const [fullscreen, setfullscreen] = useState(false)
 
@@ -61,15 +61,15 @@ export const EditEntryModal = ({EditModalState, setEditModalState, entry}) => {
         })
     }
 
-    const [title, setTitle] = useState(entry.title);
-    const [text, setText] = useState(entry.text);
+    const [title, setTitle] = useState(entry?.title);
+    const [text, setText] = useState(entry?.text);
 
-    const [entryImgState, setEntryImgState] = useState([...entry.photos])
+    const [entryImgState, setEntryImgState] = useState(entry?.photos)
     const dispatch = useDispatch()
 
     let auxImgArray=[];
 
-    const [imgInputIsEmpty, setImgInputIsEmpty] = useState(entry.photos.length<1)
+    const [imgInputIsEmpty, setImgInputIsEmpty] = useState(entry?.photos.length<1)
 
 
 
@@ -125,7 +125,6 @@ export const EditEntryModal = ({EditModalState, setEditModalState, entry}) => {
      
     const handleEditEntry = () => {
 
-        
         const cardID = cards.filter( (card) => card.month === datePickerState.time.getMonth() && card.year === datePickerState.time.getFullYear())
         const newEntry = {
             eid : entry.eid, 
@@ -163,7 +162,6 @@ export const EditEntryModal = ({EditModalState, setEditModalState, entry}) => {
         setImgInputIsEmpty(true)
         setTagsCE([])
         setLocationCE('')
-        
     }   
 
     const closeModal = () =>{
@@ -171,6 +169,23 @@ export const EditEntryModal = ({EditModalState, setEditModalState, entry}) => {
         setDatePicker({...datePickerState, time: new Date()})
         resetValues()
     }
+
+    useEffect(() => {
+        
+        if(!!entry){
+        setTitle(entry.title);
+        setText(entry.text);
+        setDatePicker({
+            time: entry.date,
+            isOpen: false
+        });
+        setEntryImgState([...entry.photos])
+        setImgInputIsEmpty(entry.photos.length<1)
+        setSelectedWeather(entry.weather);
+        setTagsCE([...entry.tags]);
+        setLocationCE(entry.location);
+        }
+    }, [EditModalState, entry])
 
     //EVALUAR PASAR LA BARRA DE ARRIBA A OTRO COMPONENTE PARA QUE SEA MAS LIMPIO
     return (

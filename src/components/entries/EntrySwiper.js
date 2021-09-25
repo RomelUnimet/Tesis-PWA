@@ -10,6 +10,9 @@ import { Entry } from './Entry';
 import { HandleEntryModal } from '../modals/HandleEntryModal';
 import { ConfirmModal } from '../modals/ConfirmModal';
 import { EditEntryModal } from './EditEntryModal';
+import { useDispatch } from 'react-redux';
+import { trashEntry } from '../../actions/entry';
+import { EntrySaveAsImg } from './EntrySaveAsImg';
 
 export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) => {
 
@@ -40,6 +43,25 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
 
     const [EditModalState, setEditModalState] = useState(false)
 
+    const [saveAsImgModal, setSaveAsImgModal] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const sendEntryToTrash = () => {
+
+        setModalState(false)
+        setConfirmModal(false)
+        if(entries.length===1){
+            setEntrySwiperState({
+                ...entrySwiperState,
+                show:false,
+                activeEntry:0
+            })
+        }
+        dispatch( trashEntry(entries[entrySwiperState.activeEntry]))
+
+    }
+
     return (
         <>
             {transition((style, item) =>  
@@ -53,6 +75,12 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
                             slidesPerView={1} 
                             initialSlide={entrySwiperState.activeEntry}
                             className="entry-swiper"
+                            onSlideChange={()=>{
+                                    setEntrySwiperState({
+                                        ...entrySwiperState, 
+                                        activeEntry: swiperRef.current?.swiper.activeIndex 
+                                    })
+                                }}
                         >
 
                             {
@@ -66,7 +94,7 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
                                             entry={entry}
                                             fullscreen={fullscreen}
                                             setfullscreen={setfullscreen}
-                                            setModalState={setModalState}
+                                            setEditModalState={setEditModalState}
                                         />
                                     </SwiperSlide>
                                 ))
@@ -97,24 +125,30 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
                             setModalState={setModalState}
                             setConfirmModal={setConfirmModal}
                             setEditModalState={setEditModalState}
+                            setSaveAsImgModal={setSaveAsImgModal}
                         />
                         <ConfirmModal
                             title={'Are you sure you want to delete this diary entry?'}
                             text={'Deleted diaries are kept in the trash. (Settings > Data > Trash)'}
                             rightText={'Delete'} 
                             leftText={'Cancel'}
-                            confirmAction={()=>console.log('trash')}
+                            confirmAction={sendEntryToTrash}
                             isActive={confirmModal}
                             setIsActive={setConfirmModal}
                         />
 
-                        {EditModalState &&
-                            <EditEntryModal
-                                EditModalState={EditModalState}
-                                setEditModalState={setEditModalState}
-                                entry={entries[entrySwiperState.activeEntry]}
-                            />
-                        }
+                        <EditEntryModal
+                            EditModalState={EditModalState}
+                            setEditModalState={setEditModalState}
+                            entry={entries[entrySwiperState.activeEntry]}
+                        />
+
+                        <EntrySaveAsImg
+                            saveAsImgModal={saveAsImgModal}
+                            setSaveAsImgModal={setSaveAsImgModal}
+                            entry={entries[entrySwiperState.activeEntry]}
+                        />
+                        
                         
                     </animated.div>
 

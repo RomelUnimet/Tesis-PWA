@@ -5,6 +5,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 
     & h4 {
         color: $grey-color;
@@ -42,5 +43,44 @@
     & label {
         color: $darker-grey;
         font-size: 0.7rem;
+    }
+}
+
+.detailed-entry-container-save-img{
+    position: absolute;
+    top:0;
+    width: 100%;
+    overflow-y: auto;
+    z-index: 5;
+    height: 100vh;
+
+    & h4 {
+        color: $grey-color;
+        letter-spacing: 0.2px;
+    }
+    & p{
+        font-size: 1rem;
+        margin: 2rem 1.4rem 0 1.4rem;
+        text-align: start;
+        white-space: pre-line;
+    }
+    & svg {
+        height: 1rem;
+        fill: $black-color;
+    }
+
+    & .entry-tag-loc-label{
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+    
+        & svg {
+            margin: 0 0.5rem 0 1.4rem ;
+        }
+    
+        & label {
+            color: $darker-grey;
+            font-size: 0.7rem;
+        }
     }
 }

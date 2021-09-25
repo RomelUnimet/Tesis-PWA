@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux'
 
 import useDoubleClick from 'use-double-click';
 
-export const Entry = ({entry, fullscreen, setfullscreen, setModalState}) => {
+export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState}) => {
 
-    const { /* eid, cid, */ photos, date, title, text, weather, location, tags} = entry;
+    const { photos, date, title, text, weather, location, tags} = entry;
 
     const dateToText = () =>{
         
@@ -33,7 +33,7 @@ export const Entry = ({entry, fullscreen, setfullscreen, setModalState}) => {
     useDoubleClick({
         onDoubleClick: () => {
             if(!fullscreen){
-                
+                setEditModalState(true)
             }
         },
         ref: entryRef,
@@ -84,7 +84,7 @@ export const Entry = ({entry, fullscreen, setfullscreen, setModalState}) => {
                 </p>
 
                 { tags.length!==0 && location!=='' &&
-                    <div className="entry-tag-loc-container">
+                    <div className="entry-tag-loc-container" >
                         { tags.length!==0 &&
                             <div className="entry-tag-loc-label">
                                 <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -105,6 +105,7 @@ export const Entry = ({entry, fullscreen, setfullscreen, setModalState}) => {
                     </div>
                 }
             </div>
+
         </div>
     )
 }
