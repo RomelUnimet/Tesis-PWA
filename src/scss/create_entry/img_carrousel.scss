@@ -3,7 +3,6 @@
 .ce-img-carrousel{
 
     width: 100%;
-    height:40vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -35,7 +34,7 @@
         background-color: rgba(0, 0, 0, 0);
         z-index: 1;
     }
-  }
+}
   
 .ce-swiper-slide {
     
@@ -44,8 +43,6 @@
     top: auto;
     border-radius: 0px;
     filter: none; 
-    
-    
 }
 
 .ce-swiper-img-container{

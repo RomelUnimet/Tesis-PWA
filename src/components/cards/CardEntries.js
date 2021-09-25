@@ -17,6 +17,7 @@ import {
   } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
 import { trashEntry } from '../../actions/entry';
+import { EntrySwiper } from '../entries/EntrySwiper';
 
 
 export const CardEntries = () => {
@@ -33,7 +34,13 @@ export const CardEntries = () => {
     const shortMonthName = monthName.toLocaleString('en-US', { month: 'long' }).toUpperCase()
 
     const [confirmModal, setConfirmModal] = useState(false)
+
     const [selectedEntry, setselectedEntry] = useState('')
+
+    const [entrySwiperState, setEntrySwiperState] = useState({
+        show:false,
+        activeEntry:0
+    })
 
     const [orderAscend, setOrderAscend] = useState(true);
 
@@ -96,7 +103,6 @@ export const CardEntries = () => {
           <SwipeAction
             destructive={false}
             onClick={() => {
-
                 setConfirmModal(true)
                 setselectedEntry(entry)
             }}
@@ -122,7 +128,8 @@ export const CardEntries = () => {
     }
     
     return (
-       
+
+        <>
             <motion.div className="detail-card-container"
                 variants={variants}
                 initial="initial"
@@ -165,12 +172,19 @@ export const CardEntries = () => {
                         fullSwipe={true}
                         type={ListType.IOS}
                      >
-                        { filteredEntries.map((entry)=>(
+                        { filteredEntries.map((entry, index)=>(
                             <SwipeableListItem
                                 key={entry.eid}
                                 trailingActions={trailingActions( entry )} 
+                                
                             >
-                                <EntryTab entry={entry}  />
+                                <EntryTab 
+                                    entry={entry}
+                                    index={index}
+                                    entrySwiperState={entrySwiperState}
+                                    setEntrySwiperState={setEntrySwiperState}
+                                />
+
                             </SwipeableListItem>
                         ))
                         }
@@ -193,6 +207,16 @@ export const CardEntries = () => {
             />
             
             </motion.div>
+
+
+            
+            <EntrySwiper
+                entries={filteredEntries} 
+                entrySwiperState={entrySwiperState}
+                setEntrySwiperState={setEntrySwiperState}
+            />
+            
+        </>
     )
 
 }

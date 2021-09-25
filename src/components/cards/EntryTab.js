@@ -3,7 +3,7 @@ import '../../scss/cards/entry-tab.scss'
 import { WeatherFilter } from '../compHelper/WeatherFilter';
 
 
-export const EntryTab = ( {entry} ) => {
+export const EntryTab = ( {entry, index, entrySwiperState, setEntrySwiperState} ) => {
 
             
     const { photos, date, title, text, weather} = entry;
@@ -23,9 +23,19 @@ export const EntryTab = ( {entry} ) => {
         }
     }
 
+    const goToDetailedEntry = () => {
+        setEntrySwiperState({
+            ...entrySwiperState,
+            show:true,
+            activeEntry: index
+        })
+    }
+
     return (
         
-        <div className="entry-tab-container">
+        <div className="entry-tab-container" 
+             onClick={goToDetailedEntry}
+        >
 
             {!(date.getDay()===6 || date.getDay()===0)?
 
@@ -95,7 +105,7 @@ export const EntryTab = ( {entry} ) => {
                 
                 </div>
             }
-            </div>
+        </div>
        
            
         
