@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import '../../scss/entries/entry.scss'
 import {EntryImgGallery} from './EntryImgGallery'
 import {WeatherFilter} from '../compHelper/WeatherFilter'
 import { useSelector } from 'react-redux'
 
-export const Entry = ({entry, fullscreen, setfullscreen}) => {
+import useDoubleClick from 'use-double-click';
+
+export const Entry = ({entry, fullscreen, setfullscreen, setModalState}) => {
 
     const { /* eid, cid, */ photos, date, title, text, weather, location, tags} = entry;
 
@@ -25,10 +27,22 @@ export const Entry = ({entry, fullscreen, setfullscreen}) => {
 
     const tagsString = entryTags.map((tag)=>tag.name).join(', ')
 
-     
+    const entryRef = useRef()
+    
+
+    useDoubleClick({
+        onDoubleClick: () => {
+            if(!fullscreen){
+                
+            }
+        },
+        ref: entryRef,
+        latency: 250
+    });
 
     return (
         <div className="detailed-entry-container"
+             ref={entryRef}
         >
             {
                 photos.length!==0 &&

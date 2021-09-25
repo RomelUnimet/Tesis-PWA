@@ -1,0 +1,54 @@
+@import '../variables.scss';
+
+.entry-modal-container-handler{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 9;
+    color: $black-color;
+    
+}
+.entry-handler-modal{
+
+    position: absolute;
+    
+    z-index: 10;
+
+    width: 80%;
+    background-color: white;
+    bottom: 0;
+    margin-bottom: 3rem;
+    border-radius: 12px;
+
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    margin-left: 10%;
+
+    & svg {
+        width: 1.7rem;
+    }
+
+}
+
+.entry-handler-modal-item{
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+
+
+
+    & p {
+        margin-left: 5%;
+        font-size: 1rem;
+    }
+    & .remove-name-tag{
+        color: $red-color;
+    }
+    
+}

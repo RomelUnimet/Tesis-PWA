@@ -7,6 +7,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import "swiper/swiper.min.css";
 import '../../scss/cards/monthcards.scss'
 import { Entry } from './Entry';
+import { HandleEntryModal } from '../modals/HandleEntryModal';
+import { ConfirmModal } from '../modals/ConfirmModal';
+import { EditEntryModal } from './EditEntryModal';
 
 export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) => {
 
@@ -29,7 +32,13 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
         })
     }
 
-    const [fullscreen, setfullscreen] = useState(false) 
+    const [fullscreen, setfullscreen] = useState(false)
+    
+    const [modalState, setModalState] = useState(false)
+
+    const [confirmModal, setConfirmModal] = useState(false)
+
+    const [EditModalState, setEditModalState] = useState(false)
 
     return (
         <>
@@ -49,13 +58,15 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
                             {
                                 entries.map((entry, index)=>(
 
-                                    <SwiperSlide key={index} 
-                                            className="entry-swiper-slide"
+                                    <SwiperSlide 
+                                        key={index} 
+                                        className="entry-swiper-slide"
                                     > 
                                         <Entry
                                             entry={entry}
                                             fullscreen={fullscreen}
                                             setfullscreen={setfullscreen}
+                                            setModalState={setModalState}
                                         />
                                     </SwiperSlide>
                                 ))
@@ -67,7 +78,9 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
                         <div className="entry-swiper-bottom-bar"
                              style={fullscreen? {zIndex:0}:{}}
                         >
-                            <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                 onClick={()=>setModalState(true)}
+                            >
                                 <path d="M17.0001 19.8334C18.5649 19.8334 19.8334 18.5649 19.8334 17.0001C19.8334 15.4353 18.5649 14.1667 17.0001 14.1667C15.4353 14.1667 14.1667 15.4353 14.1667 17.0001C14.1667 18.5649 15.4353 19.8334 17.0001 19.8334Z" />
                                 <path d="M26.9166 19.8334C28.4814 19.8334 29.7499 18.5649 29.7499 17.0001C29.7499 15.4353 28.4814 14.1667 26.9166 14.1667C25.3518 14.1667 24.0833 15.4353 24.0833 17.0001C24.0833 18.5649 25.3518 19.8334 26.9166 19.8334Z" />
                                 <path d="M7.08333 19.8334C8.64814 19.8334 9.91667 18.5649 9.91667 17.0001C9.91667 15.4353 8.64814 14.1667 7.08333 14.1667C5.51853 14.1667 4.25 15.4353 4.25 17.0001C4.25 18.5649 5.51853 19.8334 7.08333 19.8334Z" />
@@ -79,6 +92,30 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
                             </svg>
                         </div>
 
+                        <HandleEntryModal
+                            modalState={modalState}
+                            setModalState={setModalState}
+                            setConfirmModal={setConfirmModal}
+                            setEditModalState={setEditModalState}
+                        />
+                        <ConfirmModal
+                            title={'Are you sure you want to delete this diary entry?'}
+                            text={'Deleted diaries are kept in the trash. (Settings > Data > Trash)'}
+                            rightText={'Delete'} 
+                            leftText={'Cancel'}
+                            confirmAction={()=>console.log('trash')}
+                            isActive={confirmModal}
+                            setIsActive={setConfirmModal}
+                        />
+
+                        {EditModalState &&
+                            <EditEntryModal
+                                EditModalState={EditModalState}
+                                setEditModalState={setEditModalState}
+                                entry={entries[entrySwiperState.activeEntry]}
+                            />
+                        }
+                        
                     </animated.div>
 
                     :
