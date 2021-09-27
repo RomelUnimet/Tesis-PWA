@@ -8,6 +8,9 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    background-color: $back-color;
+    z-index: 2;
+    padding-bottom: 1rem;
 }
 .topbar-container-layout{
     width: 100%;

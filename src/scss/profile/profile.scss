@@ -1,0 +1,233 @@
+@import '../variables.scss';
+
+.profile-screen-container {
+    height: 100vh;
+    width: 100%;
+    padding-top: 5rem;
+    overflow-y: auto;
+
+}
+
+.profile-overflow-y{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1.2rem;
+    margin-bottom: 15rem;
+}
+
+.profile-container {
+    position: relative;
+    height: 10rem;
+    width: 90%;
+    border-radius: 10px;
+}
+.profile-picture-container{
+    position: absolute;
+    top: 0;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    z-index: 1;
+    height: 4.2rem;
+    width: 4.2rem;
+    border-radius: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: $grey-color;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & svg {
+        height: 75%;
+        fill: white;
+    }
+}
+.profile-data-container{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 80%;
+    background-color: white;
+    border-radius: inherit; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0px 6px 8px rgba(0, 0, 0, 0.1));
+
+    & svg {
+        position: absolute;
+        top:0;
+        right: 0;
+        fill: $darker-grey;
+        height: 1rem;
+        padding: 1rem;
+    }
+    & h1 {
+        margin-top: 1rem;
+    }
+    & h3  {
+        margin-top: 1rem;
+        color: $darker-grey;
+        font-weight: 500;
+    }
+}
+
+@mixin profile-all-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: 90%;
+    border-radius: 10px;
+    filter: drop-shadow(0px 6px 8px rgba(0, 0, 0, 0.1));
+}
+
+.profile-all-diaries-container{
+    
+    @include profile-all-container();
+
+    height: 5rem;
+
+    & h2 {
+        font-size: 1.5rem;
+        color: black;
+        margin-bottom: 0.4rem;
+    }
+    & h4 {
+        color: $darker-grey;
+        font-weight: 500;
+        font-size: 0.7rem;
+
+    }
+}
+
+.profile-all-photos-container {
+
+    @include profile-all-container();
+}
+
+.profile-all-topbar{
+    display: flex;
+    align-items: center;
+    width: 100%; 
+    height: 2.6rem;
+    justify-content: space-between;
+
+    & .number-arrow-container{
+        display: flex;
+        align-items: center;
+        margin-right: 1rem;
+    }
+
+    & h3 {
+        font-size: 0.9rem;
+        margin-left: 1.2rem;
+        color: #585858; 
+    }
+    & h4 {
+        font-size: 0.9rem;
+        color: $black-color;
+    }
+
+    & svg {
+        width: 0.9rem;
+        transform: rotate(-90deg);
+        stroke: $darker-grey;
+    }
+}
+
+.profile-all-photos {
+    display: flex;
+    height: 10rem;
+    width: 100%;
+
+    & .profile-all-photos-first {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 50%;
+        height: 100%;
+    }
+
+    & .profile-all-photos-latter {
+        
+        width: 50%;
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    & .profile-all-small-photo {
+        width: 50%;
+        height: 50%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
+
+.profile-all-tags-container {
+    @include profile-all-container();
+
+    .profile-tag-badge-container{
+        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 2.4rem 0 2.4rem 0;
+        margin: 0rem 10% 0rem 10%;
+        border-top: 1px solid $grey-color;
+        column-gap: 0.5rem;
+        row-gap: 0.6rem;
+    }
+
+    .tag-name-number{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid $grey-color;
+        column-gap: 0.4rem;
+        padding: 0.3rem 0.6rem 0.3rem 0.6rem;
+        border-radius: 100rem;
+
+        & svg {
+            fill: $darker-grey;
+            height: 1rem;
+        }
+        & h5 {
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        & p {
+            color: $darker-grey
+        }
+    }
+}
+.profile-all-locations-container {
+
+    @include profile-all-container();
+}
+.profile-all-weather-container {
+
+    @include profile-all-container();
+
+    .profile-all-weather-topbar{
+        display: flex;
+        align-items: center;
+        width: 100%; 
+        height: 2.6rem;
+        
+        & h3 {
+            font-size: 0.9rem;
+            margin-left: 1.2rem;
+            color: #585858; 
+        }
+    }
+    
+}

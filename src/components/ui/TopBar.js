@@ -42,8 +42,6 @@ export const TopBar = ({navigateCard, cardModalState, setCardModalState}) => {
                     <p>{dateText()}</p>
                 </div>
             </div>
-
-
         </div>
     )
 
