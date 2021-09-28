@@ -12,8 +12,6 @@ import {
   } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 
-
-
 const libraries = ["places"]
 
 export const MapModal = ({mapModalState, setMapModalState, addLocation, updateData={lid:'', latitude:0, longitude:0, name:'', description:'', update:false}, setUpdateData}) => {

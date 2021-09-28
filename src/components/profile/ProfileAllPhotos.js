@@ -31,7 +31,7 @@ export const ProfileAllPhotos = ({allImg}) => {
                     {
                         smallPhotos.map((photo, index)=>(
                             <div key={index} 
-                                 style={{backgroundImage: `url(${photo.photo})`}}
+                                 style={index===3? {backgroundImage: `url(${photo.photo})`, borderBottomRightRadius:'10px'} : {backgroundImage: `url(${photo.photo})`}}
                                  className="profile-all-small-photo"
                             />
                         ))

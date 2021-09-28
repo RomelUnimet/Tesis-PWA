@@ -10,7 +10,12 @@
     align-items: flex-end;
     background-color: $back-color;
     z-index: 2;
-    padding-bottom: 1rem;
+    padding-bottom: 0.6rem;
+
+    & h1 {
+        font-size: 1.1rem;
+        color: $black-color;
+    }
 }
 .topbar-container-layout{
     width: 100%;
