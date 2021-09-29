@@ -7,6 +7,7 @@ import { CreateModal } from '../components/create_entry/CreateModal';
 import { ProfileScreen } from '../components/profile/ProfileScreen';
 import { CardEntries } from '../components/cards/CardEntries';
 import { Navbar } from '../components/ui/Navbar'
+import { SettingsScreen } from '../components/settings/SettingsScreen';
 
 
 
@@ -48,9 +49,12 @@ export const RoutesApp = () => {
                             path="/profile" 
                             component= { ProfileScreen }
                         />
+                        <Route
+                            exact
+                            path="/settings" 
+                            component= { SettingsScreen }
+                        />
                             
-                        
-
                         <Redirect to="/cards"/>
 
                     </Switch>

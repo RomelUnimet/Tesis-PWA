@@ -20,16 +20,7 @@ export const Navbar = ({CEModalState, setCEModalState}) => {
             >
 
             { 
-              pathname!=='/cards'?
-
-              <svg  viewBox="0 0 37 32" fill="none" xmlns="http://www.w3.org/2000/svg"
-                
-              >
-                  <path fillRule="evenodd" clipRule="evenodd" d="M11.7142 1H24.5713C25.708 1 26.7981 1.45153 27.6018 2.25526C28.4055 3.05898 28.857 4.14907 28.857 5.28571V26.7143C28.857 27.8509 28.4055 28.941 27.6018 29.7447C26.7981 30.5485 25.708 31 24.5713 31H11.7142C10.5775 31 9.48745 30.5485 8.68372 29.7447C7.88 28.941 7.42847 27.8509 7.42847 26.7143V5.28571C7.42847 4.14907 7.88 3.05898 8.68372 2.25526C9.48745 1.45153 10.5775 1 11.7142 1V1ZM28.857 6.35714H30.9999C32.1365 6.35714 33.2266 6.80867 34.0304 7.6124C34.8341 8.41613 35.2856 9.50621 35.2856 10.6429V21.3571C35.2856 22.4938 34.8341 23.5839 34.0304 24.3876C33.2266 25.1913 32.1365 25.6429 30.9999 25.6429H28.857V6.35714Z" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path fillRule="evenodd" clipRule="evenodd" d="M7.42857 6.35718H5.28571C4.14907 6.35718 3.05898 6.80871 2.25526 7.61243C1.45153 8.41616 1 9.50625 1 10.6429V21.3572C1 22.4938 1.45153 23.5839 2.25526 24.3876C3.05898 25.1914 4.14907 25.6429 5.28571 25.6429H7.42857V6.35718Z" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            
-            :
+              pathname==='/cards' || pathname.includes('/detailedcard')?
 
             <svg  viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fillRule="evenodd" clipRule="evenodd" d="M7.5625 6.53564H5.375C4.21468 6.53564 3.10188 6.98717 2.28141 7.7909C1.46094 8.59463 1 9.68472 1 10.8214V21.5356C1 22.6723 1.46094 23.7624 2.28141 24.5661C3.10188 25.3698 4.21468 25.8214 5.375 25.8214H7.5625V6.53564Z" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -38,6 +29,11 @@ export const Navbar = ({CEModalState, setCEModalState}) => {
               <rect x="10.9866" y="1" width="21" height="30" rx="3" fill="#555555"/>
               <path fillRule="evenodd" clipRule="evenodd" d="M35.4644 25.9553H37.6519C38.8122 25.9553 39.925 25.5038 40.7454 24.7001C41.5659 23.8963 42.0269 22.8063 42.0269 21.6696V10.9553C42.0269 9.81868 41.5659 8.72859 40.7454 7.92487C39.925 7.12114 38.8122 6.66961 37.6519 6.66961H35.4644V25.9553Z" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M35 6.04468H39C40.6569 6.04468 42 7.38782 42 9.04468V21.0447C42 23.2538 40.2091 25.0447 38 25.0447H35V6.04468Z" fill="#555555"/>
+            </svg>
+            :
+            <svg  viewBox="0 0 37 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" clipRule="evenodd" d="M11.7142 1H24.5713C25.708 1 26.7981 1.45153 27.6018 2.25526C28.4055 3.05898 28.857 4.14907 28.857 5.28571V26.7143C28.857 27.8509 28.4055 28.941 27.6018 29.7447C26.7981 30.5485 25.708 31 24.5713 31H11.7142C10.5775 31 9.48745 30.5485 8.68372 29.7447C7.88 28.941 7.42847 27.8509 7.42847 26.7143V5.28571C7.42847 4.14907 7.88 3.05898 8.68372 2.25526C9.48745 1.45153 10.5775 1 11.7142 1V1ZM28.857 6.35714H30.9999C32.1365 6.35714 33.2266 6.80867 34.0304 7.6124C34.8341 8.41613 35.2856 9.50621 35.2856 10.6429V21.3571C35.2856 22.4938 34.8341 23.5839 34.0304 24.3876C33.2266 25.1913 32.1365 25.6429 30.9999 25.6429H28.857V6.35714Z" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path fillRule="evenodd" clipRule="evenodd" d="M7.42857 6.35718H5.28571C4.14907 6.35718 3.05898 6.80871 2.25526 7.61243C1.45153 8.41616 1 9.50625 1 10.6429V21.3572C1 22.4938 1.45153 23.5839 2.25526 24.3876C3.05898 25.1914 4.14907 25.6429 5.28571 25.6429H7.42857V6.35718Z" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
 
             }
@@ -62,7 +58,7 @@ export const Navbar = ({CEModalState, setCEModalState}) => {
             >
 
               {
-                pathname!=='/profile'?
+                (pathname==='/cards' || pathname.includes('/detailedcard'))?
 
                 <svg  viewBox="0 0 29 31"  xmlns="http://www.w3.org/2000/svg"
                 >

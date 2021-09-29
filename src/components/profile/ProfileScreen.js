@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../../scss/profile/profile.scss'
 import { motion } from "framer-motion"
 import { TopBarProfile } from '../ui/TopBarProfile'
@@ -7,18 +7,13 @@ import { ProfileAllLocations } from './ProfileAllLocations'
 import { ProfileAllTags } from './ProfileAllTags'
 import { ProfileAllPhotos } from './ProfileAllPhotos'
 import { ProfileAllWeathers } from './ProfileAllWeathers'
+import { useLastLocation } from 'react-router-last-location'
 
 
 export const ProfileScreen = () => {
 
 
-    const [variants, setvariants] = useState(()=>{
-            return {
-                    initial:{opacity:1, transition:{duration:0} },
-                    in:{opacity:1, transition:{duration:0} },
-                    out:{opacity:1, transition:{duration:0} }
-                    }
-    })
+    
 
     
 
@@ -68,6 +63,36 @@ export const ProfileScreen = () => {
         }
     }
 
+    const lastLocation = useLastLocation();
+       
+    const [variants, setvariants] = useState(()=>{
+
+        if(lastLocation?.pathname==='/settings'){
+        
+            return {
+                    initial:{x:-40, transition:{duration:0.2} },
+                    in:{x:0, transition:{duration:0.2} },
+                    out:{x:-40, transition:{duration:0.2} }
+                    }
+        }else {
+            return {
+                    initial:{x:0, transition:{duration:0} },
+                    in:{x:0, transition:{duration:0} },
+                    out:{x:0, transition:{duration:0} }
+                    }
+        }
+    })
+
+    useEffect(() => {
+        setvariants({
+            
+            initial:{x:0, transition:{duration:0} },
+            in:{x:0, transition:{duration:0} },
+            out:{x:0, transition:{duration:0} }
+        })
+        
+    }, [])
+
    
 
     return (
@@ -82,7 +107,11 @@ export const ProfileScreen = () => {
             onScroll={helpVisibility}
         >
             <div className="profile-overflow-y">
-                <TopBarProfile diaryName={settings.name} visible={visible} />
+                <TopBarProfile 
+                    diaryName={settings.name} 
+                    visible={visible} 
+                    setvariants={setvariants} 
+                />
 
                 <div className="profile-container">
                     <div className="profile-picture-container"
