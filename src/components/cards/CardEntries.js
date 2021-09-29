@@ -112,7 +112,6 @@ export const CardEntries = ( ) => {
     const {navigatingTo} = useSelector(state => state.navigation)
 
     useEffect(() => {
-        console.log(navigatingTo)
         
         if(navigatingTo==='profile'){ 
             setvariants({
@@ -222,7 +221,7 @@ export const CardEntries = ( ) => {
                     <h2 className="no-diaries">No diaries yet.</h2>
                 </div>
             }                
-
+            </motion.div>
             <ConfirmModal
                 title={'Are you sure you want to delete this diary entry?'}
                 text={'Deleted diaries are kept in the trash. (Settings > Data > Trash)'}
@@ -232,11 +231,6 @@ export const CardEntries = ( ) => {
                 isActive={confirmModal}
                 setIsActive={setConfirmModal}
             />
-            
-            </motion.div>
-
-
-            
             <EntrySwiper
                 entries={filteredEntries} 
                 entrySwiperState={entrySwiperState}

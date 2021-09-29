@@ -54,7 +54,6 @@ export const SettingsScreen = ( ) => {
     const {navigatingTo} = useSelector(state => state.navigation)
 
     useEffect(() => {
-        console.log(navigatingTo)
         if(navigatingTo==='card'){
             setvariants({
                 initial:{x:0,opacity:1, transition:{duration:0} },
