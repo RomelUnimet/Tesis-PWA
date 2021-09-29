@@ -3,11 +3,11 @@ import { useHistory } from 'react-router'
 import { motion } from "framer-motion"
 import { useLocation } from 'react-router'
 import { useLastLocation } from 'react-router-last-location'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { storeLastProfilePath } from '../../actions/navigation'
 
 
-export const SettingsScreen = ( {usedNavbar} ) => {
+export const SettingsScreen = ( ) => {
 
     const history = useHistory()
 
@@ -16,8 +16,6 @@ export const SettingsScreen = ( {usedNavbar} ) => {
     const SCREEN_WIDTH = window.innerWidth;
 
     //Navigation 
-
-       
     const [variants, setvariants] = useState(()=>{
 
         if(lastLocation?.pathname.includes('/profile')){
@@ -53,15 +51,18 @@ export const SettingsScreen = ( {usedNavbar} ) => {
         dispatch( storeLastProfilePath(pathname) )
     }, [dispatch, pathname])
 
+    const {navigatingTo} = useSelector(state => state.navigation)
+
     useEffect(() => {
-        if(usedNavbar==='card'){
+        console.log(navigatingTo)
+        if(navigatingTo==='card'){
             setvariants({
                 initial:{x:0,opacity:1, transition:{duration:0} },
                 in:{x:0, opacity:1, transition:{duration:0} },
                 out:{x:0, opacity:0, transition:{duration:0} }
             })
         }
-    }, [usedNavbar])
+    }, [navigatingTo])
 
     
 

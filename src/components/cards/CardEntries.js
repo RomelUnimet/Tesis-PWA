@@ -22,7 +22,7 @@ import { EntrySwiper } from '../entries/EntrySwiper';
 import { storeLastCardPath } from '../../actions/navigation';
 
 
-export const CardEntries = ( {usedNavbar} ) => {
+export const CardEntries = ( ) => {
 
     //Validar si es un ID Valido
     const { id } = useParams();
@@ -109,10 +109,12 @@ export const CardEntries = ( {usedNavbar} ) => {
         dispatch( storeLastCardPath(pathname) )
     }, [dispatch, pathname])
 
+    const {navigatingTo} = useSelector(state => state.navigation)
 
     useEffect(() => {
-
-        if(usedNavbar==='profile'){ 
+        console.log(navigatingTo)
+        
+        if(navigatingTo==='profile'){ 
             setvariants({
                 initial:{x:0, opacity:1, transition:{duration:0,ease:'linear'} },
                 in:{x:0, opacity:1, transition:{duration:0,ease:'linear'} },
@@ -120,7 +122,7 @@ export const CardEntries = ( {usedNavbar} ) => {
                 })
         }
         
-    }, [usedNavbar])
+    }, [navigatingTo])
 
     //SWIPE TO DELETE
     const trailingActions = ( entry ) => (

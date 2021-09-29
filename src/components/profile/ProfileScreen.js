@@ -47,7 +47,7 @@ export const ProfileScreen = () => {
                 return <ProfileAllTags key={'tags'}/>
                 
             case "locations": 
-                return <ProfileAllTags key={'locations'}/>
+                return <ProfileAllLocations key={'locations'}/>
             default:
                 return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
             

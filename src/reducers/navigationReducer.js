@@ -2,7 +2,8 @@ import { types } from "../types/types";
 
 const initialState = {
     lastCardPath: '',    
-    lastProfilePath: '',    
+    lastProfilePath: '',
+    navigatingTo:''    
 }
 
 export const navigationReducer = ( state = initialState, action ) => {
@@ -21,6 +22,13 @@ export const navigationReducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 lastProfilePath: action.payload,
+            } 
+
+        case types.navigatingToStore:
+
+            return {
+                ...state,
+                navigatingTo: action.payload,
             } 
 
         default:

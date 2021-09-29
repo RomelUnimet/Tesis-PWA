@@ -1,6 +1,7 @@
 import React from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
+import { storeNavigatingTo } from '../../actions/navigation';
 
 import '../../scss/ui/navbar.scss'
 
@@ -10,28 +11,36 @@ export const Navbar = ({CEModalState, setCEModalState, setusedNavbar}) => {
 
     const history = useHistory()
 
+    const dispatch = useDispatch()
+
     const {lastCardPath, lastProfilePath} = useSelector(state => state.navigation)
 
     const navToCardSection = () => {
 
-      setusedNavbar('card')
+      dispatch(storeNavigatingTo('card'))
 
-      if(lastCardPath==='' || pathname.includes('/detailed')){
-        history.push('/cards');
-      }else{
-        history.push(lastCardPath)
-      }
+      setTimeout(() => {
+        if(lastCardPath==='' || pathname.includes('/detailed')){
+          history.push('/cards');
+        }else{
+          history.push(lastCardPath)
+        }
+      }, 25);
+      
     }
 
     const navToProfileSection = () => {
 
-      setusedNavbar('profile')
+      dispatch(storeNavigatingTo('profile'))
 
-      if(lastProfilePath==='' || pathname.includes('/settings')){
-        history.push('/profile');
-      }else{
-          history.push(lastProfilePath)
-      }
+      setTimeout(() => {
+        if(lastProfilePath==='' || pathname.includes('/settings')){
+          history.push('/profile');
+        }else{
+            history.push(lastProfilePath)
+        }
+      }, 25);
+      
     }
 
     return (

@@ -20,7 +20,7 @@ export const RoutesApp = () => {
 
     //ESTO ES LO QUE ME ESTA CAUSANDO PROBLEMAS
     //CON CADA CAMBIO DE RUTA SE VUELVE A INICIALIZAR
-    const [usedNavbar, setusedNavbar] = useState('') 
+    //const [usedNavbar, setusedNavbar] = useState('') 
 
     return (
         <>
@@ -47,7 +47,7 @@ export const RoutesApp = () => {
                             path="/detailedcard/:id" 
                         >
                             <CardEntries
-                                usedNavbar={usedNavbar}
+                               // usedNavbar={usedNavbar}
                             />
                         </Route>
                             
@@ -62,7 +62,7 @@ export const RoutesApp = () => {
                             path="/settings" 
                         >
                             <SettingsScreen
-                                usedNavbar={usedNavbar}
+                                //usedNavbar={usedNavbar}
                             />
                         </Route>
                             
@@ -73,12 +73,9 @@ export const RoutesApp = () => {
 
             <Navbar
                 CEModalState={CEModalState}
-                setCEModalState={setCEModalState}
-                setusedNavbar={setusedNavbar}
+                //setCEModalState={setCEModalState}
+                //setusedNavbar={setusedNavbar}
             />
-            
-            
-            
         </>
     )
 

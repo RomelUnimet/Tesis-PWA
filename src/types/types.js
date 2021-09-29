@@ -26,6 +26,7 @@ export const types = {
     //Navigation
     lastCardPathStore: '[navigation] Store last Card Section Path',    
     lastProfilePathStore: '[navigation] Store last Profile Section Path',    
+    navigatingToStore: '[navigation] Store Path to be navigated',    
 
     //Tags
     tagsStore: '[tag] Store tags in state',

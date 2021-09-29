@@ -16,3 +16,11 @@ export const storeLastProfilePath = ( path ) =>{
         payload: path
     }
 }
+
+export const storeNavigatingTo = ( path ) =>{
+
+    return {
+        type: types.navigatingToStore,
+        payload: path
+    }
+}
