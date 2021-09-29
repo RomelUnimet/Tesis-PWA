@@ -1,22 +1,47 @@
 import React from 'react'
-import { NavLink, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useLocation, useHistory } from 'react-router-dom';
 
 import '../../scss/ui/navbar.scss'
 
-export const Navbar = ({CEModalState, setCEModalState}) => {
+export const Navbar = ({CEModalState, setCEModalState, setusedNavbar}) => {
     
     const {pathname} = useLocation();
+
+    const history = useHistory()
+
+    const {lastCardPath, lastProfilePath} = useSelector(state => state.navigation)
+
+    const navToCardSection = () => {
+
+      setusedNavbar('card')
+
+      if(lastCardPath==='' || pathname.includes('/detailed')){
+        history.push('/cards');
+      }else{
+        history.push(lastCardPath)
+      }
+    }
+
+    const navToProfileSection = () => {
+
+      setusedNavbar('profile')
+
+      if(lastProfilePath==='' || pathname.includes('/settings')){
+        history.push('/profile');
+      }else{
+          history.push(lastProfilePath)
+      }
+    }
 
     return (
         <nav className="navbar">
 
           <div className="nav-icon-container">
               
-            <NavLink
-              activeClassName="nav-bar-icon-active"
+            <div
               className="nav-bar-icon" 
-              exact
-              to="/cards"
+              onClick={navToCardSection}
             >
 
             { 
@@ -37,7 +62,7 @@ export const Navbar = ({CEModalState, setCEModalState}) => {
             </svg>
 
             }
-            </NavLink>
+            </div>
 
             <div
               className="create-entry-icon"
@@ -50,11 +75,9 @@ export const Navbar = ({CEModalState, setCEModalState}) => {
               </svg>
             </div>
 
-            <NavLink
-              activeClassName="nav-bar-icon-active"
+            <div
               className="nav-bar-icon" 
-              exact
-              to="/profile"
+              onClick={navToProfileSection}
             >
 
               {
@@ -73,7 +96,7 @@ export const Navbar = ({CEModalState, setCEModalState}) => {
 
 
               }
-            </NavLink>
+            </div>
 
 
           </div>

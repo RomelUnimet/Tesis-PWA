@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { EntryTab } from './EntryTab';
 import { ConfirmModal } from './../modals/ConfirmModal'
 import { useLastLocation } from 'react-router-last-location';
+import { useLocation } from 'react-router';
 
 import {
     SwipeableList,
@@ -18,9 +19,10 @@ import {
 import 'react-swipeable-list/dist/styles.css';
 import { trashEntry } from '../../actions/entry';
 import { EntrySwiper } from '../entries/EntrySwiper';
+import { storeLastCardPath } from '../../actions/navigation';
 
 
-export const CardEntries = () => {
+export const CardEntries = ( {usedNavbar} ) => {
 
     //Validar si es un ID Valido
     const { id } = useParams();
@@ -52,50 +54,73 @@ export const CardEntries = () => {
 
     const goBack = (e) =>{
         e.preventDefault()
-        history.goBack();
+        setvariants({
+            initial:{x:SCREEN_WIDTH},
+            in:{x:0},
+            out:{x:SCREEN_WIDTH}
+        })
+        history.push('/cards');
     }
 
-    const dispatch = useDispatch()
-
+    const dispatch = useDispatch();
 
     const SCREEN_WIDTH = window.innerWidth;
+
+    useEffect(() => {
+        setFilteredEntries(entries.filter( (entry) => (card.cid === entry.cid && entry.trash===false) ))
+    }, [entries, card])
 
     //Tengo que buscar una manera de que cuando se le de click a la navbar cambie la a imacion de salida de esto a otra
     //GUARDAR LA ULTIMA RUTA QUE SE ACCEDIO DE LAS ENTRIES Y QUE LA NEVEHACION SEA DIRECTO A ESA RUTA
     //COMO AHORA VA A TENER ALGUNA COSA DE PROFILE SE PUEDE HACER EL FILTRO MAS FACIL
 
+    //Navigation 
     const lastLocation = useLastLocation();
        
     const [variants, setvariants] = useState(()=>{
 
-        if(lastLocation?.pathname.includes('/profile')){
+        if(lastLocation?.pathname.includes('/card')){
         
             return  {
-                    initial:{x:0, transition:{duration:0} },
-                    in:{x:0, transition:{duration:0} },
-                    out:{x:0, transition:{duration:0} }
+                    initial:{x:SCREEN_WIDTH, transition:{ ease:'easeOut'}},
+                    in:{x:0, transition:{ ease:'easeOut'}},
+                    out:{x:SCREEN_WIDTH, transition:{ ease:'easeOut'}}
                     }
         }else {
             return  {
-                    initial:{x:SCREEN_WIDTH},
-                    in:{x:0},
-                    out:{x:SCREEN_WIDTH}
+                    initial:{x:0, opacity:1, transition:{duration:0, ease:'linear'} },
+                    in:{x:0, opacity:1, transition:{duration:0, ease:'linear'} },
+                    out:{x:0, opacity:0, transition:{duration:0, ease:'linear'} }
                     }
         }
     })
 
     useEffect(() => {
         setvariants({
-            initial:{x:SCREEN_WIDTH},
-            in:{x:0},
-            out:{x:SCREEN_WIDTH}
+            initial:{x:SCREEN_WIDTH, transition:{ ease:'easeOut'}},
+            in:{x:0, transition:{ ease:'easeOut'}},
+            out:{x:SCREEN_WIDTH, transition:{ ease:'easeOut'}}
         })
-        
     }, [SCREEN_WIDTH])
 
+    const {pathname} = useLocation();
+
     useEffect(() => {
-        setFilteredEntries(entries.filter( (entry) => (card.cid === entry.cid && entry.trash===false) ))
-    }, [entries, card])
+        dispatch( storeLastCardPath(pathname) )
+    }, [dispatch, pathname])
+
+
+    useEffect(() => {
+
+        if(usedNavbar==='profile'){ 
+            setvariants({
+                initial:{x:0, opacity:1, transition:{duration:0,ease:'linear'} },
+                in:{x:0, opacity:1, transition:{duration:0,ease:'linear'} },
+                out:{x:0, opacity:0, transition:{duration:0, ease:'linear'} }
+                })
+        }
+        
+    }, [usedNavbar])
 
     //SWIPE TO DELETE
     const trailingActions = ( entry ) => (
@@ -135,7 +160,7 @@ export const CardEntries = () => {
                 initial="initial"
                 animate="in"
                 exit="out"
-                transition={{ ease:'easeOut'}}
+                transition={{ type:'tween'}}
             >
                 <div className="d-c-topbar">
                     <div className="d-c-topbar-layout">

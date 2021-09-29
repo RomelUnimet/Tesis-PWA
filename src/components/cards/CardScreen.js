@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState }  from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -16,10 +16,12 @@ import { TopBar } from '../ui/TopBar';
 import { motion } from "framer-motion"
 
 import { useLastLocation } from 'react-router-last-location';
+import { useLocation } from 'react-router';
+import { storeLastCardPath } from '../../actions/navigation';
 
 
 
-export const CardScreen = ( {prevPath} ) => {
+export const CardScreen = ( ) => {
 
 
     const [modalState, setModalState] = useState({
@@ -50,6 +52,10 @@ export const CardScreen = ( {prevPath} ) => {
     const months = cards.filter( (card) => card.year === cardModalState.year )  //Hay que guardar ese Year en un State lo mas probable
 
     const swiperRef = useRef(null);  
+
+    const dispatch = useDispatch();
+
+    const {pathname} = useLocation();
 
     const showCardModal = () => {
 
@@ -179,14 +185,17 @@ export const CardScreen = ( {prevPath} ) => {
     })
 
     useEffect(() => {
+
         setvariants({
             
             initial:{x:0, transition:{duration:0} },
             in:{x:0, transition:{duration:0} },
             out:{x:0, transition:{duration:0} }
         })
+
+        dispatch( storeLastCardPath(pathname) )
         
-    }, [])
+    }, [dispatch, pathname])
 
     if (cards.length===0){
         return(

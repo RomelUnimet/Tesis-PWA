@@ -18,6 +18,9 @@ export const RoutesApp = () => {
 
     const [CEModalState, setCEModalState] = useState(false);
 
+    //ESTO ES LO QUE ME ESTA CAUSANDO PROBLEMAS
+    //CON CADA CAMBIO DE RUTA SE VUELVE A INICIALIZAR
+    const [usedNavbar, setusedNavbar] = useState('') 
 
     return (
         <>
@@ -35,25 +38,33 @@ export const RoutesApp = () => {
                         <Route
                             exact
                             path="/cards" 
-                            component= { CardScreen }
-                        />
+                        >
+                            <CardScreen/>
+                        </Route>
                            
                         <Route
                             exact
                             path="/detailedcard/:id" 
-                            component= { CardEntries }
-                        />
+                        >
+                            <CardEntries
+                                usedNavbar={usedNavbar}
+                            />
+                        </Route>
                             
                         <Route
                             exact
                             path="/profile" 
-                            component= { ProfileScreen }
-                        />
+                        >
+                            <ProfileScreen/>
+                        </Route>
                         <Route
                             exact
                             path="/settings" 
-                            component= { SettingsScreen }
-                        />
+                        >
+                            <SettingsScreen
+                                usedNavbar={usedNavbar}
+                            />
+                        </Route>
                             
                         <Redirect to="/cards"/>
 
@@ -63,6 +74,7 @@ export const RoutesApp = () => {
             <Navbar
                 CEModalState={CEModalState}
                 setCEModalState={setCEModalState}
+                setusedNavbar={setusedNavbar}
             />
             
             

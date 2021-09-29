@@ -8,6 +8,7 @@ import { tagReducer } from './tagReducer';
 import { locationReducer } from './locationReducer';
 import { pathReducer } from './pathReducer';
 import { entryReducer } from './entryReducer';
+import { navigationReducer } from './navigationReducer';
 
 
 export const rootReducer = combineReducers({
@@ -20,5 +21,6 @@ export const rootReducer = combineReducers({
     locations: locationReducer,
     lastPath: pathReducer,
     entries: entryReducer,
+    navigation: navigationReducer,
 
 });

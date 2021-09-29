@@ -21,7 +21,11 @@ export const types = {
     weatherStore: '[weather] Store weather in state',
 
     //Routes - Paths
-    lastPathStore: '[routes-path] Store las path/route in state',
+    lastPathStore: '[routes-path] Store last path/route in state',
+
+    //Navigation
+    lastCardPathStore: '[navigation] Store last Card Section Path',    
+    lastProfilePathStore: '[navigation] Store last Profile Section Path',    
 
     //Tags
     tagsStore: '[tag] Store tags in state',
