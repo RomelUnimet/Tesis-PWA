@@ -191,7 +191,7 @@ export const CardEntries = ( ) => {
                 </div>
 
 
-            {filteredEntries.length!==0?
+            {filteredEntries.length>0?
 
                 <div className="entrie-tabs-container">
                      <SwipeableList

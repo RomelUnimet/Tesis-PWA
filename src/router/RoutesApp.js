@@ -27,10 +27,16 @@ export const RoutesApp = () => {
                 CEModalState={CEModalState}
                 setCEModalState={setCEModalState}
             />
+
+            <Navbar
+                CEModalState={CEModalState}
+                setCEModalState={setCEModalState}
+            />
         
             <div 
                 style={{width:'100vw', height:'100vh', overflow:'hidden', position:'absolute'}}
             >
+                
                 
                     <Switch >
                         <Route
@@ -67,10 +73,7 @@ export const RoutesApp = () => {
                     </Switch>
             </div>    
 
-            <Navbar
-                CEModalState={CEModalState}
-                setCEModalState={setCEModalState}
-            />
+            
         </>
     )
 
