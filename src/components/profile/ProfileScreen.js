@@ -14,11 +14,6 @@ import { storeLastProfilePath } from '../../actions/navigation'
 
 export const ProfileScreen = () => {
 
-
-    
-
-    
-
     const {settings} = useSelector(state => state.settings)
 
     const {entries} = useSelector(state => state.entries)
@@ -59,11 +54,15 @@ export const ProfileScreen = () => {
     const [visible, setvisible] = useState(false)
 
     const helpVisibility =  () => {
+
         if(ref.current.scrollTop>=120){
-           setvisible(true)
+            //setvisible(true)
+            //console.log(ref.current.scrollTop)
         }else{
-            setvisible(false)
+            //setvisible(false)
+            //console.log(ref.current.scrollTop)
         }
+
     }
 
     const lastLocation = useLastLocation();

@@ -25,13 +25,13 @@ export const ProfileAllPhotos = ({allImg}) => {
             
             <div className="profile-all-photos">
 
-                <div className="profile-all-photos-first" style={{backgroundImage: `url(${firstPhoto.photo})`}}/>
+                <div className="profile-all-photos-first" style={{backgroundImage: `url(${firstPhoto?.photo})`}}/>
                     
                 <div className="profile-all-photos-latter">
                     {
                         smallPhotos.map((photo, index)=>(
                             <div key={index} 
-                                 style={index===3? {backgroundImage: `url(${photo.photo})`, borderBottomRightRadius:'10px'} : {backgroundImage: `url(${photo.photo})`}}
+                                 style={index===3? {backgroundImage: `url(${photo?.photo})`, borderBottomRightRadius:'10px'} : {backgroundImage: `url(${photo.photo})`}}
                                  className="profile-all-small-photo"
                             />
                         ))

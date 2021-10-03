@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import '../../scss/profile/profile.scss'
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
@@ -11,13 +11,29 @@ export const ProfileAllLocations = () => {
     let latitudes = locations.map((l)=>parseFloat(l.latitude))
     let longitudes = locations.map((l)=>parseFloat(l.longitude))
 
-    //Maps
-    let maxLat = Math.max(...latitudes);
-    let minLat = Math.min(...latitudes);
-    let maxLng = Math.max(...longitudes);
-    let minLng = Math.min(...longitudes);
+    const [center, setcenter] = useState({lat: 0, lng: 0 })
+    const setMapCenter = async () => {
 
-    const center = {lat: (maxLat-((maxLat-minLat)/2)), lng: (maxLng-((maxLng-minLng)/2)) }
+        if(locations.length!==0){
+            //Maps
+            let maxLat = Math.max(...latitudes);
+            let minLat = Math.min(...latitudes);
+            let maxLng = Math.max(...longitudes);
+            let minLng = Math.min(...longitudes);
+
+            setcenter ({lat: (maxLat-((maxLat-minLat)/2)), lng: (maxLng-((maxLng-minLng)/2)) })
+
+        }else{
+
+            navigator.geolocation.getCurrentPosition( (position) => {
+
+                setcenter({lat: position.coords.latitude, lng: position.coords.longitude})
+                
+            })
+        }
+    }
+
+    setMapCenter()
 
     const options = {
         disableDefaultUI: true
