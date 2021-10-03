@@ -51,8 +51,8 @@ export const ProfileScreen = () => {
 
     const ref = useRef()
 
-    const [visible, setvisible] = useState(false)
-
+    //const [visible, setvisible] = useState(false)
+/*
     const helpVisibility =  () => {
 
         if(ref.current.scrollTop>=120){
@@ -63,7 +63,7 @@ export const ProfileScreen = () => {
             //console.log(ref.current.scrollTop)
         }
 
-    }
+    }*/
 
     const lastLocation = useLastLocation();
        
@@ -115,12 +115,12 @@ export const ProfileScreen = () => {
             
             ref={ref}
             className="profile-screen-container"
-            onScroll={helpVisibility}
+            //onScroll={helpVisibility}
         >
             <div className="profile-overflow-y">
                 <TopBarProfile 
                     diaryName={settings.name} 
-                    visible={visible} 
+                    visible={false} 
                     setvariants={setvariants} 
                 />
 
