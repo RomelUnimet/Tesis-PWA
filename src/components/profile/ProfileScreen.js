@@ -40,9 +40,10 @@ export const ProfileScreen = () => {
                 return <ProfileAllPhotos key={'photos'} allImg={allImg} />
             case "tags": 
                 return <ProfileAllTags key={'tags'}/>
-                
+            /*  
             case "locations": 
                 return <ProfileAllLocations key={'locations'}/>
+            */
             default:
                 return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
             
