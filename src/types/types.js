@@ -20,6 +20,9 @@ export const types = {
     startWeatherStore: '[weather] Start weather cards in state',
     weatherStore: '[weather] Store weather in state',
 
+    //GEOLOCATION
+    geolocationStore: '[geolocation] Store geolocation in state',
+
     //Routes - Paths
     lastPathStore: '[routes-path] Store last path/route in state',
 

@@ -11,6 +11,7 @@ import {
     ComboboxOption,
   } from "@reach/combobox";
 import "@reach/combobox/styles.css";
+import { useSelector } from 'react-redux';
 
 const libraries = ["places"]
 
@@ -38,7 +39,10 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation, updateDa
     });
 
     //Maps
-    const [center, setCenter] = useState({lat: updateData.latitude, lng: updateData.longitude})
+
+    const {geolocation} = useSelector(state => state.geolocation)
+
+    const [center, setCenter] = useState({...geolocation[0]})
 
     const [mapCurrentAddress, setMapCurrentAddress] = useState(updateData.description)
 

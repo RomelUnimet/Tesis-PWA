@@ -1,5 +1,6 @@
 import { types } from "../types/types";
 import { defineWeather } from "../helpers/defineWeather";
+import { storeGeolocation } from "./geolocation";
 
 
 export const startGetWeather = () => {
@@ -20,6 +21,7 @@ export const startGetWeather = () => {
             
             const weatherLabel = defineWeather(weather[0], wind)
 
+            dispatch( storeGeolocation({lat:lat, lon:lon}) )
             dispatch( finishStoreWeather(weatherLabel) )
 
         });
@@ -33,3 +35,4 @@ const finishStoreWeather = ( weatherLabel ) =>{
         payload: weatherLabel
     }
 }
+

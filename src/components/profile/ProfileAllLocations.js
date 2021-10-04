@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import '../../scss/profile/profile.scss'
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
@@ -6,15 +6,21 @@ import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 
 export const ProfileAllLocations = () => {
 
-    const {locations} = useSelector(state => state.locations)
-    
-    let latitudes = locations.map((l)=>parseFloat(l.latitude))
-    let longitudes = locations.map((l)=>parseFloat(l.longitude))
+    //HACER QUE NO SALGA CUANDO SE ABRA EL CE MODAL
 
-    const [center, setcenter] = useState({lat: 0, lng: 0 })
-    const setMapCenter = async () => {
+    const {locations} = useSelector(state => state.locations)
+
+    const {geolocation} = useSelector(state => state.geolocation)
+
+
+    const [center, setcenter] = useState({...geolocation[0]})
+
+    useEffect(() => {
 
         if(locations.length!==0){
+
+            const latitudes = locations.map((l)=>parseFloat(l.latitude))
+            const longitudes = locations.map((l)=>parseFloat(l.longitude))
             //Maps
             let maxLat = Math.max(...latitudes);
             let minLat = Math.min(...latitudes);
@@ -23,17 +29,8 @@ export const ProfileAllLocations = () => {
 
             setcenter ({lat: (maxLat-((maxLat-minLat)/2)), lng: (maxLng-((maxLng-minLng)/2)) })
 
-        }else{
-
-            navigator.geolocation.getCurrentPosition( (position) => {
-
-                setcenter({lat: position.coords.latitude, lng: position.coords.longitude})
-                
-            })
         }
-    }
-
-    setMapCenter()
+    }, [locations])
 
     const options = {
         disableDefaultUI: true
