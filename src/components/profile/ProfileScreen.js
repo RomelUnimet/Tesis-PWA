@@ -3,7 +3,7 @@ import '../../scss/profile/profile.scss'
 import { motion } from "framer-motion"
 import { TopBarProfile } from '../ui/TopBarProfile'
 import { useDispatch, useSelector } from 'react-redux'
-import { ProfileAllLocations } from './ProfileAllLocations'
+//import { ProfileAllLocations } from './ProfileAllLocations'
 import { ProfileAllTags } from './ProfileAllTags'
 import { ProfileAllPhotos } from './ProfileAllPhotos'
 import { ProfileAllWeathers } from './ProfileAllWeathers'
