@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React /*,{ useEffect, useRef, useState }*/ from 'react'
 import '../../scss/profile/profile.scss'
+/*
 import { motion } from "framer-motion"
 import { TopBarProfile } from '../ui/TopBarProfile'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,9 +12,10 @@ import { useLastLocation } from 'react-router-last-location'
 import { useLocation } from 'react-router'
 import { storeLastProfilePath } from '../../actions/navigation'
 
-
+*/
 export const ProfileScreen = () => {
 
+    /*
     const {settings} = useSelector(state => state.settings)
 
     const {entries} = useSelector(state => state.entries)
@@ -40,10 +42,10 @@ export const ProfileScreen = () => {
                 return <ProfileAllPhotos key={'photos'} allImg={allImg} />
             case "tags": 
                 return <ProfileAllTags key={'tags'}/>
-            /*  
-            case "locations": 
-                return <ProfileAllLocations key={'locations'}/>
-            */
+             
+            //case "locations": 
+              //  return <ProfileAllLocations key={'locations'}/>
+            
             default:
                 return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
             
@@ -65,7 +67,7 @@ export const ProfileScreen = () => {
         }
 
     }*/
-
+/*
     const lastLocation = useLastLocation();
        
     const [variants, setvariants] = useState(()=>{
@@ -105,8 +107,13 @@ export const ProfileScreen = () => {
         dispatch( storeLastProfilePath(pathname) )
     }, [dispatch, pathname])
 
-   
-
+   */
+    return(
+        <div>
+            <h1>Profile</h1>
+        </div>
+    )
+    /*
     return (
         <motion.div
             variants={variants}
@@ -154,4 +161,5 @@ export const ProfileScreen = () => {
             </div>
         </motion.div>
     )
+    */
 }
