@@ -13,7 +13,7 @@ import { useLocation } from 'react-router'
 import { storeLastProfilePath } from '../../actions/navigation'
 
 */
-export const ProfileScreen = () => {
+export const ProfileScreen = ({ ceModalState }) => {
 
     /*
     const {settings} = useSelector(state => state.settings)
@@ -44,7 +44,7 @@ export const ProfileScreen = () => {
                 return <ProfileAllTags key={'tags'}/>
              
             //case "locations": 
-              //  return <ProfileAllLocations key={'locations'}/>
+              //  return { !ceModalState && <ProfileAllLocations key={'locations'}}/>
             
             default:
                 return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />

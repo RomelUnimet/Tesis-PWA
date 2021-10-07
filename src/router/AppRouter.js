@@ -40,9 +40,7 @@ export const AppRouter = () => {
         dispatch( startTagStore() );
         dispatch( startLocationStore() );
         dispatch( startEntryStore() );
-
         dispatch( startGetWeather() );
-        
         
     }, [dispatch])
 

@@ -8,6 +8,7 @@ import { ProfileScreen } from '../components/profile/ProfileScreen';
 import { CardEntries } from '../components/cards/CardEntries';
 import { Navbar } from '../components/ui/Navbar'
 import { SettingsScreen } from '../components/settings/SettingsScreen';
+import { AnimatePresence } from 'framer-motion';
 
 
 
@@ -18,15 +19,17 @@ export const RoutesApp = () => {
 
     const [CEModalState, setCEModalState] = useState(false);
 
-  
-
     return (
         <>
-            
-            <CreateModal
-                CEModalState={CEModalState}
-                setCEModalState={setCEModalState}
-            />
+            <AnimatePresence>
+                {
+                    CEModalState &&
+                    <CreateModal
+                        CEModalState={CEModalState}
+                        setCEModalState={setCEModalState}
+                    />
+                }
+            </AnimatePresence>
 
             <Navbar
                 CEModalState={CEModalState}
@@ -50,15 +53,14 @@ export const RoutesApp = () => {
                             exact
                             path="/detailedcard/:id" 
                         >
-                            <CardEntries
-                            />
+                            <CardEntries/>
                         </Route>
                             
                         <Route
                             exact
                             path="/profile" 
                         >
-                            <ProfileScreen/>
+                            <ProfileScreen ceModalState={CEModalState}/>
                         </Route>
                         <Route
                             exact
