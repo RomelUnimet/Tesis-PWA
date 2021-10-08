@@ -14,7 +14,7 @@ import '../../scss/create_entry/img_carrousel.scss'
 import { animated, useSpring, config } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
 
-export const EntryImgGallery = ({images, fullscreen, setfullscreen}) => {
+export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRef}) => {
 
 
     const moreThanOne = (images.length>1)
@@ -62,6 +62,8 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen}) => {
     const closeFS = () => {
         api.start({y:0, height:(window.innerHeight*0.42), backgroundColor:`rgb(0, 0, 0, ${0})`, config:config.default} )
         setfullscreen(false)
+        //PREVENT SWIPE WHEN IS ONLY ONE IMAGE
+        prevswiperRef.current.swiper.allowTouchMove=true
         
     }
     const fullScreenAction = () => {
@@ -69,6 +71,8 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen}) => {
             openFS()
             setfullscreen(!fullscreen)
         }
+        //PREVENT SWIPE WHEN IS ONLY ONE IMAGE
+        prevswiperRef.current.swiper.allowTouchMove=false
     }
 
     const getimgsize = (img) => {
@@ -77,8 +81,20 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen}) => {
         return i.width>i.height || i.width<window.innerWidth
     }
 
-    const auxActiveURL = () => {
+    const auxActiveUrlFoward = () => {
         let imgPosition = swiperRef.current?.swiper.activeIndex-1
+        if(images.length===swiperRef.current?.swiper.activeIndex-1){
+            imgPosition=0;
+        }
+        console.log(imgPosition)
+        setActiveURL(images[imgPosition].photo)
+    }
+
+    const auxActiveUrlBackward = () => {
+        let imgPosition = swiperRef.current?.swiper.activeIndex-1
+        if(imgPosition===-1){
+            imgPosition=images.length-1;
+        }
         setActiveURL(images[imgPosition].photo)
     }
 
@@ -97,7 +113,8 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen}) => {
                         pagination={moreThanOne}
                         allowTouchMove={moreThanOne}
                         className='entry-img-gallery-swiper-container'
-                        onSlideChange={auxActiveURL}
+                        onSlideNextTransitionStart={auxActiveUrlFoward}
+                        onSlidePrevTransitionStart={auxActiveUrlBackward}
                     >
 
                         <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"

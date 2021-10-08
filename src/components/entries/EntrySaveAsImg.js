@@ -47,15 +47,49 @@ export const EntrySaveAsImg = ({entry, saveAsImgModal, setSaveAsImgModal}) => {
         const canvas = await html2canvas(shareImgRef.current);
         const dataUrl = canvas.toDataURL();
         const blob = await (await fetch(dataUrl)).blob();
-        const filesArray = [new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() })];
-        const shareData = {
-            files: filesArray,
-        };
-        navigator.share(shareData).then(() => {
-            console.log('Shared successfully');
-        });
+        const file = new File([blob], 'htmldiv.png', { type: blob.type });
+        const filesArray = [file]
+
+        if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+            navigator.share({
+                text: 'some_text',
+                files: filesArray,
+                title: 'some_title',
+                url:'https://pwacarddiarytesisrc.netlify.app/'
+            }).then(() => {
+                console.log('Shared successfully');
+            });
           
-      }
+        }
+    }
+    
+
+    /*
+    
+I get it working by requesting a blob and generating a File object. Someting like this:
+
+fetch("url_to_the_file")
+  .then(function(response) {
+    return response.blob()
+  })
+  .then(function(blob) {
+
+    var file = new File([blob], "picture.jpg", {type: 'image/jpeg'});
+    var filesArray = [file];
+
+    if(navigator.canShare && navigator.canShare({ files: filesArray })) {
+      navigator.share({
+        text: 'some_text',
+        files: filesArray,
+        title: 'some_title',
+        url: 'some_url'
+      });
+    }
+  }
+    */
+
+
+
       
     //NO ME DEJA HACER EL TRIGGER DE LA WEB SHARE API AUTOMATICAMENTE
     /*

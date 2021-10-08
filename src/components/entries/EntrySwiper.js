@@ -76,11 +76,11 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
                             initialSlide={entrySwiperState.activeEntry}
                             className="entry-swiper"
                             onSlideChange={()=>{
-                                    setEntrySwiperState({
-                                        ...entrySwiperState, 
-                                        activeEntry: swiperRef.current?.swiper.activeIndex 
-                                    })
-                                }}
+                                setEntrySwiperState({
+                                    ...entrySwiperState, 
+                                    activeEntry: swiperRef.current?.swiper.activeIndex 
+                                })
+                            }}
                         >
 
                             {
@@ -88,13 +88,14 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
 
                                     <SwiperSlide 
                                         key={index} 
-                                        className="entry-swiper-slide"
+                                        className="entry-swiper-slide swiper-lazy"
                                     > 
                                         <Entry
                                             entry={entry}
                                             fullscreen={fullscreen}
                                             setfullscreen={setfullscreen}
                                             setEditModalState={setEditModalState}
+                                            swiperRef={swiperRef}
                                         />
                                     </SwiperSlide>
                                 ))

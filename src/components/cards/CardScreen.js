@@ -198,10 +198,11 @@ export const CardScreen = ( ) => {
     }, [dispatch, pathname])
 
     if (cards.length===0){
+        console.log(cards)
         return(
                 //Puedo poner un esqueleto
                 <>
-                    Loading...
+                    Loading Cards...
                 </>
                 )
     }

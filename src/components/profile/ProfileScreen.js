@@ -1,6 +1,6 @@
-import React /*,{ useEffect, useRef, useState }*/ from 'react'
+import React ,{ useEffect, useRef, useState } from 'react'
 import '../../scss/profile/profile.scss'
-/*
+
 import { motion } from "framer-motion"
 import { TopBarProfile } from '../ui/TopBarProfile'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,10 +12,10 @@ import { useLastLocation } from 'react-router-last-location'
 import { useLocation } from 'react-router'
 import { storeLastProfilePath } from '../../actions/navigation'
 
-*/
-export const ProfileScreen = ({ ceModalState }) => {
 
-    /*
+export const ProfileScreen = ( /*{ ceModalState }*/) => {
+
+    
     const {settings} = useSelector(state => state.settings)
 
     const {entries} = useSelector(state => state.entries)
@@ -43,8 +43,8 @@ export const ProfileScreen = ({ ceModalState }) => {
             case "tags": 
                 return <ProfileAllTags key={'tags'}/>
              
-            //case "locations": 
-              //  return { !ceModalState && <ProfileAllLocations key={'locations'}}/>
+            case "locations": 
+                return  <div key={'locations'}></div> //{ !ceModalState && <ProfileAllLocations key={'locations'}}/>
             
             default:
                 return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
@@ -67,7 +67,7 @@ export const ProfileScreen = ({ ceModalState }) => {
         }
 
     }*/
-/*
+
     const lastLocation = useLastLocation();
        
     const [variants, setvariants] = useState(()=>{
@@ -107,13 +107,9 @@ export const ProfileScreen = ({ ceModalState }) => {
         dispatch( storeLastProfilePath(pathname) )
     }, [dispatch, pathname])
 
-   */
-    return(
-        <div>
-            <h1>Profile</h1>
-        </div>
-    )
-    /*
+   
+    
+    
     return (
         <motion.div
             variants={variants}
@@ -161,5 +157,5 @@ export const ProfileScreen = ({ ceModalState }) => {
             </div>
         </motion.div>
     )
-    */
+    
 }

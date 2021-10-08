@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 import useDoubleClick from 'use-double-click';
 
-export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState}) => {
+export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState, swiperRef}) => {
 
     const { photos, date, title, text, weather, location, tags} = entry;
 
@@ -41,7 +41,7 @@ export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState}) => 
     });
 
     return (
-        <div className="detailed-entry-container"
+        <div className="detailed-entry-container swiper-lazy"
              ref={entryRef}
         >
             {
@@ -50,6 +50,7 @@ export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState}) => 
                         images={photos}
                         fullscreen={fullscreen}
                         setfullscreen={setfullscreen}
+                        prevswiperRef={swiperRef}
                     />
             }
 

@@ -23,11 +23,6 @@ import { startTagStore } from '../actions/tag'
 import { startLocationStore } from '../actions/location'
 import { startEntryStore } from '../actions/entry'
 
-
-
-
-
-
 export const AppRouter = () => {
 
     const dispatch = useDispatch();

@@ -4,6 +4,8 @@ import { types } from '../types/types'
 
 import Localbase from 'localbase';
 import { decodeToken } from '../helpers/decodeToken';
+import { startCardStore } from './cards';
+import { startSettingsStore } from './settings';
 
 
 const db = new Localbase('pwa-card-diary');
@@ -17,7 +19,6 @@ export const startLogin = ( email, password) => {
         const body = await resp.json();
 
         if( body.ok){
-
 
             await db.collection('token').set([{
                 token: body.token,
@@ -56,7 +57,7 @@ export const startRegister = ( email, password) => {
         const resp = await fetchNoToken('auth/new', { email, password }, 'POST');
         const body = await resp.json();
 
-        
+        console.log(body)
         
         if( body.ok ){
 
@@ -80,6 +81,9 @@ export const startRegister = ( email, password) => {
                 );
     
             }
+
+            await dispatch( startCardStore() )
+            await dispatch( startSettingsStore() )
 
             dispatch( login ({
                 uid:body.uid,

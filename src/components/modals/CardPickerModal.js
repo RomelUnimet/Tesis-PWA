@@ -22,7 +22,6 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
         }
     }
     const closeModal = () =>{
-
         animateClose()
         setTimeout(() => {
             setModalState({
@@ -72,9 +71,9 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
           if (last) {
             my > height * 0.5 || vy > 0.5 ? close(vy) : open({ canceled })
           }
-          else api.start({ y: my, immediate: true })
+          else api.start({ y: my, immediate: true, preventScroll:true })
         },
-        { initial: () => [0, y.get()], filterTaps: true, bounds: { top: 0 }, rubberband: false }
+        { initial: () => [0, y.get()], filterTaps: true, bounds: { top: 0 }, rubberband: false, preventScroll:true}
       )
 
     const animateClose = () => {
