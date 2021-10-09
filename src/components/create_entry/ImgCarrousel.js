@@ -14,6 +14,7 @@ import { ImgEditCE } from './ImgEditCE';
 
 import { animated, useSpring, config } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
+import { AnimatePresence } from 'framer-motion';
 
 export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmpty, fullscreen, setfullscreen, isEdit=false}) => {
 
@@ -300,28 +301,36 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                     </div>
             </animated.div>
 
-            <ConfirmModal
-                title={'Do you want to delete this photo?'}
-                text={''}
-                rightText={'Delete'} 
-                leftText={'Cancel'}
-                confirmAction={removeImg}
-                isActive={imgPromptState}
-                setIsActive={setImgPromptState}
-            />
+            <AnimatePresence>
+                {
+                    imgPromptState &&
+                    <ConfirmModal
+                        title={'Do you want to delete this photo?'}
+                        text={''}
+                        rightText={'Delete'} 
+                        leftText={'Cancel'}
+                        confirmAction={removeImg}
+                        isActive={imgPromptState}
+                        setIsActive={setImgPromptState}
+                    />
+                }
+            </AnimatePresence>
 
-            <ImgEditCE
-                imgEditorState={imgEditorState}
-                setImgEditorState={setImgEditorState}
-                entryImgState={entryImgState}
-                setEntryImgState={setEntryImgState}
-                removeImgInEditor={removeImgInEditor}
-                addImg={addImg}
-                imgInput={imgInput}
-                swiperRef={swiperRef}
-                imgInSwiperState={state} 
-                setImgInSwiperState={setstate}
-            />
+            {
+                imgEditorState &&
+                <ImgEditCE
+                    imgEditorState={imgEditorState}
+                    setImgEditorState={setImgEditorState}
+                    entryImgState={entryImgState}
+                    setEntryImgState={setEntryImgState}
+                    removeImgInEditor={removeImgInEditor}
+                    addImg={addImg}
+                    imgInput={imgInput}
+                    swiperRef={swiperRef}
+                    imgInSwiperState={state} 
+                    setImgInSwiperState={setstate}
+                />
+            }
 
         </>        
     )

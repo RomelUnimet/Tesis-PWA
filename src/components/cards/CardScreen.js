@@ -13,7 +13,7 @@ import { CardPickerModal } from '../modals/CardPickerModal';
 import { CropperComponent } from '../ui/CropperComponent';
 import { TopBar } from '../ui/TopBar';
 
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 
 import { useLastLocation } from 'react-router-last-location';
 import { useLocation } from 'react-router';
@@ -207,6 +207,7 @@ export const CardScreen = ( ) => {
                 )
     }
     
+    
 
     return (
 
@@ -270,21 +271,37 @@ export const CardScreen = ( ) => {
 
                     <button className="calendar-btn">CALENDAR</button>
                 
-                    <UpdateCardModal
-                        modalState={modalState} 
-                        setModalState={setModalState}
-                        cropperState={cropperState}
-                        setCropperState={setCropperState}
-                    />
-                    <CardPickerModal
-                        modalState={cardModalState} 
-                        setModalState={setCardModalState}
-                        navigateCard={navigateCard}
-                    />
-                    <CropperComponent
-                        cropperState={cropperState}
-                        setCropperState={setCropperState}
-                    />
+                    
+
+                    {
+                        modalState.show &&
+                        
+                        <UpdateCardModal
+                            modalState={modalState} 
+                            setModalState={setModalState}
+                            cropperState={cropperState}
+                            setCropperState={setCropperState}
+                        />
+                    }
+                    {
+                        cardModalState.show &&
+                        
+                        <CardPickerModal
+                            modalState={cardModalState} 
+                            setModalState={setCardModalState}
+                            navigateCard={navigateCard}
+                        />
+                    }
+
+                    <AnimatePresence>
+                        { 
+                            cropperState.show &&
+                            <CropperComponent
+                                cropperState={cropperState}
+                                setCropperState={setCropperState}
+                            />
+                        }
+                    </AnimatePresence>
 
                     
                     {swiperPosition.isBeginning?

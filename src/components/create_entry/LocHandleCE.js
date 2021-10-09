@@ -8,6 +8,7 @@ import { generateID } from '../../helpers/generateId'
 import { MapModal } from '../modals/MapModal'
 import { locationCreate, locationDelete, locationUpdate } from '../../actions/location'
 import { ConfirmModal } from '../modals/ConfirmModal'
+import { AnimatePresence } from 'framer-motion'
 
 export const LocHandleCE = ({handlerState, setHandlerState, locationCE, setLocationCE}) => {
 
@@ -22,7 +23,7 @@ export const LocHandleCE = ({handlerState, setHandlerState, locationCE, setLocat
     }
     const SCREEN_HEIGHT = window.innerHeight;
 
-    const [{ y }, api] = useSpring(() => ({ y: 0 }));
+    const [{ y }, api] = useSpring(() => ({ y: SCREEN_HEIGHT }));
     const height = 330;
 
     
@@ -57,9 +58,7 @@ export const LocHandleCE = ({handlerState, setHandlerState, locationCE, setLocat
             open()
         }
     }, [handlerState,open])
-    useEffect(() => {
-        api.start({ y: SCREEN_HEIGHT, immediate: true }) 
-    }, [SCREEN_HEIGHT,api])
+    
 
     //Logica Funcional
 
@@ -191,8 +190,6 @@ export const LocHandleCE = ({handlerState, setHandlerState, locationCE, setLocat
             >    
             </div>
 
-            {handlerState.show?
-                <>
                 <animated.div className="handler-container" style={{y: y, touchAction: 'none'}} {...bindModal()}
                 >
                     <div className="handler-top-bar">
@@ -274,47 +271,50 @@ export const LocHandleCE = ({handlerState, setHandlerState, locationCE, setLocat
                 </animated.div>
 
                 
-                <MapModal
-                    mapModalState={mapModalState} 
-                    setMapModalState={setMapModalState}
-                    addLocation={createLocation}
-                />
                 
-                { locUpdateState.update &&
-                    <MapModal
-                        mapModalState={updateModal} 
-                        setMapModalState={setUpdateModal}
-                        addLocation={editLocation}
-                        updateData={locUpdateState}
-                        setUpdateData={setLocUpdateState}
-                    />
-                }
+                <AnimatePresence>
+                    {
+                        mapModalState &&
+                        <MapModal
+                            key={"mapModal"}
+                            mapModalState={mapModalState} 
+                            setMapModalState={setMapModalState}
+                            addLocation={createLocation}
+                        />
+                    }
                     
-                <ConfirmModal
-                    title={'Delete this location?'}
-                    text={'It will delete this location in all related diaries. (diaries still exist)'}
-                    rightText={'Delete'} 
-                    leftText={'Cancel'}
-                    confirmAction={()=>{deleteLocation()}}
-                    isActive={deleteModal}
-                    setIsActive={setDeleteModal}     
-                />  
-                
-                
-                    <HandlerMenuModal
-                        modalState={menuModalState}
-                        setModalState={setMenuModalState}
-                        setUpdateInputModal={setUpdateModal}
-                        setDeleteModal={setDeleteModal} 
-                    />
-                
-                 
-
-                </>
-                :
-                <></>
-            }
-            
+                    { (locUpdateState.update && updateModal) &&
+                        <MapModal
+                            key={"mapUpdate"}
+                            mapModalState={updateModal} 
+                            setMapModalState={setUpdateModal}
+                            addLocation={editLocation}
+                            updateData={locUpdateState}
+                            setUpdateData={setLocUpdateState}
+                        />
+                    }
+                    { 
+                        deleteModal &&
+                        <ConfirmModal
+                            title={'Delete this location?'}
+                            text={'It will delete this location in all related diaries. (diaries still exist)'}
+                            rightText={'Delete'} 
+                            leftText={'Cancel'}
+                            confirmAction={()=>{deleteLocation()}}
+                            isActive={deleteModal}
+                            setIsActive={setDeleteModal}     
+                        />  
+                    }
+                    {
+                        menuModalState.show &&
+                        <HandlerMenuModal
+                            modalState={menuModalState}
+                            setModalState={setMenuModalState}
+                            setUpdateInputModal={setUpdateModal}
+                            setDeleteModal={setDeleteModal} 
+                        />
+                    }
+                </AnimatePresence>
         </>
     )
 }

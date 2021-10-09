@@ -54,7 +54,7 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
 
     const SCREEN_HEIGHT = window.innerHeight;
 
-    const [{ y }, api] = useSpring(() => ({ y: 0 }));
+    const [{ y }, api] = useSpring(() => ({ y: SCREEN_HEIGHT }));
     const height = 330;
 
     
@@ -90,9 +90,7 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
             open()
         }
     }, [modalState,open])
-    useEffect(() => {
-        api.start({ y: SCREEN_HEIGHT, immediate: true }) 
-    }, [SCREEN_HEIGHT,api])
+   
 
 
     return (
@@ -185,18 +183,24 @@ export const CEModal = ({modalState, setModalState, selectedWeather, setSelected
                 <></>
         
             }
-            <TagHandleCE
-                handlerState={tagState}
-                setHandlerState={setTagState}
-                tagsCE={tagsCE}
-                setTagsCE={setTagsCE}
-            />
-            <LocHandleCE
-                handlerState={locationState}
-                setHandlerState={setLocationState}
-                locationCE={locationCE}
-                setLocationCE={setLocationCE}
-            />
+            {
+                tagState.show &&
+                <TagHandleCE
+                    handlerState={tagState}
+                    setHandlerState={setTagState}
+                    tagsCE={tagsCE}
+                    setTagsCE={setTagsCE}
+                />
+            }
+            {
+                locationState.show &&
+                <LocHandleCE
+                    handlerState={locationState}
+                    setHandlerState={setLocationState}
+                    locationCE={locationCE}
+                    setLocationCE={setLocationCE}
+                />
+            }
         </>
     )
 

@@ -16,7 +16,7 @@ export const HandleEntryModal = ({modalState, setModalState, setConfirmModal, se
     //ANIMATIONS / GESTURES
    const SCREEN_HEIGHT = window.innerHeight;
 
-   const [{ y }, api] = useSpring(() => ({ y: 0 }));
+   const [{ y }, api] = useSpring(() => ({ y: SCREEN_HEIGHT }));
    const height = 330; //CAMBIAR SI ES NECESARIO
 
    const open = useCallback(() => {
@@ -53,10 +53,6 @@ export const HandleEntryModal = ({modalState, setModalState, setConfirmModal, se
        }
    }, [modalState,open])
 
-   useEffect(() => {
-       api.start({ y: SCREEN_HEIGHT, immediate: true }) 
-   }, [SCREEN_HEIGHT,api])
-
   
 
     return (
@@ -68,7 +64,6 @@ export const HandleEntryModal = ({modalState, setModalState, setConfirmModal, se
                     
             </div>
 
-            {modalState &&
                 <animated.div className="entry-handler-modal" style={{y: y, touchAction: 'none'}} {...bindModal()}  
                 >
 
@@ -108,10 +103,7 @@ export const HandleEntryModal = ({modalState, setModalState, setConfirmModal, se
                             </svg>
                             <p className="remove-name-tag">Delete</p>
                         </div>
-
-                            
                 </animated.div>
-                }
                 
         </>
     )

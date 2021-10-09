@@ -49,7 +49,7 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
 
     const SCREEN_HEIGHT = window.innerHeight;
 
-    const [{ y }, api] = useSpring(() => ({ y: 0 }));
+    const [{ y }, api] = useSpring(() => ({ y: SCREEN_HEIGHT }));
     const height = 330;
 
     
@@ -85,10 +85,8 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
             open()
         }
     }, [modalState,open])
-    useEffect(() => {
-        api.start({ y: SCREEN_HEIGHT, immediate: true }) 
-    }, [SCREEN_HEIGHT,api])
-
+    
+  
     return (
         <>
             <div className="modal-container"
@@ -97,7 +95,6 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
             >
             </div>
 
-            {modalState.show?
             
             <animated.div className="modal-card" style={{y: y, touchAction: 'none'}} {...bindModal()} >
                 
@@ -166,9 +163,6 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
                 </div>
 
             </animated.div>
-            :
-            <></>
-            }
         </>
     )
 }

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from "react-router-dom";
 import '../../scss/cards/card-details.scss'
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { EntryTab } from './EntryTab';
 import { ConfirmModal } from './../modals/ConfirmModal'
 import { useLastLocation } from 'react-router-last-location';
@@ -222,21 +222,34 @@ export const CardEntries = ( ) => {
                 </div>
             }                
             </motion.div>
-            <ConfirmModal
-                title={'Are you sure you want to delete this diary entry?'}
-                text={'Deleted diaries are kept in the trash. (Settings > Data > Trash)'}
-                rightText={'Delete'} 
-                leftText={'Cancel'}
-                confirmAction={sendEntrytoTrash}
-                isActive={confirmModal}
-                setIsActive={setConfirmModal}
-            />
-            <EntrySwiper
-                entries={filteredEntries} 
-                entrySwiperState={entrySwiperState}
-                setEntrySwiperState={setEntrySwiperState}
-            />
-            
+
+            <AnimatePresence>
+                
+
+                {
+                    entrySwiperState.show &&
+                    <EntrySwiper
+                        entries={filteredEntries} 
+                        entrySwiperState={entrySwiperState}
+                        setEntrySwiperState={setEntrySwiperState}
+                    />
+                }
+
+                {
+                    confirmModal &&
+
+                    <ConfirmModal
+                        title={'Are you sure you want to delete this diary entry?'}
+                        text={'Deleted diaries are kept in the trash. (Settings > Data > Trash)'}
+                        rightText={'Delete'} 
+                        leftText={'Cancel'}
+                        confirmAction={sendEntrytoTrash}
+                        isActive={confirmModal}
+                        setIsActive={setConfirmModal}
+                    />
+                }
+
+            </AnimatePresence>       
         </>
     )
 

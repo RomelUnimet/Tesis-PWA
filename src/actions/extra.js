@@ -21,7 +21,7 @@ export const startGetWeather = () => {
             
             const weatherLabel = defineWeather(weather[0], wind)
 
-            dispatch( storeGeolocation({lat:lat, lon:lon}) )
+            dispatch( storeGeolocation({lat:lat, lng:lon}) )
             dispatch( finishStoreWeather(weatherLabel) )
 
         });

@@ -23,7 +23,8 @@ export const EntryTab = ( {entry, index, entrySwiperState, setEntrySwiperState} 
         }
     }
 
-    const goToDetailedEntry = () => {
+    const goToDetailedEntry = (e) => {
+        e.preventDefault()
         setEntrySwiperState({
             ...entrySwiperState,
             show:true,
@@ -34,7 +35,7 @@ export const EntryTab = ( {entry, index, entrySwiperState, setEntrySwiperState} 
     return (
         
         <div className="entry-tab-container" 
-             onClick={goToDetailedEntry}
+             onClick={(e)=>{goToDetailedEntry(e)}}
         >
 
             {!(date.getDay()===6 || date.getDay()===0)?

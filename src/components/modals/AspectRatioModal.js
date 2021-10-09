@@ -1,13 +1,12 @@
 import React from 'react'
 import '../../scss/modals/aspectRatio.scss'
-import { animated, useTransition } from 'react-spring'
+import { motion } from 'framer-motion';
 
 
 
 export const AspectRatioModal = ({aspectModal, setAspectModal, cropperRef}) => {
 
     const isVertical = cropperRef.current?.cropper.getImageData().naturalHeight>cropperRef.current?.cropper.getImageData().naturalWidth;
-
 
     const ratios = [ 
         {name: 'Original', aspect: null},
@@ -38,72 +37,62 @@ export const AspectRatioModal = ({aspectModal, setAspectModal, cropperRef}) => {
         })
     }
 
-     //ANIMATION
-     const transitionContainer = useTransition(aspectModal.show, {
-        from: {opacity:0},
-        enter: {opacity:1},
-        leave: {opacity:0},
-        
-    });
-
     //ANIMATION
     const SCREEN_HEIGHT = window.innerHeight;
 
-    const transitionModal = useTransition(aspectModal.show, {
-        from: {x:0, y:SCREEN_HEIGHT},
-        enter: {x:0, y:0},
-        leave: {x:0, y:SCREEN_HEIGHT},
-    });
-
     return (
         <>
-            {transitionContainer((style, item) =>
-                item?
-                    <animated.div className="aspect-modal-container" style={style}
+            <motion.div 
+                className="aspect-modal-container" 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{duration:0.3}}
+
+                onClick={closeModal}
+            />
+            
+
+
+            <motion.div 
+                className="aspect-ratio-modal" 
+                initial={{x:0, y: SCREEN_HEIGHT }}
+                animate={{x:0, y: 0 }}
+                exit={{x:0, y: SCREEN_HEIGHT }}
+                transition={{duration:0.3}}
+            >
+                {
+                    isVertical?
+                        ratios.map((ratio, index) => (
+                            <div key={index}>
+                                <div  className="aspect-ratio-item"
+                                    onClick={()=>setAspectModal({show:false, aspect:ratio.aspect })}
+                                >
+                                    <h3> { ratio.name } </h3>
+                                </div>
+                                <hr></hr>
+                            </div>
+                        ))
+                        :
+                        ratiosReverse.map((ratio, index) => (
+                            <div key={index}>
+                                <div  className="aspect-ratio-item"
+                                    onClick={()=>setAspectModal({show:false, aspect:ratio.aspect})}
+                                >
+                                    <h3> { ratio.name } </h3>
+                                </div>
+                                <hr></hr>
+                            </div>
+                        ))
+
+                }
+                <div className="aspect-ratio-item aspect-ratio-item-cancel"
                         onClick={closeModal}
-                    />
-                    :
-                    ''
-                )}
-
-            {transitionModal((style, item) =>
-                item?
-                    <animated.div className="aspect-ratio-modal" style={style}>
-                        {
-                            isVertical?
-                                ratios.map((ratio, index) => (
-                                    <div key={index}>
-                                        <div  className="aspect-ratio-item"
-                                            onClick={()=>setAspectModal({show:false, aspect:ratio.aspect })}
-                                        >
-                                            <h3> { ratio.name } </h3>
-                                        </div>
-                                        <hr></hr>
-                                    </div>
-                                ))
-                                :
-                                ratiosReverse.map((ratio, index) => (
-                                    <div key={index}>
-                                        <div  className="aspect-ratio-item"
-                                            onClick={()=>setAspectModal({show:false, aspect:ratio.aspect})}
-                                        >
-                                            <h3> { ratio.name } </h3>
-                                        </div>
-                                        <hr></hr>
-                                    </div>
-                                ))
-
-                        }
-                        <div className="aspect-ratio-item aspect-ratio-item-cancel"
-                             onClick={closeModal}
-                        >
-                            <h3> Cancel </h3>
-                        </div>
-                        
-                    </animated.div>
-                    :
-                    ''
-                )}
+                >
+                    <h3> Cancel </h3>
+                </div>
+                
+            </motion.div>
 
         </>
     )

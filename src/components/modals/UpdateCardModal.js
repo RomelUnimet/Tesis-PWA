@@ -5,16 +5,15 @@ import { useDispatch } from 'react-redux'
 import { animated, useSpring } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
 
-export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCropperState}) => {
-
-
-    const dispatch = useDispatch();
-
-    const colors = ['#65DBFF','#65BCFF','#6390FD','#6C65FF','#A064FF','#FE65CF',
+const colors = ['#65DBFF','#65BCFF','#6390FD','#6C65FF','#A064FF','#FE65CF',
                     '#FE659E','#FF6565','#FB8B65','#FFB466','#FFDE00','#B9E888',
                     '#87E99E','#87E9D2','#86DCEB','#C4C4C4','#B7B7B7','#999999',
                     '#6C6C6C','#373737'
                 ]
+
+export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCropperState}) => {
+
+    const dispatch = useDispatch();
 
     const closeModal = () =>{
         animateClose()
@@ -68,7 +67,7 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
    //ANIMATIONS / GESTURES
    const SCREEN_HEIGHT = window.innerHeight;
 
-    const [{ y }, api] = useSpring(() => ({ y: 0 }));
+    const [{ y }, api] = useSpring(() => ({ y: SCREEN_HEIGHT }));
     const height = 330; //CAMBIAR SI ES NECESARIO
 
     const open = useCallback(() => {
@@ -103,9 +102,7 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
             open()
         }
     }, [modalState,open])
-    useEffect(() => {
-        api.start({ y: SCREEN_HEIGHT, immediate: true }) 
-    }, [SCREEN_HEIGHT,api])
+    
 
     return (
             <>
@@ -116,7 +113,6 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
                     
                 </div>
 
-                {modalState.show?
                     <animated.div className="modal" style={{y: y, touchAction: 'none'}} {...bindModal()}  
                     >
             
@@ -151,11 +147,7 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
                                 </div>
                             </div>
                     </animated.div>
-                    :
-                    <></>
-            
-                }
-                
+                   
             </>
         )
 

@@ -295,16 +295,19 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                 </div>
             </div>
 
-            <CEModal
-                modalState={modalState}
-                setModalState={setModalState}
-                selectedWeather={selectedWeather} 
-                setSelectedWeather={setSelectedWeather}
-                tagsCE ={tagsCE}
-                setTagsCE={setTagsCE}
-                locationCE ={locationCE}
-                setLocationCE={setLocationCE}
-            />
+            {
+                modalState.show &&
+                <CEModal
+                    modalState={modalState}
+                    setModalState={setModalState}
+                    selectedWeather={selectedWeather} 
+                    setSelectedWeather={setSelectedWeather}
+                    tagsCE ={tagsCE}
+                    setTagsCE={setTagsCE}
+                    locationCE ={locationCE}
+                    setLocationCE={setLocationCE}
+                />
+            }
         </motion.div>
             
         

@@ -8,6 +8,7 @@ import { generateID } from '../../helpers/generateId'
 import { tagCreate, tagDelete, tagUpdate } from '../../actions/tag'
 import { HandlerMenuModal } from '../modals/HandlerMenuModal'
 import { ConfirmModal } from '../modals/ConfirmModal'
+import { AnimatePresence } from 'framer-motion'
 
 
 export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) => {
@@ -25,7 +26,7 @@ export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) 
     }
     const SCREEN_HEIGHT = window.innerHeight;
 
-    const [{ y }, api] = useSpring(() => ({ y: 0 }));
+    const [{ y }, api] = useSpring(() => ({ y: SCREEN_HEIGHT }));
     const height = 330;
 
     const open = useCallback(() => {
@@ -59,10 +60,6 @@ export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) 
             open()
         }
     }, [handlerState,open])
-
-    useEffect(() => {
-        api.start({ y: SCREEN_HEIGHT, immediate: true }) 
-    }, [SCREEN_HEIGHT, api])
 
     //Logica Funcional
 
@@ -167,9 +164,6 @@ export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) 
             >    
             </div>
             
-            { handlerState.show?
-                <>
-                
                 <animated.div 
                 className="handler-container" style={{y: y, touchAction: 'none'}} {...bindModal()}
                 >
@@ -243,56 +237,68 @@ export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) 
                         ))
 
                     }
-
-
-                    <InputModal
-                        title={'New tag'}
-                        text={''}
-                        rightText={'Done'}
-                        leftText={'Cancel'}
-                        confirmAction={createTag}
-                        isActive ={inputModal}
-                        setIsActive={setInputModal}
-                        inputValue ={inputValue}
-                        setInputValue={setInputValue}
-                    />
-                    
                     
                 </animated.div>
 
-                <HandlerMenuModal
-                    modalState={menuModalState}
-                    setModalState={setMenuModalState}
-                    setUpdateInputModal={setUpdateInputModal}
-                    setDeleteModal={setDeleteModal} 
-                />   
-                <InputModal
-                    title={'Edit tag name'}
-                    text={'It will apply to all tagged diaries.'}
-                    rightText={'Done'}
-                    leftText={'Cancel'}
-                    confirmAction={editTag}
-                    isActive ={updateInputModal}
-                    setIsActive={setUpdateInputModal}
-                    inputValue ={updateInputModalValue}
-                    setInputValue={setUpdateInputModalValue}
-                />
+                      
+                <AnimatePresence>
                     
-                
-                <ConfirmModal
-                    title={'Delete this tag?'}
-                    text={'It will delete this tag in all tagged diaries. (diaries still exist)'}
-                    rightText={'Delete'} 
-                    leftText={'Cancel'}
-                    confirmAction={()=>{deleteTag()}}
-                    isActive={deleteModal}
-                    setIsActive={setDeleteModal}       
-                />
-                
-                </>
-                :
-                <></>
-            }
+                    {
+                        inputModal &&
+                        <InputModal
+                            key={'inputModal'}
+                            title={'New tag'}
+                            text={''}
+                            rightText={'Done'}
+                            leftText={'Cancel'}
+                            confirmAction={createTag}
+                            isActive ={inputModal}
+                            setIsActive={setInputModal}
+                            inputValue ={inputValue}
+                            setInputValue={setInputValue}
+                        />
+                    }
+                    
+                    {
+                        menuModalState.show &&
+                        <HandlerMenuModal
+                            modalState={menuModalState}
+                            setModalState={setMenuModalState}
+                            setUpdateInputModal={setUpdateInputModal}
+                            setDeleteModal={setDeleteModal} 
+                        /> 
+                    }
+
+                    {
+                        updateInputModal &&
+                        <InputModal
+                            key={'updateInputModal'}
+                            title={'Edit tag name'}
+                            text={'It will apply to all tagged diaries.'}
+                            rightText={'Done'}
+                            leftText={'Cancel'}
+                            confirmAction={editTag}
+                            isActive ={updateInputModal}
+                            setIsActive={setUpdateInputModal}
+                            inputValue ={updateInputModalValue}
+                            setInputValue={setUpdateInputModalValue}
+                        />
+                    }
+
+                    {
+                        deleteModal &&
+                        <ConfirmModal
+                            title={'Delete this tag?'}
+                            text={'It will delete this tag in all tagged diaries. (diaries still exist)'}
+                            rightText={'Delete'} 
+                            leftText={'Cancel'}
+                            confirmAction={()=>{deleteTag()}}
+                            isActive={deleteModal}
+                            setIsActive={setDeleteModal}       
+                        />
+                    }
+
+                </AnimatePresence>
             
         </>
     )

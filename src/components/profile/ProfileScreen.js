@@ -5,15 +5,15 @@ import { motion } from "framer-motion"
 import { TopBarProfile } from '../ui/TopBarProfile'
 import { useDispatch, useSelector } from 'react-redux'
 //import { ProfileAllLocations } from './ProfileAllLocations'
-import { ProfileAllTags } from './ProfileAllTags'
-import { ProfileAllPhotos } from './ProfileAllPhotos'
-import { ProfileAllWeathers } from './ProfileAllWeathers'
+//import { ProfileAllTags } from './ProfileAllTags'
+//import { ProfileAllPhotos } from './ProfileAllPhotos'
+//import { ProfileAllWeathers } from './ProfileAllWeathers'
 import { useLastLocation } from 'react-router-last-location'
 import { useLocation } from 'react-router'
 import { storeLastProfilePath } from '../../actions/navigation'
 
 
-export const ProfileScreen = ( /*{ ceModalState }*/) => {
+export const ProfileScreen = ( /*{ ceModalState }*/ ) => {
 
     
     const {settings} = useSelector(state => state.settings)
@@ -21,8 +21,8 @@ export const ProfileScreen = ( /*{ ceModalState }*/) => {
     const {entries} = useSelector(state => state.entries)
     const filteredEntries = entries.filter( e => e.trash===false)
 
-    const [userSettings] = settings;
-
+    //const [userSettings] = settings;
+    /*
     const getAllImgs = ()=> {
         let a = filteredEntries.map(e => e.photos)
         let b = []
@@ -31,11 +31,13 @@ export const ProfileScreen = ( /*{ ceModalState }*/) => {
         });
         return b
     }
+    */
 
-    const allImg = getAllImgs() //Pudiesemos aplicar algo de guarar el resultado de la funcion y eso
+    //const allImg = getAllImgs() //Pudiesemos aplicar algo de guarar el resultado de la funcion y eso
 
-    const allWeathers =  filteredEntries.map( e => e.weather )
+    //const allWeathers =  filteredEntries.map( e => e.weather )
 
+    /*
     const orderedComponents = userSettings.order.map(comp => {
         switch (comp) {
             case "photos": 
@@ -51,6 +53,7 @@ export const ProfileScreen = ( /*{ ceModalState }*/) => {
             
         }
     });
+    */
 
     const ref = useRef()
 
@@ -153,7 +156,7 @@ export const ProfileScreen = ( /*{ ceModalState }*/) => {
                     <h4> All Diaries </h4>
                 </div>    
 
-                {orderedComponents}
+                { /*orderedComponents */}
             </div>
         </motion.div>
     )
