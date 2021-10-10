@@ -1,19 +1,19 @@
-import React ,{ useEffect, useRef, useState } from 'react'
+import React ,{ useCallback, useEffect, useRef, useState } from 'react'
 import '../../scss/profile/profile.scss'
 
 import { motion } from "framer-motion"
 import { TopBarProfile } from '../ui/TopBarProfile'
 import { useDispatch, useSelector } from 'react-redux'
-//import { ProfileAllLocations } from './ProfileAllLocations'
-//import { ProfileAllTags } from './ProfileAllTags'
-//import { ProfileAllPhotos } from './ProfileAllPhotos'
-//import { ProfileAllWeathers } from './ProfileAllWeathers'
+import { ProfileAllLocations } from './ProfileAllLocations'
+import { ProfileAllTags } from './ProfileAllTags'
+import { ProfileAllPhotos } from './ProfileAllPhotos'
+import { ProfileAllWeathers } from './ProfileAllWeathers'
 import { useLastLocation } from 'react-router-last-location'
 import { useLocation } from 'react-router'
 import { storeLastProfilePath } from '../../actions/navigation'
 
 
-export const ProfileScreen = ( /*{ ceModalState }*/ ) => {
+export const ProfileScreen = ( { ceModalState } ) => {
 
     
     const {settings} = useSelector(state => state.settings)
@@ -22,20 +22,24 @@ export const ProfileScreen = ( /*{ ceModalState }*/ ) => {
     const filteredEntries = entries.filter( e => e.trash===false)
 
     //const [userSettings] = settings;
-    /*
-    const getAllImgs = ()=> {
-        let a = filteredEntries.map(e => e.photos)
-        let b = []
-        a.forEach(e => {
-            b.push(...e)
-        });
-        return b
-    }
-    */
+    
+    const getAllImgs = useCallback(
+        () => {
+            console.log('All img callback called')
+            let a = filteredEntries.map(e => e.photos)
+            let b = []
+            a.forEach(e => {
+                b.push(...e)
+            });
+            return b
+        },
+        [filteredEntries],
+    )
+   
 
-    //const allImg = getAllImgs() //Pudiesemos aplicar algo de guarar el resultado de la funcion y eso
+    const allImg = getAllImgs() //Pudiesemos aplicar algo de guarar el resultado de la funcion y eso
 
-    //const allWeathers =  filteredEntries.map( e => e.weather )
+    const allWeathers =  filteredEntries.map( e => e.weather )
 
     /*
     const orderedComponents = userSettings.order.map(comp => {
@@ -52,6 +56,10 @@ export const ProfileScreen = ( /*{ ceModalState }*/ ) => {
                 return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
             
         }
+        <ProfileAllPhotos key={'photos'} allImg={allImg} />
+        <ProfileAllTags key={'tags'}/>
+        { !ceModalState && <ProfileAllLocations key={'locations'}}
+        <ProfileAllWeathers key={'weather'} allWeathers={allWeathers}
     });
     */
 
@@ -156,7 +164,10 @@ export const ProfileScreen = ( /*{ ceModalState }*/ ) => {
                     <h4> All Diaries </h4>
                 </div>    
 
-                { /*orderedComponents */}
+                <ProfileAllPhotos key={'photos'} allImg={allImg} />
+                <ProfileAllTags key={'tags'}/>
+                { !ceModalState && <ProfileAllLocations key={'locations'}/> /* Problema de multiples Maps sigue sucediendo */  }
+                <ProfileAllWeathers key={'weather'} allWeathers={allWeathers}/>
             </div>
         </motion.div>
     )

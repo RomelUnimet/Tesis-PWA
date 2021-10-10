@@ -231,7 +231,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                 style={fullscreen ? { ...style , position:'fixed', zIndex:10, touchAction: 'none'} : { height }}
             
             >
-                {rerenderCaruosel?
+                {rerenderCaruosel &&
                     <Swiper
                         ref={swiperRef}    
                         className='ce-swiper-container'   
@@ -273,8 +273,6 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                                 ))
                         }
                     </Swiper>
-                    :
-                    <></>
                 }
                 
                     <div className="ce-slider-icon-container"

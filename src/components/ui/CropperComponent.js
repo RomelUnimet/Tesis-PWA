@@ -18,12 +18,10 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
         const imageElement = cropperRef?.current;
         const cropper = imageElement?.cropper;
       
-        const croppedImg = cropper.getCroppedCanvas().toDataURL( 'image/', 1 ); //Numero 1 representa la calidad de la img y va de 0.1 a 1
+        //Creo que debo bajarle la resolucion a la imagen en algun punto
+        const croppedImg = cropper.getCroppedCanvas().toDataURL( 'image/', 0.5 ); //Numero 1 representa la calidad de la img y va de 0.1 a 1
         
         dispatch(cardUpdatePhoto(croppedImg, cropperState.card));
-
-        //AQUI LO GUARDO EN LAS BASES DE DATOS
-        //Creo que debo bajarle la resolucion a la imagen en algun punto
 
         cancel();
     };
@@ -57,8 +55,7 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
             <Cropper
                 style={{ height: '60%', width: "100%" }}
                 aspectRatio={7 / 10}
-                zoomTo={0.3}
-                viewMode={3}
+                viewMode={2}
                 background={false}
                 responsive={true}
                 autoCropArea={0.9}
@@ -68,9 +65,6 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
                 src={cropperState.img}
                 center={false}
                 ref={cropperRef}
-                
-                //cropmove={move}
-                //crop={onCrop}
             /> 
             
 

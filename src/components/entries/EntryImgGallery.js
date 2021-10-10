@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../../scss/entries/entry-img-gallery.scss'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -16,14 +16,15 @@ import { useDrag } from 'react-use-gesture'
 
 export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRef}) => {
 
-
-    const moreThanOne = (images.length>1)
+    const [moreThanOne, setmoreThanOne] = useState(images.length>1)
 
     const swiperRef = useRef(null);  
 
     SwiperCore.use([Pagination]);
 
     const [opacity, setopacity] = useState(1)
+
+    const [rerenderCaruosel, setRerenderCaruosel] = useState(true)
 
     const [activeURL, setActiveURL] = useState(images[0].photo)
 
@@ -86,7 +87,6 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
         if(images.length===swiperRef.current?.swiper.activeIndex-1){
             imgPosition=0;
         }
-        console.log(imgPosition)
         setActiveURL(images[imgPosition].photo)
     }
 
@@ -98,23 +98,34 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
         setActiveURL(images[imgPosition].photo)
     }
 
+    useEffect(() => {
+
+        setRerenderCaruosel((s)=>!s) //Desrenderiza
+        setmoreThanOne(images.length>1) 
+        setTimeout(() => {
+            setRerenderCaruosel((s)=>!s) //Renderiza
+        }, 1);
+        
+        
+    }, [images])
+
     
    
     return (
-        
-        
             <animated.div className="entry-img-gallery-container"
                 {...bindCarrousel()}
                 style={fullscreen ? { ...style , position:'fixed', touchAction: 'none'} : { height }}
             >
+                {
+                    rerenderCaruosel?
                     <Swiper
                         ref={swiperRef}    
                         loop={moreThanOne}       
                         pagination={moreThanOne}
                         allowTouchMove={moreThanOne}
                         className='entry-img-gallery-swiper-container'
-                        onSlideNextTransitionStart={auxActiveUrlFoward}
-                        onSlidePrevTransitionStart={auxActiveUrlBackward}
+                        onSlideNextTransitionStart={ auxActiveUrlFoward }
+                        onSlidePrevTransitionStart={ auxActiveUrlBackward }
                     >
 
                         <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -158,6 +169,12 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
                                 ))
                         }
                     </Swiper>
+                    :
+                    <div 
+                        className="entry-img-gallery-placeholder"
+                        style={{backgroundImage: `url(${images[0].photo})`}}
+                    />
+                }
             </animated.div>
         
         

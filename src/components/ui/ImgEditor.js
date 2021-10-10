@@ -21,7 +21,7 @@ export const ImgEditor = ({ editorState, setEditorState, entryImgState, setEntry
         const imageElement = cropperRef?.current;
         const cropper = imageElement?.cropper;
       
-        const croppedImg = cropper.getCroppedCanvas().toDataURL( 'image/', 1 ); //Numero 1 representa la calidad de la img y va de 0.1 a 1
+        const croppedImg = cropper.getCroppedCanvas().toDataURL( 'image/', 0.5 ); //Numero 1 representa la calidad de la img y va de 0.1 a 1
         
         let auxArray = entryImgState
 
@@ -96,7 +96,6 @@ export const ImgEditor = ({ editorState, setEditorState, entryImgState, setEntry
                 <Cropper
                     style={{ height: '60%', width: "100%" }}
                     aspectRatio={ aspectModal.aspect }
-                    zoomTo={0.3}
                     viewMode={2}
                     background={false}
                     responsive={true}
@@ -107,9 +106,6 @@ export const ImgEditor = ({ editorState, setEditorState, entryImgState, setEntry
                     src={editorState.img}
                     center={false}
                     ref={cropperRef}
-                    
-                    //cropmove={move}
-                    //crop={onCrop}
                 /> 
                 
             

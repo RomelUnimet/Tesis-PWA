@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import '../../scss/modals/mapModal.scss'
 
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
@@ -28,18 +28,7 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation, updateDa
 
     const {geolocation} = useSelector(state => state.geolocation)
 
-    const [center, setCenter] = useState(
-            ()=> {
-                if(updateData.lid!==''){
-                    return {...geolocation}
-                } else {
-                    return {
-                        lat: updateData.latitude,
-                        lng: updateData.longitude,
-                    }
-                }
-            }
-        )
+    const [center] = useState(updateData.lid===''? {...geolocation} :{ lat: updateData.latitude, lng: updateData.longitude} )
 
     const [mapCurrentAddress, setMapCurrentAddress] = useState(updateData.description)
 
@@ -52,7 +41,7 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation, updateDa
         libraries,
     });
     
-    
+    /*
     const setCoordinatesCenter = useCallback( 
         
         async () => {
@@ -69,22 +58,25 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation, updateDa
         },
         [center, updateData.update],
     )
+    */
 
     const reverseGeocoding = useCallback(
         async () => {
-        
-            let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${mapRef.current?.getCenter().lat()},${mapRef.current?.getCenter().lng()}&key=${process.env.REACT_APP_MAP_API_KEY}`;
+            if(isLoaded){
+
+                let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${mapRef.current?.getCenter().lat()},${mapRef.current?.getCenter().lng()}&key=${process.env.REACT_APP_MAP_API_KEY}`;
+                        
+                fetch(url)
+                    .then(response => response.json())
+                        .then(data => {
+                        
+                            setMapCurrentAddress(data.results[1].formatted_address)
                     
-            fetch(url)
-                .then(response => response.json())
-                    .then(data => {
-                     
-                        setMapCurrentAddress(data.results[1].formatted_address)
-                
-                    })
-                .catch(err => console.warn(err.message));
+                        })
+                    .catch(err => console.warn(err.message));
+            }
         },
-        [],
+        [isLoaded],
     )
     const panTo = useCallback(({ lat, lng})=> {
         mapRef.current?.panTo({ lat, lng });
@@ -103,13 +95,13 @@ export const MapModal = ({mapModalState, setMapModalState, addLocation, updateDa
     }, [reverseGeocoding]);
 
 
-    
+    /*
     useEffect(() => {
 
         setCoordinatesCenter() 
         
     }, [setCoordinatesCenter, reverseGeocoding, updateData])
-    
+    */
    
 
     const handleAdd = () => {

@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 
 import { WeatherFilter } from '../compHelper/WeatherFilter';
 
-import html2canvas from 'html2canvas';
+import {toJpeg} from 'html-to-image';
+
 import { motion } from 'framer-motion';
 
-//import domtoimage from 'dom-to-image';
 
 export const EntrySaveAsImg = ({entry, saveAsImgModal, setSaveAsImgModal}) => {
 
@@ -35,26 +35,30 @@ export const EntrySaveAsImg = ({entry, saveAsImgModal, setSaveAsImgModal}) => {
 
     const shareImgRef = useRef()
 
+    
     const shareEntry = async (e)=> {
-        
-        e.preventDefault();
-        const canvas = await html2canvas(shareImgRef.current);
-        const dataUrl = canvas.toDataURL();
-        const blob = await (await fetch(dataUrl)).blob();
-        const file = new File([blob], 'htmldiv.png', { type: blob.type });
-        const filesArray = [file]
 
-        if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+        const dataUrl = await toJpeg(document.getElementById("img"), { quality: 0.95 })
+          
+        const blob = await (await fetch(dataUrl)).blob();
+        const file = new File([blob], 'shareImg.png', { type: blob.type });
+
+        //const filesArray = [file]
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
             navigator.share({
                 text: 'some_text',
-                files: filesArray,
+                files: [file],
                 title: 'some_title',
                 url:'https://pwacarddiarytesisrc.netlify.app/'
             }).then(() => {
                 console.log('Shared successfully');
+            }).catch((err)=>{
+                console.log(err)
             });
           
-        }
+        }  
+        
     }
     
 
@@ -103,6 +107,7 @@ fetch("url_to_the_file")
         >
             <div 
             ref={shareImgRef}
+            id={'img'}
             className="save-image-container"
             onClick={(e)=>{shareEntry(e)}}
             >
