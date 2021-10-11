@@ -96,10 +96,10 @@ export const ImgEditor = ({ editorState, setEditorState, entryImgState, setEntry
                 <Cropper
                     style={{ height: '60%', width: "100%" }}
                     aspectRatio={ aspectModal.aspect }
-                    viewMode={2}
+                    viewMode={3}
                     background={false}
                     responsive={true}
-                    autoCropArea={0.9}
+                    autoCropArea={0.8}
                     dragMode={"move"}
                     cropBoxMovable={true} //Cambiarlo si es necesario, no se siente muy bien         
                     guides={true}  //Ver si puedo apagarlas cuando se mueve

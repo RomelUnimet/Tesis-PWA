@@ -21,11 +21,10 @@ export const ProfileScreen = ( { ceModalState } ) => {
     const {entries} = useSelector(state => state.entries)
     const filteredEntries = entries.filter( e => e.trash===false)
 
-    //const [userSettings] = settings;
-    
+    const [userSettings] = settings;
+
     const getAllImgs = useCallback(
         () => {
-            console.log('All img callback called')
             let a = filteredEntries.map(e => e.photos)
             let b = []
             a.forEach(e => {
@@ -41,27 +40,31 @@ export const ProfileScreen = ( { ceModalState } ) => {
 
     const allWeathers =  filteredEntries.map( e => e.weather )
 
-    /*
+    
     const orderedComponents = userSettings.order.map(comp => {
+
         switch (comp) {
             case "photos": 
                 return <ProfileAllPhotos key={'photos'} allImg={allImg} />
+
             case "tags": 
                 return <ProfileAllTags key={'tags'}/>
              
             case "locations": 
-                return  <div key={'locations'}></div> //{ !ceModalState && <ProfileAllLocations key={'locations'}}/>
+                return  <ProfileAllLocations key={'locations'} ceModalState={ceModalState} /> //{ !ceModalState && <ProfileAllLocations key={'locations'}}/>
             
             default:
                 return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
             
         }
+        /*
         <ProfileAllPhotos key={'photos'} allImg={allImg} />
         <ProfileAllTags key={'tags'}/>
         { !ceModalState && <ProfileAllLocations key={'locations'}}
         <ProfileAllWeathers key={'weather'} allWeathers={allWeathers}
+        */
     });
-    */
+    
 
     const ref = useRef()
 
@@ -163,11 +166,10 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     <h2> <b>{filteredEntries.length}</b> </h2>
                     <h4> All Diaries </h4>
                 </div>    
+                
 
-                <ProfileAllPhotos key={'photos'} allImg={allImg} />
-                <ProfileAllTags key={'tags'}/>
-                { !ceModalState && <ProfileAllLocations key={'locations'}/> /* Problema de multiples Maps sigue sucediendo */  }
-                <ProfileAllWeathers key={'weather'} allWeathers={allWeathers}/>
+                { orderedComponents }
+
             </div>
         </motion.div>
     )

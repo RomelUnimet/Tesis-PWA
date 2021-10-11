@@ -4,7 +4,7 @@ import '../../scss/profile/profile.scss'
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 
 
-export const ProfileAllLocations = () => {
+export const ProfileAllLocations = ( {ceModalState} ) => {
 
     //HACER QUE NO SALGA CUANDO SE ABRA EL CE MODAL
 
@@ -63,7 +63,7 @@ export const ProfileAllLocations = () => {
                 </div>
             </div>
 
-            { isLoaded &&
+            { isLoaded && !ceModalState &&
 
                 <GoogleMap
                     mapContainerClassName="all-location-map"
