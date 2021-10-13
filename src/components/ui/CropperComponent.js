@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import '../../scss/ui/cropper.scss'
@@ -39,6 +39,13 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
         cropperRef?.current.cropper.reset()
 
     }
+
+    //PARA QUE LAS IMG VERTICALES NO SE COMPORTEN RARO
+    useEffect(() => {
+
+        cropperRef?.current?.cropper.rotateTo(0)
+
+    }, [])
 
     //ANIMATION
     const SCREEN_HEIGHT = window.innerHeight;

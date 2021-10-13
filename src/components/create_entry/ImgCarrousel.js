@@ -261,7 +261,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
                                         >
                                             {fullscreen?
                                             <img src={img.photo} alt='Altrernative' 
-                                                 style={getimgsize(img)?{ width:'100%'}:{ height:'100%'}}
+                                                 style={getimgsize(img)?{ width:'100%'}:{ maxHeight:'100%',maxWidth:'100%'}}
                                             />
                                             :
                                             <></>

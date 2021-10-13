@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import '../../scss/entries/save-entry-img.scss';
 import { useSelector } from 'react-redux';
 
@@ -9,7 +9,7 @@ import {toJpeg} from 'html-to-image';
 import { motion } from 'framer-motion';
 
 
-export const EntrySaveAsImg = ({entry, saveAsImgModal, setSaveAsImgModal}) => {
+export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
 
     const { photos, date, title, text, weather, location, tags} = entry;
 
@@ -35,57 +35,44 @@ export const EntrySaveAsImg = ({entry, saveAsImgModal, setSaveAsImgModal}) => {
 
     const shareImgRef = useRef()
 
-    
-    const shareEntry = async (e)=> {
+    const dataURLtoFile = useCallback(
+        (dataurl, filename) => {
+            var arr = dataurl.split(","),
+              mimeType = arr[0].match(/:(.*?);/)[1],
+              decodedData = atob(arr[1]),
+              lengthOfDecodedData = decodedData.length,
+              u8array = new Uint8Array(lengthOfDecodedData);
+            while (lengthOfDecodedData--) {
+              u8array[lengthOfDecodedData] = decodedData.charCodeAt(lengthOfDecodedData);
+            }
+            return new File([u8array], filename, { type: mimeType });
+          },
+        [],
+    )
 
-        const dataUrl = await toJpeg(document.getElementById("img"), { quality: 0.95 })
-          
-        const blob = await (await fetch(dataUrl)).blob();
-        const file = new File([blob], 'shareImg.png', { type: blob.type });
-
-        //const filesArray = [file]
-
+    const shareFile = (file, title, text) => {
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            navigator.share({
-                text: 'some_text',
-                files: [file],
-                title: 'some_title',
-                url:'https://pwacarddiarytesisrc.netlify.app/'
-            }).then(() => {
-                console.log('Shared successfully');
-            }).catch((err)=>{
-                console.log(err)
-            });
-          
-        }  
-        
-    }
-    
+          navigator
+            .share({
+              files: [file],
+              title,
+              text
+            })
+            .then(() => console.log("Share was successful."))
+            .catch((error) => console.log("Sharing failed", error));
+        } else {
+          console.log(`Your system doesn't support sharing files.`);
+        }
+    };
 
-    /*
-    
-I get it working by requesting a blob and generating a File object. Someting like this:
-
-fetch("url_to_the_file")
-  .then(function(response) {
-    return response.blob()
-  })
-  .then(function(blob) {
-
-    var file = new File([blob], "picture.jpg", {type: 'image/jpeg'});
-    var filesArray = [file];
-
-    if(navigator.canShare && navigator.canShare({ files: filesArray })) {
-      navigator.share({
-        text: 'some_text',
-        files: filesArray,
-        title: 'some_title',
-        url: 'some_url'
-      });
-    }
-  }
-    */
-
+    const shareEntry = () => {
+        toJpeg(document.getElementById("entry_img"), { quality: 0.95 }).then(
+          (dataUrl) => {
+            const file = dataURLtoFile(dataUrl, "thanku_poster.png");
+            shareFile(file, "Share Entry", "https://pwacarddiarytesisrc.netlify.app/");
+          }
+        );
+    };
 
 
       
@@ -107,7 +94,7 @@ fetch("url_to_the_file")
         >
             <div 
             ref={shareImgRef}
-            id={'img'}
+            id={'entry_img'}
             className="save-image-container"
             onClick={(e)=>{shareEntry(e)}}
             >

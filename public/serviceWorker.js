@@ -8,4 +8,4 @@ workbox.routing.registerRoute(
   );
 
 // Switch debug logging on/off here. Default is on in dev and off in prod.
-//workbox.setConfig({debug: false});
+workbox.setConfig({debug: false});

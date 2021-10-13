@@ -16,12 +16,13 @@ import { storeLastProfilePath } from '../../actions/navigation'
 export const ProfileScreen = ( { ceModalState } ) => {
 
     
+    
     const {settings} = useSelector(state => state.settings)
 
     const {entries} = useSelector(state => state.entries)
     const filteredEntries = entries.filter( e => e.trash===false)
 
-    //const [userSettings] = settings;
+    const [userSettings] = settings;
 
     const getAllImgs = useCallback(
         () => {
@@ -65,22 +66,19 @@ export const ProfileScreen = ( { ceModalState } ) => {
         */
     //});
     
-
     const ref = useRef()
 
-    //const [visible, setvisible] = useState(false)
-/*
+    const [visible, setvisible] = useState(false)
+
     const helpVisibility =  () => {
 
         if(ref.current.scrollTop>=120){
-            //setvisible(true)
-            //console.log(ref.current.scrollTop)
+            setvisible(true)
         }else{
-            //setvisible(false)
-            //console.log(ref.current.scrollTop)
+            setvisible(false)
         }
 
-    }*/
+    }
 
     const lastLocation = useLastLocation();
        
@@ -123,7 +121,6 @@ export const ProfileScreen = ( { ceModalState } ) => {
 
    
     
-    
     return (
         <motion.div
             variants={variants}
@@ -133,12 +130,12 @@ export const ProfileScreen = ( { ceModalState } ) => {
             
             ref={ref}
             className="profile-screen-container"
-            //onScroll={helpVisibility}
+            onScrollCapture={helpVisibility}
         >
             <div className="profile-overflow-y">
                 <TopBarProfile 
                     diaryName={settings.name} 
-                    visible={false} 
+                    visible={visible} 
                     setvariants={setvariants} 
                 />
 
@@ -167,15 +164,22 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     <h4> All Diaries </h4>
                 </div>    
                 
-
-                <ProfileAllPhotos key={'photos'} allImg={allImg} />
-
-                <ProfileAllTags key={'tags'}/>
-             
-                {/*<ProfileAllLocations key={'locations'} ceModalState={ceModalState} /> */}
-                { !ceModalState && <ProfileAllLocations key={'locations'}/> }
-            
-                <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
+                {
+                    userSettings.order.map( field => {
+                        switch (field) {
+                            case "photos": 
+                                return <ProfileAllPhotos key={'photos'} allImg={allImg} />
+                
+                            case "tags": 
+                                return <ProfileAllTags key={'tags'}/>
+                             
+                            case "locations": 
+                                return  <ProfileAllLocations key={'locations'} ceModalState={ceModalState} /> //{ !ceModalState && <ProfileAllLocations key={'locations'}}/>
+                            
+                            default:
+                                return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
+                        }})
+                }
 
             </div>
         </motion.div>

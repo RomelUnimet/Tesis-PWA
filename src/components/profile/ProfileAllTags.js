@@ -5,6 +5,7 @@ import '../../scss/profile/profile.scss'
 export const ProfileAllTags = () => {
 
     const {tags} = useSelector(state => state.tags)
+    
 
     return (
         <div className="profile-all-tags-container">

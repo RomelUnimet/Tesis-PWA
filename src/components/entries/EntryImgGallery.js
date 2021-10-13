@@ -14,6 +14,7 @@ import '../../scss/create_entry/img_carrousel.scss'
 import { animated, useSpring, config } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
 
+//Se renderiza demasiado porque es cada galeria individual la que lo hace
 export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRef}) => {
 
     const [moreThanOne, setmoreThanOne] = useState(images.length>1)
@@ -79,7 +80,20 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
     const getimgsize = (img) => {
         var i = new Image(); 
         i.src = img.photo; 
-        return i.width>i.height || i.width<window.innerWidth
+
+        if(i.width>i.height){
+            return {width:'100%'}
+        } else {
+            i.style.height = "100%";
+
+            if(i.width>window.innerWidth){
+    
+                return { maxWidth:'100%', maxHeight:'100%'}
+            } else {
+                return { height: '100%' }
+            }
+        }
+
     }
 
     const auxActiveUrlFoward = () => {
@@ -157,7 +171,9 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
                                         >
                                             {fullscreen?
                                             <img src={img.photo} alt='Altrernative' 
-                                                 style={getimgsize(img)?{ width:'100%'}:{ height:'100%'}}
+                                                 style={getimgsize(img)} 
+                                                 //Se podria lograr si pudiesemos distinguir si el width cuando 
+                                                 //la altura es 100% es menor que el ancho de la pantalla 
                                             />
                                             :
                                             <></>

@@ -74,14 +74,23 @@ export const ImgEditor = ({ editorState, setEditorState, entryImgState, setEntry
         
     }
 
-    //ANIMATION
-    const SCREEN_HEIGHT = window.innerHeight;
+   
 
     useEffect(() => {
         
         cropperRef?.current?.cropper.setAspectRatio(aspectModal.aspect);
     
     }, [aspectModal])
+
+    //PARA QUE LAS IMG VERTICALES NO SE COMPORTEN RARO
+    useEffect(() => {
+
+        cropperRef?.current?.cropper.rotateTo(0)
+
+    }, [])
+
+     //ANIMATION
+     const SCREEN_HEIGHT = window.innerHeight;
 
     return (
 
