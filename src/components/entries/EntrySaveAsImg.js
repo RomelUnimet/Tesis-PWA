@@ -58,14 +58,24 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
               title,
               text
             })
-            .then(() => console.log("Share was successful."))
-            .catch((error) => console.log("Sharing failed", error));
+            .then(() => {
+                console.log("Share was successful.")
+                alert("Share was successful")
+                
+            
+        })
+            .catch((error) =>{ 
+                console.log("Sharing failed", error)
+                alert("Sharing failed!")
+            });
         } else {
           console.log(`Your system doesn't support sharing files.`);
+          alert("Your system doesn't support sharing files")
         }
     };
 
     const shareEntry = () => {
+        
         toJpeg(document.getElementById("entry_img"), { quality: 0.95 }).then(
           (dataUrl) => {
             const file = dataURLtoFile(dataUrl, "thanku_poster.png");

@@ -22,7 +22,7 @@ export const ProfileScreen = ( { ceModalState } ) => {
     const {entries} = useSelector(state => state.entries)
     const filteredEntries = entries.filter( e => e.trash===false)
 
-    const [userSettings] = settings;
+    //const [userSettings] = settings;
 
     const getAllImgs = useCallback(
         () => {
@@ -164,22 +164,11 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     <h4> All Diaries </h4>
                 </div>    
                 
-                {
-                    userSettings.order.map( field => {
-                        switch (field) {
-                            case "photos": 
-                                return <ProfileAllPhotos key={'photos'} allImg={allImg} />
-                
-                            case "tags": 
-                                return <ProfileAllTags key={'tags'}/>
-                             
-                            case "locations": 
-                                return  <ProfileAllLocations key={'locations'} ceModalState={ceModalState} /> //{ !ceModalState && <ProfileAllLocations key={'locations'}}/>
-                            
-                            default:
-                                return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
-                        }})
-                }
+                <ProfileAllPhotos key={'photos'} allImg={allImg} />
+                <ProfileAllTags key={'tags'}/>
+                <ProfileAllLocations key={'locations'} ceModalState={ceModalState} /> 
+                <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
+                      
 
             </div>
         </motion.div>
