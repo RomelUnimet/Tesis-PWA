@@ -59,11 +59,8 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
             in:{ x:0,transition:{duration:0.35}},
             out:{x:-40,transition:{duration:0.35}}
         })
-        history.push(`/detailedcard/${cid}`);
+        history.push(`/cards/detailedcard/${cid}`);
     }
-
-    
-    
 
     return (
         <div className="card-component" style={ hasPhoto? bImgStyles :{backgroundColor:color}}

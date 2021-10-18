@@ -6,8 +6,6 @@ import '../../scss/cards/card-details.scss'
 import { AnimatePresence, motion } from "framer-motion";
 import { EntryTab } from './EntryTab';
 import { ConfirmModal } from './../modals/ConfirmModal'
-import { useLastLocation } from 'react-router-last-location';
-import { useLocation } from 'react-router';
 
 import {
     SwipeableList,
@@ -19,7 +17,7 @@ import {
 import 'react-swipeable-list/dist/styles.css';
 import { trashEntry } from '../../actions/entry';
 import { EntrySwiper } from '../entries/EntrySwiper';
-import { storeLastCardPath } from '../../actions/navigation';
+import { useNavAnimation } from '../../hooks/navAnimationHook';
 
 
 export const CardEntries = ( ) => {
@@ -52,76 +50,15 @@ export const CardEntries = ( ) => {
     }
     const history = useHistory();
 
-    const goBack = (e) =>{
-        e.preventDefault()
-        setvariants({
-            initial:{x:SCREEN_WIDTH},
-            in:{x:0},
-            out:{x:SCREEN_WIDTH}
-        })
-        history.push('/cards');
-    }
-
     const dispatch = useDispatch();
-
-    const SCREEN_WIDTH = window.innerWidth;
 
     useEffect(() => {
         setFilteredEntries(entries.filter( (entry) => (card.cid === entry.cid && entry.trash===false) ))
     }, [entries, card])
 
-    //Tengo que buscar una manera de que cuando se le de click a la navbar cambie la a imacion de salida de esto a otra
-    //GUARDAR LA ULTIMA RUTA QUE SE ACCEDIO DE LAS ENTRIES Y QUE LA NEVEHACION SEA DIRECTO A ESA RUTA
-    //COMO AHORA VA A TENER ALGUNA COSA DE PROFILE SE PUEDE HACER EL FILTRO MAS FACIL
 
     //Navigation 
-    const lastLocation = useLastLocation();
-       
-    const [variants, setvariants] = useState(()=>{
-
-        if(lastLocation?.pathname.includes('/card')){
-        
-            return  {
-                    initial:{x:SCREEN_WIDTH, transition:{ ease:'easeOut'}},
-                    in:{x:0, transition:{ ease:'easeOut'}},
-                    out:{x:SCREEN_WIDTH, transition:{ ease:'easeOut'}}
-                    }
-        }else {
-            return  {
-                    initial:{x:0, opacity:1, transition:{duration:0, ease:'linear'} },
-                    in:{x:0, opacity:1, transition:{duration:0, ease:'linear'} },
-                    out:{x:0, opacity:0, transition:{duration:0, ease:'linear'} }
-                    }
-        }
-    })
-
-    useEffect(() => {
-        setvariants({
-            initial:{x:SCREEN_WIDTH, transition:{ ease:'easeOut'}},
-            in:{x:0, transition:{ ease:'easeOut'}},
-            out:{x:SCREEN_WIDTH, transition:{ ease:'easeOut'}}
-        })
-    }, [SCREEN_WIDTH])
-
-    const {pathname} = useLocation();
-
-    useEffect(() => {
-        dispatch( storeLastCardPath(pathname) )
-    }, [dispatch, pathname])
-
-    const {navigatingTo} = useSelector(state => state.navigation)
-
-    useEffect(() => {
-        
-        if(navigatingTo==='profile'){ 
-            setvariants({
-                initial:{x:0, opacity:1, transition:{duration:0,ease:'linear'} },
-                in:{x:0, opacity:1, transition:{duration:0,ease:'linear'} },
-                out:{x:0, opacity:0, transition:{duration:0, ease:'linear'} }
-                })
-        }
-        
-    }, [navigatingTo])
+    const [ variants ] = useNavAnimation('card')
 
     //SWIPE TO DELETE
     const trailingActions = ( entry ) => (
@@ -167,7 +104,7 @@ export const CardEntries = ( ) => {
                     <div className="d-c-topbar-layout">
 
                         <svg  viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            onClick={goBack}
+                            onClick={()=>{history.push('/cards');}}
                         >
                             <path d="M25.3333 14.6667H9.51992L14.3599 8.85338C14.5862 8.58109 14.6951 8.23005 14.6626 7.87748C14.6301 7.52491 14.4589 7.19969 14.1866 6.97338C13.9143 6.74706 13.5633 6.63817 13.2107 6.67068C12.8581 6.70319 12.5329 6.87442 12.3066 7.14671L5.63992 15.1467C5.59507 15.2103 5.55496 15.2772 5.51992 15.3467C5.51992 15.4134 5.51992 15.4534 5.42659 15.52C5.36615 15.6729 5.33451 15.8357 5.33325 16C5.33451 16.1644 5.36615 16.3272 5.42659 16.48C5.42659 16.5467 5.42659 16.5867 5.51992 16.6534C5.55496 16.7229 5.59507 16.7897 5.63992 16.8534L12.3066 24.8534C12.4319 25.0039 12.5889 25.1249 12.7664 25.2079C12.9438 25.2908 13.1374 25.3337 13.3333 25.3334C13.6448 25.334 13.9467 25.2255 14.1866 25.0267C14.3216 24.9148 14.4332 24.7773 14.515 24.6222C14.5968 24.467 14.6472 24.2973 14.6633 24.1227C14.6794 23.948 14.6609 23.7719 14.6088 23.6045C14.5568 23.437 14.4722 23.2814 14.3599 23.1467L9.51992 17.3334H25.3333C25.6869 17.3334 26.026 17.1929 26.2761 16.9429C26.5261 16.6928 26.6666 16.3537 26.6666 16C26.6666 15.6464 26.5261 15.3073 26.2761 15.0572C26.026 14.8072 25.6869 14.6667 25.3333 14.6667Z" />
                         </svg>

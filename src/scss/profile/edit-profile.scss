@@ -1,0 +1,94 @@
+@import '../variables.scss';
+
+.edit-profile-tab {
+    padding: 0 5% 0 5%;
+    margin-top: 1rem;
+
+    & h2 {
+        font-size: 0.8rem;
+        font-weight: 900;
+        margin-bottom: 0.6rem;
+    }
+
+    & input {
+
+        width: 100%;
+        border: none;
+        border-color: $grey-color;   
+        font-family: 'Roboto', sans-serif;
+        background-color: rgb(235, 235, 235);
+        text-align: center;
+        height: 2.2rem;
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: $black-color;
+        border-radius: 6px;
+        &:focus{
+            outline:none;
+            color: $black-color;   
+        }
+    }
+    & textarea {
+
+        width: 100%;
+        border: none;
+        resize: none;
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: $black-color;
+        background-color: rgb(235, 235, 235);
+        text-align: center;
+        padding: 1rem 0 1rem 0;
+        border-radius: 6px;
+       
+        &:focus{
+            outline:none;
+            color: $black-color;
+            
+        }
+    }
+
+    & hr {
+        margin: 0px;
+        background-color:  $grey-color;
+        border: none;
+        
+    }
+}
+
+.profile-edit-picture-container {
+    
+    height: 4.2rem;
+    width: 4.2rem;
+    border-radius: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: $grey-color;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & svg {
+        height: 75%;
+        fill: white;
+    }
+}
+
+.order-profile-tab {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0 1rem 0;
+    border-bottom: solid $grey-color 1px;
+}
+
+.profile-editor-drag-handle {
+    height: 1.4rem;
+    fill: $grey-color;
+}
+
+

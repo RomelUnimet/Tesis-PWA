@@ -2,6 +2,7 @@
 import { types } from '../types/types'
 
 import Localbase from 'localbase';
+import { fetchWithToken } from '../helpers/fetch';
 
 
 const db = new Localbase('pwa-card-diary');
@@ -16,6 +17,21 @@ export const startSettingsStore = () => {
         const settings = await db.collection('settings').get();
 
         dispatch( finishSettingsStore( settings ) );
+    }
+}
+
+export const updateSettings = ( newSettings ) => {
+
+    return async (dispatch) => {
+
+        await db.collection('settings').set([
+            newSettings,
+        ])
+
+        //Posible que haya un error aqui // Si llega a haber
+        fetchWithToken(`settings/${newSettings.sid}`, newSettings, 'PUT');
+        
+        dispatch(startSettingsStore())   
     }
 }
 
