@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
+import '../../scss/settings/settings-tabs.scss'
 import { motion } from "framer-motion"
 import { useNavAnimation } from '../../hooks/navAnimationHook'
 import { useHistory } from 'react-router'
+import Switch from "react-switch";
 
 export const LockScreen = () => {
 
     const [variants] = useNavAnimation('profile')
 
     const history = useHistory()
+
+    const [checked, setChecked] = useState(false)
+
+    const handleAuthSwitch = () => {
+        setChecked((s)=>!s)
+        console.log('Change lock property here')
+    }
 
 
     return (
@@ -27,6 +36,27 @@ export const LockScreen = () => {
                 </svg>
                 <h1> Lock </h1>
             </div>
+
+            <div className="tab-container">
+
+                <p>Biometric Lock</p>
+
+                <Switch
+                    checked={checked}
+                    onChange={handleAuthSwitch}
+                    offColor="#B6B6B6"
+                    onColor="#3CDAFD"
+                    onHandleColor="#FFFFFF"
+                    offHandleColor="#FFFFFF"
+                    handleDiameter={27}
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    height={30}
+                    activeBoxShadow=""
+                />
+            </div>
+            <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
+
         </motion.div>
     )
 }

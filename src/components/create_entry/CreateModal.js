@@ -203,13 +203,13 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                         isOpen={datePickerState.isOpen}
                         onSelect={handleSelect}
                         onCancel={handleCancel}
-                        theme={'android'}
+                        theme={'ios'}
                         min={new Date(2020,0,1)}
                         max={new Date(2023,0,1)}
                         showHeader={false}
                         confirmText={'Done'}
                         cancelText={'Close'} 
-                            />
+                    />
 
                     <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" 
                         onClick={handleCreateEntry}

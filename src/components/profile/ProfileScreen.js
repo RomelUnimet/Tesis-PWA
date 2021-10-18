@@ -4,13 +4,10 @@ import '../../scss/profile/profile.scss'
 import { motion } from "framer-motion"
 import { TopBarProfile } from '../ui/TopBarProfile'
 import { useDispatch, useSelector } from 'react-redux'
-import { ProfileAllLocations } from './ProfileAllLocations'
-import { ProfileAllTags } from './ProfileAllTags'
-import { ProfileAllPhotos } from './ProfileAllPhotos'
-import { ProfileAllWeathers } from './ProfileAllWeathers'
 import { useLastLocation } from 'react-router-last-location'
 import { useHistory, useLocation } from 'react-router'
 import { storeLastProfilePath } from '../../actions/navigation'
+import { ProfileSectionFilter } from '../compHelper/ProfileSectionFilter'
 
 
 export const ProfileScreen = ( { ceModalState } ) => {
@@ -40,31 +37,6 @@ export const ProfileScreen = ( { ceModalState } ) => {
     const allImg = getAllImgs() //Pudiesemos aplicar algo de guarar el resultado de la funcion y eso
 
     const allWeathers =  filteredEntries.map( e => e.weather )
-
-        /*
-    const orderedComponents = userSettings.order.map(comp => {
-
-        switch (comp) {
-            case "photos": 
-                return <ProfileAllPhotos key={'photos'} allImg={allImg} />
-
-            case "tags": 
-                return <ProfileAllTags key={'tags'}/>
-             
-            case "locations": 
-                return  <ProfileAllLocations key={'locations'} ceModalState={ceModalState} /> //{ !ceModalState && <ProfileAllLocations key={'locations'}}/>
-            
-            default:
-                return <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
-            
-        }
-        /*
-        <ProfileAllPhotos key={'photos'} allImg={allImg} />
-        <ProfileAllTags key={'tags'}/>
-        { !ceModalState && <ProfileAllLocations key={'locations'}}
-        <ProfileAllWeathers key={'weather'} allWeathers={allWeathers}
-        */
-    //});
     
     const ref = useRef()
 
@@ -129,6 +101,7 @@ export const ProfileScreen = ( { ceModalState } ) => {
         })
         history.push('/profile/edit')
     }
+
     return (
         <motion.div
             variants={variants}
@@ -177,12 +150,13 @@ export const ProfileScreen = ( { ceModalState } ) => {
                 {
                     //Esta es una manera muy forzada de hacerlo
                     userSettings.order.map((element)=>(
-                        <>
-                            { element==='photos' && <ProfileAllPhotos key={'photos'} allImg={allImg} />}
-                            { element==='tags' && <ProfileAllTags key={'tags'}/>}
-                            { element==='locations' && <ProfileAllLocations key={'locations'} ceModalState={ceModalState} /> }
-                            { element==='weather' && <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />}
-                        </>
+                        <ProfileSectionFilter
+                            element={element}
+                            allImg={allImg}
+                            ceModalState={ceModalState}
+                            allWeathers={allWeathers}
+                        />
+                        
                     ))
                 }
                 

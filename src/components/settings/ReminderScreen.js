@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
+import '../../scss/settings/settings-tabs.scss'
 import { motion } from "framer-motion"
 import { useNavAnimation } from '../../hooks/navAnimationHook'
 import { useHistory } from 'react-router'
+import Switch from "react-switch";
+import DatePicker from 'react-mobile-datepicker';
+
 
 export const ReminderScreen = () => {
 
@@ -9,6 +13,53 @@ export const ReminderScreen = () => {
 
     const history = useHistory()
 
+    //SWITCH
+    const [checked, setChecked] = useState(false)
+
+    const handleReminderSwitch = () => {
+        setChecked((s)=>!s)
+        console.log('Change Notification property here')
+    }
+
+    //TIMEPICKER
+
+    const [timePickerState, settimePickerState] = useState({
+        isOpen: false,
+        time: new Date()
+    })
+
+    const getTimeFormat = () => {
+        return timePickerState.time.toLocaleString('en-US', {
+            hour: 'numeric', // numeric, 2-digit
+            minute: 'numeric', // numeric, 2-digit
+        })
+    }
+
+    const handleClick = () => {
+        settimePickerState({...timePickerState, isOpen: true });
+    }
+ 
+    const handleCancel = () => {
+        settimePickerState({...timePickerState, isOpen: false });
+    }
+ 
+    const handleSelect = (time) => {
+        settimePickerState({ time, isOpen: false });
+    }
+
+    const dateConfig = {
+        'hour': {
+            format: 'hh',
+            caption: 'Hour',
+            step: 1,
+        },
+        'minute': {
+            format: 'mm',
+            caption: 'Min',
+            step: 1,
+        },
+        
+    }
 
     return (
         <motion.div
@@ -27,6 +78,61 @@ export const ReminderScreen = () => {
                 </svg>
                 <h1> Reminder </h1>   
             </div>
+
+            <div className="tab-container">
+
+                <p>Notifications</p>
+
+                <Switch
+                    checked={checked}
+                    onChange={handleReminderSwitch}
+                    offColor="#B6B6B6"
+                    onColor="#3CDAFD"
+                    onHandleColor="#FFFFFF"
+                    offHandleColor="#FFFFFF"
+                    handleDiameter={27}
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    height={30}
+                    activeBoxShadow=""
+                />
+            </div>
+            <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
+
+            <div className="tab-container"
+                style={{paddingTop:'0.3rem', paddingBottom:'0.3rem'}}
+            >
+
+                <p>Time</p>
+
+                <button 
+                    onClick={handleClick}
+                    className="time-picker-btn"
+                    >
+                        <p>{getTimeFormat()}</p>
+                        <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                </button>
+                                
+                                
+                <DatePicker //Tengo que separar este componente //Esto puedo cambiarlo cuando yo quiera ya que es diferente en cada interfaz
+                    value={timePickerState.time}
+                    isOpen={timePickerState.isOpen}
+                    onSelect={handleSelect}
+                    onCancel={handleCancel}
+                    theme={'ios'}
+                    showHeader={false}
+                    confirmText={'Done'}
+                    cancelText={'Close'} 
+                    dateConfig={dateConfig}
+                />
+            </div>
+
+            <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
+
+            
+
         </motion.div>
     )
 }
