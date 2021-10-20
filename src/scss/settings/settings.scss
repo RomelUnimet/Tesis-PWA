@@ -1,11 +1,40 @@
 @import '../variables.scss';
 
-.top-bar-left-center {
+.settings-container {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    background-color: white;
+    
+}
 
+.spacing-div{
+    padding-top: 3rem;
+}
+.spacing-div-sections{
+    padding-top: 4rem;
+}
+
+.settings-section-container {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    background-color: white;
+}
+
+.top-bar-left-center {
+    position: fixed;
+    width: 100vw;
     display: flex;
     align-items: center;
     height: 3rem;
-    padding: 0.8rem 0.8rem 0 0.8rem;
+    padding-top: 0.8rem ;
+    background-color: white;
+    z-index: 1;
 
     & h1 {
         font-size: 1.2rem;
@@ -16,12 +45,14 @@
 
     & h2 {
         font-size: 1.1rem;
-        font-weight: 500;
+        font-weight: 400;
+        margin-right: 0.8rem;
     }
 
     & svg {
         height: 2rem;
         fill: $black-color;
+        margin-left: 0.8rem;
     }
 }
 

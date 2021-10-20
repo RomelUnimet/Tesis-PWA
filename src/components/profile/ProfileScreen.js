@@ -149,12 +149,13 @@ export const ProfileScreen = ( { ceModalState } ) => {
                 
                 {
                     //Esta es una manera muy forzada de hacerlo
-                    userSettings.order.map((element)=>(
+                    userSettings.order.map((element,index)=>(
                         <ProfileSectionFilter
                             element={element}
                             allImg={allImg}
                             ceModalState={ceModalState}
                             allWeathers={allWeathers}
+                            key={index}
                         />
                         
                     ))

@@ -52,6 +52,8 @@ const fetchWithToken = async ( endpoint, data, method='GET' ) => {
         });
 
     } else {
+
+        console.log(endpoint, data, method)
         return fetch ( url, {
 
             method,

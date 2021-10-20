@@ -17,10 +17,13 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
 
         const imageElement = cropperRef?.current;
         const cropper = imageElement?.cropper;
+
+        console.log(cropper)
       
         //Creo que debo bajarle la resolucion a la imagen en algun punto
         const croppedImg = cropper.getCroppedCanvas().toDataURL( 'image/', 0.5 ); //Numero 1 representa la calidad de la img y va de 0.1 a 1
         
+
         dispatch(cardUpdatePhoto(croppedImg, cropperState.card));
 
         cancel();
@@ -35,15 +38,13 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
         })
     }
     const reset = () => {
-
         cropperRef?.current.cropper.reset()
-
     }
 
     //PARA QUE LAS IMG VERTICALES NO SE COMPORTEN RARO
     useEffect(() => {
 
-        cropperRef?.current?.cropper.rotateTo(0)
+        //cropperRef?.current?.cropper.rotateTo(0)
 
     }, [])
 
@@ -71,6 +72,7 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
                 guides={true}  //Ver si puedo apagarlas cuando se mueve
                 src={cropperState.img}
                 center={false}
+                ref={cropperRef}
             /> 
             
 

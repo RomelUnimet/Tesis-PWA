@@ -16,6 +16,11 @@ export const LockScreen = () => {
     const handleAuthSwitch = () => {
         setChecked((s)=>!s)
         console.log('Change lock property here')
+        if (window.navigator && window.navigator.vibrate) {
+            navigator.vibrate(100);
+        } else {
+            console.log('vibrar')
+        }
     }
 
 
@@ -37,25 +42,29 @@ export const LockScreen = () => {
                 <h1> Lock </h1>
             </div>
 
-            <div className="tab-container">
+            <div className="spacing-div-sections">
 
-                <p>Biometric Lock</p>
+                <div className="tab-container">
 
-                <Switch
-                    checked={checked}
-                    onChange={handleAuthSwitch}
-                    offColor="#B6B6B6"
-                    onColor="#3CDAFD"
-                    onHandleColor="#FFFFFF"
-                    offHandleColor="#FFFFFF"
-                    handleDiameter={27}
-                    uncheckedIcon={false}
-                    checkedIcon={false}
-                    height={30}
-                    activeBoxShadow=""
-                />
+                    <p>Biometric Lock</p>
+
+                    <Switch
+                        checked={checked}
+                        onChange={handleAuthSwitch}
+                        offColor="#B6B6B6"
+                        onColor="#3CDAFD"
+                        onHandleColor="#FFFFFF"
+                        offHandleColor="#FFFFFF"
+                        handleDiameter={27}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        height={30}
+                        activeBoxShadow=""
+                    />
+                </div>
+                <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
+
             </div>
-            <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
 
         </motion.div>
     )

@@ -13,7 +13,6 @@ export const startEntryStore = () => {
 
     return async (dispatch) => {
 
-        
         const entries = await db.collection('entries').get();
 
         const orderedEntries = entries.sort(( a, b ) => b.date - a.date)
@@ -162,21 +161,26 @@ export const entryUpdate = ( oldEntry, newEntry ) => {
     }
 }
 
-//Testear que funciona con la nueva funciona
-export const entryDelete = ( entry ) => {
+//DEBERIA SER UNA PETICION QUE PUEDE BORRAR MULTIPLES ENTRADAS
+export const entryDelete = ( entries ) => {
 
     return async (dispatch) => {
 
-        await db.collection('entries').doc({ eid: entry.eid }).delete()
+        console.log(entries)
+        
+        //Es un for y se hace uno por uno
+        /*
+        for (let i = 0; i < entries.length; i++) {
 
-        //await deleteEidFromCardTagLocation( entry ) //Creo que esto no es necesario
+            await db.collection('entries').doc({ eid: entries[i] }).delete()
+            
+        }
+        */
         
-        fetchWithToken(`entry/delete/${entry.eid}`, {}, 'DELETE');
+        fetchWithToken(`entry/delete`, { entries: entries }, 'DELETE');
+    
+        //dispatch(startEntryStore())   
         
-        //dispatch( startCardStore() )
-        //dispatch( startLocationStore() )
-        //dispatch( startTagStore() )
-        dispatch(startEntryStore())   
     }
 }
 
@@ -200,22 +204,35 @@ export const trashEntry = ( entry ) => {
     }
 }
 
-export const unTrashEntry = ( entry ) => {
+//DEBERIAN SER UNA SOLA PETICION QUE BORRA TODO
+export const unTrashEntry = ( entries ) => {
 
     return async ( dispatch ) => {
 
-        await db.collection('entries').doc({ eid: entry.eid }).update({
-            trash: false,
-        })
+        //Es un for y se hace uno por uno
+        console.log(entries)
 
-        await addEidToCardTagLocation( entry, dispatch )
-
-        fetchWithToken(`entry/untrash/${entry.eid}`, entry, 'PUT');
         
+        for (let i = 0; i < entries.length; i++) {
+            /*
+            await db.collection('entries').doc({ eid: entries[i].eid }).update({
+                trash: false,
+            })
+            //NECESITO LA ENTRADA COMPLETA PARA ESTE ASUNTO
+            await addEidToCardTagLocation( entries[i], dispatch )
+            */
+            fetchWithToken(`entry/untrash/${entries[i].eid}`, entries[i], 'PUT');
+            
+        }
+        
+        
+        
+        /*
         dispatch( startCardStore() )
         dispatch( startLocationStore() )
         dispatch( startTagStore() )
         dispatch(startEntryStore())  
+        */
 
     }
 }

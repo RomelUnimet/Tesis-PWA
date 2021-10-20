@@ -18,6 +18,11 @@ export const ReminderScreen = () => {
 
     const handleReminderSwitch = () => {
         setChecked((s)=>!s)
+        if (window.navigator && window.navigator.vibrate) {
+            navigator.vibrate(100);
+        } else {
+            console.log('vibrar')
+        }
         console.log('Change Notification property here')
     }
 
@@ -79,58 +84,61 @@ export const ReminderScreen = () => {
                 <h1> Reminder </h1>   
             </div>
 
-            <div className="tab-container">
+            <div className="spacing-div-sections" >
 
-                <p>Notifications</p>
+                <div className="tab-container">
 
-                <Switch
-                    checked={checked}
-                    onChange={handleReminderSwitch}
-                    offColor="#B6B6B6"
-                    onColor="#3CDAFD"
-                    onHandleColor="#FFFFFF"
-                    offHandleColor="#FFFFFF"
-                    handleDiameter={27}
-                    uncheckedIcon={false}
-                    checkedIcon={false}
-                    height={30}
-                    activeBoxShadow=""
-                />
+                    <p>Notifications</p>
+
+                    <Switch
+                        checked={checked}
+                        onChange={handleReminderSwitch}
+                        offColor="#B6B6B6"
+                        onColor="#3CDAFD"
+                        onHandleColor="#FFFFFF"
+                        offHandleColor="#FFFFFF"
+                        handleDiameter={27}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        height={30}
+                        activeBoxShadow=""
+                    />
+                </div>
+                <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
+
+                <div className="tab-container"
+                    style={{paddingTop:'0.3rem', paddingBottom:'0.3rem'}}
+                >
+
+                    <p>Time</p>
+
+                    <button 
+                        onClick={handleClick}
+                        className="time-picker-btn"
+                        >
+                            <p>{getTimeFormat()}</p>
+                            <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                    </button>
+                                    
+                                    
+                    <DatePicker //Tengo que separar este componente //Esto puedo cambiarlo cuando yo quiera ya que es diferente en cada interfaz
+                        value={timePickerState.time}
+                        isOpen={timePickerState.isOpen}
+                        onSelect={handleSelect}
+                        onCancel={handleCancel}
+                        theme={'ios'}
+                        showHeader={false}
+                        confirmText={'Done'}
+                        cancelText={'Close'} 
+                        dateConfig={dateConfig}
+                    />
+                </div>
+
+                <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
+
             </div>
-            <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
-
-            <div className="tab-container"
-                style={{paddingTop:'0.3rem', paddingBottom:'0.3rem'}}
-            >
-
-                <p>Time</p>
-
-                <button 
-                    onClick={handleClick}
-                    className="time-picker-btn"
-                    >
-                        <p>{getTimeFormat()}</p>
-                        <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                </button>
-                                
-                                
-                <DatePicker //Tengo que separar este componente //Esto puedo cambiarlo cuando yo quiera ya que es diferente en cada interfaz
-                    value={timePickerState.time}
-                    isOpen={timePickerState.isOpen}
-                    onSelect={handleSelect}
-                    onCancel={handleCancel}
-                    theme={'ios'}
-                    showHeader={false}
-                    confirmText={'Done'}
-                    cancelText={'Close'} 
-                    dateConfig={dateConfig}
-                />
-            </div>
-
-            <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
-
             
 
         </motion.div>

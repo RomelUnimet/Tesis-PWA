@@ -66,7 +66,6 @@ export const useNavAnimation = ( prevPathname = '', initialState = {} ) => {
 
     useEffect(() => {
         if(!navigatingTo.includes(prevPathname) && navigatingTo!=='' ){ 
-            console.log(navigatingTo)
             setvariants({
                 initial:{x:0,opacity:1, transition:{duration:0} },
                 in:{x:0, opacity:1, transition:{duration:0} },
