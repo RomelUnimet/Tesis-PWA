@@ -119,7 +119,7 @@ export const ProfileEdit = () => {
 
     return (
         <motion.div
-            style={{height:'100vh', width:'100vw', position: 'absolute', top:0, zIndex:1, backgroundColor:'white'}} 
+            className="profile-edit-container"
             variants={variants}
             initial="initial"
             animate="in"
@@ -135,64 +135,68 @@ export const ProfileEdit = () => {
                 <h1> My Tab - Setting </h1>
             </div>
 
-            <div className="edit-profile-tab">
-                <h2> DIARY PHOTO </h2>
+            <div className="spacing-div">
 
-                <label>
-                    <input type="file" id="cardPhotoInput" onChange={changePhoto} ref={fileInput} accept="image/*"/>
-                                    
-                    <div className="profile-edit-picture-container"
-                        style={{backgroundImage: `url(${diaryImg})`}}
-                    >
-                        <svg viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg"
-                             style={diaryImg===""? {} : {display:'none'}}
+                <div className="edit-profile-tab">
+                    <h2> DIARY PHOTO </h2>
+
+                    <label>
+                        <input type="file" id="cardPhotoInput" onChange={changePhoto} ref={fileInput} accept="image/*"/>
+                                        
+                        <div className="profile-edit-picture-container"
+                            style={{backgroundImage: `url(${diaryImg})`}}
                         >
-                            <path d="M30.5455 0H1.45455C0.65 0 0 0.670312 0 1.5V40.5C0 41.3297 0.65 42 1.45455 42H30.5455C31.35 42 32 41.3297 32 40.5V1.5C32 0.670312 31.35 0 30.5455 0ZM18.7273 3.375H23.0909V13.2141L20.9773 11.625L18.7273 13.2844V3.375ZM28.7273 38.625H3.27273V3.375H16V17.2922C16 17.4469 16.0455 17.6016 16.1364 17.7281C16.1915 17.8086 16.2617 17.8769 16.3426 17.9293C16.4236 17.9816 16.5138 18.0168 16.6081 18.033C16.7024 18.0491 16.7988 18.0458 16.8918 18.0232C16.9848 18.0007 17.0726 17.9593 17.15 17.9016L20.9591 15.0938L24.6591 17.8781C24.7818 17.9719 24.9318 18.0234 25.0864 18.0234C25.4864 18.0234 25.8136 17.6859 25.8136 17.2734V3.375H28.7227V38.625H28.7273Z" />
-                        </svg>
-                    
-                    </div>
+                            <svg viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                style={diaryImg===""? {} : {display:'none'}}
+                            >
+                                <path d="M30.5455 0H1.45455C0.65 0 0 0.670312 0 1.5V40.5C0 41.3297 0.65 42 1.45455 42H30.5455C31.35 42 32 41.3297 32 40.5V1.5C32 0.670312 31.35 0 30.5455 0ZM18.7273 3.375H23.0909V13.2141L20.9773 11.625L18.7273 13.2844V3.375ZM28.7273 38.625H3.27273V3.375H16V17.2922C16 17.4469 16.0455 17.6016 16.1364 17.7281C16.1915 17.8086 16.2617 17.8769 16.3426 17.9293C16.4236 17.9816 16.5138 18.0168 16.6081 18.033C16.7024 18.0491 16.7988 18.0458 16.8918 18.0232C16.9848 18.0007 17.0726 17.9593 17.15 17.9016L20.9591 15.0938L24.6591 17.8781C24.7818 17.9719 24.9318 18.0234 25.0864 18.0234C25.4864 18.0234 25.8136 17.6859 25.8136 17.2734V3.375H28.7227V38.625H28.7273Z" />
+                            </svg>
+                        
+                        </div>
 
-                </label>
+                    </label>
 
+                </div>
+
+                <div className="edit-profile-tab">
+                    <h2> DIARY NAME </h2>
+                    <input 
+                        type="text" 
+                        name="diaryName"
+                        value={ diaryName }
+                        onChange={ handleInputChange }
+                    />
+                </div>
+
+                <div className="edit-profile-tab">
+                    <h2> TODAY'S TALK </h2>
+                    <textarea 
+                        type="text" 
+                        name="description"
+                        value={ description }
+                        onChange={ handleInputChange }
+                    />
+                </div>
+
+                <div className="edit-profile-tab">
+                    <h2> Order </h2>
+                    <hr/>
+                    <SortableContainer  
+                        onSortEnd={onSortEnd} 
+                        useDragHandle 
+                        helperClass="sortableHelper" 
+                        lockAxis={'y'}
+                        onSortOver={onSortOver}
+                    >
+                        {
+                            order.map((element, index)=>(
+                                <SortableItem key={`item-${index}`} element={element} index={index} />
+                            ))
+                        }
+                    </SortableContainer>
+                </div>
             </div>
 
-            <div className="edit-profile-tab">
-                <h2> DIARY NAME </h2>
-                <input 
-                    type="text" 
-                    name="diaryName"
-                    value={ diaryName }
-                    onChange={ handleInputChange }
-                />
-            </div>
-
-            <div className="edit-profile-tab">
-                <h2> TODAY'S TALK </h2>
-                <textarea 
-                    type="text" 
-                    name="description"
-                    value={ description }
-                    onChange={ handleInputChange }
-                />
-            </div>
-
-            <div className="edit-profile-tab">
-                <h2> Order </h2>
-                <hr/>
-                <SortableContainer  
-                    onSortEnd={onSortEnd} 
-                    useDragHandle 
-                    helperClass="sortableHelper" 
-                    lockAxis={'y'}
-                    onSortOver={onSortOver}
-                >
-                    {
-                        order.map((element, index)=>(
-                            <SortableItem key={`item-${index}`} element={element} index={index} />
-                        ))
-                    }
-                </SortableContainer>
-            </div>
             
         </motion.div>
     )

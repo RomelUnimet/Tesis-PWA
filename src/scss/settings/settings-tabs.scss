@@ -51,6 +51,8 @@
     display: flex;
     align-items: center;
 
+    filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.06));
+
     & svg {
         position: absolute;
         bottom: 0;
@@ -126,5 +128,15 @@
         border: none;
         color: rgb(0, 110, 255);
     }
+}
+
+.no-diaries-yet{
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+    color: $grey-color;
+    font-weight: 500;
 }
 

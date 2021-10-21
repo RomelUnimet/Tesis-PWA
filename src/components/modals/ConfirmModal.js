@@ -2,7 +2,7 @@ import React from 'react'
 import '../../scss/modals/confirmModal.scss'
 import { motion } from 'framer-motion'
 
-export const ConfirmModal = ({title, text, rightText, leftText, confirmAction, isActive, setIsActive}) => {
+export const ConfirmModal = ({title, text, rightText, leftText, confirmAction, setIsActive}) => {
 
     
     const handleLeftButton = () => {

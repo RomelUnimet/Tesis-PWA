@@ -43,7 +43,6 @@ export const TrashEntry = ( {entry, selectedEntries, setselectedEntries,select} 
             setselectedEntries([...auxArray])
         }
 
-        console.log(auxArray)
     }
 
 

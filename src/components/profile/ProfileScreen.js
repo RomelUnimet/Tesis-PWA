@@ -7,7 +7,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLastLocation } from 'react-router-last-location'
 import { useHistory, useLocation } from 'react-router'
 import { storeLastProfilePath } from '../../actions/navigation'
-import { ProfileSectionFilter } from '../compHelper/ProfileSectionFilter'
+import { ProfileAllLocations } from '../profile/ProfileAllLocations'
+import { ProfileAllPhotos } from '../profile/ProfileAllPhotos'
+import { ProfileAllTags } from '../profile/ProfileAllTags'
+import { ProfileAllWeathers } from '../profile/ProfileAllWeathers'
 
 
 export const ProfileScreen = ( { ceModalState } ) => {
@@ -147,19 +150,13 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     <h4> All Diaries </h4>
                 </div>    
                 
-                {
-                    //Esta es una manera muy forzada de hacerlo
-                    userSettings.order.map((element,index)=>(
-                        <ProfileSectionFilter
-                            element={element}
-                            allImg={allImg}
-                            ceModalState={ceModalState}
-                            allWeathers={allWeathers}
-                            key={index}
-                        />
-                        
-                    ))
-                }
+                 <ProfileAllPhotos key={'photos'} allImg={allImg} />
+
+                <ProfileAllTags key={'tags'}/>
+                
+                <ProfileAllLocations key={'locations'} ceModalState={ceModalState} /> 
+
+                <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
                 
             
             </div>

@@ -166,20 +166,17 @@ export const entryDelete = ( entries ) => {
 
     return async (dispatch) => {
 
-        console.log(entries)
         
-        //Es un for y se hace uno por uno
-        /*
         for (let i = 0; i < entries.length; i++) {
 
             await db.collection('entries').doc({ eid: entries[i] }).delete()
             
         }
-        */
+        
         
         fetchWithToken(`entry/delete`, { entries: entries }, 'DELETE');
     
-        //dispatch(startEntryStore())   
+        dispatch(startEntryStore())   
         
     }
 }
@@ -214,25 +211,22 @@ export const unTrashEntry = ( entries ) => {
 
         
         for (let i = 0; i < entries.length; i++) {
-            /*
+            
             await db.collection('entries').doc({ eid: entries[i].eid }).update({
                 trash: false,
             })
-            //NECESITO LA ENTRADA COMPLETA PARA ESTE ASUNTO
+
             await addEidToCardTagLocation( entries[i], dispatch )
-            */
+            
             fetchWithToken(`entry/untrash/${entries[i].eid}`, entries[i], 'PUT');
             
-        }
+        }   
         
-        
-        
-        /*
         dispatch( startCardStore() )
         dispatch( startLocationStore() )
         dispatch( startTagStore() )
         dispatch(startEntryStore())  
-        */
+        
 
     }
 }
