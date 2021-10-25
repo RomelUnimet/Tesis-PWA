@@ -1,4 +1,4 @@
-import React ,{ useCallback, useEffect, useRef, useState } from 'react'
+import React ,{ useEffect, useRef, useState } from 'react'
 import '../../scss/profile/profile.scss'
 
 import { motion } from "framer-motion"
@@ -7,13 +7,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLastLocation } from 'react-router-last-location'
 import { useHistory, useLocation } from 'react-router'
 import { storeLastProfilePath } from '../../actions/navigation'
-//import { ProfileAllLocations } from '../profile/ProfileAllLocations'
+/*
+import { ProfileAllLocations } from '../profile/ProfileAllLocations'
 import { ProfileAllPhotos } from '../profile/ProfileAllPhotos'
 import { ProfileAllTags } from '../profile/ProfileAllTags'
 import { ProfileAllWeathers } from '../profile/ProfileAllWeathers'
+*/
 
 
-export const ProfileScreen = ( { ceModalState } ) => {    
+export const ProfileScreen = ( /*{ ceModalState }*/ ) => {    
     
     const {settings} = useSelector(state => state.settings)
 
@@ -22,6 +24,7 @@ export const ProfileScreen = ( { ceModalState } ) => {
 
     const [userSettings] = settings;
 
+    /*
     const getAllImgs = useCallback(
         () => {
             let a = filteredEntries.map(e => e.photos)
@@ -33,11 +36,11 @@ export const ProfileScreen = ( { ceModalState } ) => {
         },
         [filteredEntries],
     )
-   
+   */
 
-    const allImg = getAllImgs() //Pudiesemos aplicar algo de guarar el resultado de la funcion y eso
+    //const allImg = getAllImgs() //Pudiesemos aplicar algo de guarar el resultado de la funcion y eso
 
-    const allWeathers =  filteredEntries.map( e => e.weather )
+    //const allWeathers =  filteredEntries.map( e => e.weather )
     
     const ref = useRef()
 
@@ -148,12 +151,7 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     <h4> All Diaries </h4>
                 </div>    
                 
-                <ProfileAllPhotos key={'photos'} allImg={allImg} />
-
-                <ProfileAllTags key={'tags'}/>
                 
-
-                <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
                 
             
             </div>
