@@ -150,7 +150,7 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     <h4> All Diaries </h4>
                 </div>    
                 
-                 <ProfileAllPhotos key={'photos'} allImg={allImg} />
+                <ProfileAllPhotos key={'photos'} allImg={allImg} />
 
                 <ProfileAllTags key={'tags'}/>
                 
