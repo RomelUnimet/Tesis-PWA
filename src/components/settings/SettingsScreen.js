@@ -12,8 +12,6 @@ export const SettingsScreen = () => {
 
     const {entries} = useSelector(state => state.entries)
 
-    const [userSettings] = settings
-
     const trashEntries =  entries.filter((e)=> e.trash)
 
     //Navigation   
@@ -108,7 +106,7 @@ export const SettingsScreen = () => {
                             <p> Lock </p>
 
                             <div className="arrow-and-text">
-                                <p> {userSettings.auth? 'ON' : 'OFF' } </p> 
+                                <p> {settings[0].auth? 'ON' : 'OFF' } </p> 
                                 <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
@@ -121,7 +119,7 @@ export const SettingsScreen = () => {
                             <p> Reminder </p>
 
                             <div className="arrow-and-text">
-                                <p> {userSettings.notification.active? 'ON' : 'OFF' } </p> 
+                                <p> {settings[0].notification.active? 'ON' : 'OFF' } </p> 
                                 <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
