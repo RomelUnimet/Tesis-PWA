@@ -70,42 +70,42 @@ export const RoutesApp = () => {
 
                         <Route
                             exact
-                            path="/profile/edit" 
+                            path="/edit" 
                         >
                             <ProfileEdit/>
                         </Route>
                         
                         <Route
                             exact
-                            path="/profile/settings" 
+                            path="/settings" 
                         >
                             <SettingsScreen/>
                         </Route>
 
                         <Route
                             exact
-                            path="/profile/settings/backup-restore" 
+                            path="/backup-restore" 
                         >
                             <BackupRestoreScreen/>
                         </Route>
 
                         <Route
                             exact
-                            path="/profile/settings/trash" 
+                            path="/trash" 
                         >
                             <TrashScreen/>
                         </Route>
 
                         <Route
                             exact
-                            path="/profile/settings/lock" 
+                            path="/lock" 
                         >
                             <LockScreen/>
                         </Route>
 
                         <Route
                             exact
-                            path="/profile/settings/reminder" 
+                            path="/reminder" 
                         >
                             <ReminderScreen/>
                         </Route>

@@ -12,7 +12,7 @@ export const TopBarProfile = ({diaryName, visible, setvariants}) => {
             in:{ x:0,transition:{duration:0.35}},
             out:{x:-40,transition:{duration:0.35}}
         })
-        history.push('profile/settings')
+        history.push('/settings')
     }
     return (
         <div className="topbar-container"
