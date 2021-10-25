@@ -13,9 +13,7 @@ import { ProfileAllTags } from '../profile/ProfileAllTags'
 import { ProfileAllWeathers } from '../profile/ProfileAllWeathers'
 
 
-export const ProfileScreen = ( { ceModalState } ) => {
-
-    
+export const ProfileScreen = ( { ceModalState } ) => {    
     
     const {settings} = useSelector(state => state.settings)
 

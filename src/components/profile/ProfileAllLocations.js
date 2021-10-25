@@ -6,14 +6,11 @@ import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 
 export const ProfileAllLocations = ( {ceModalState} ) => {
 
-    //HACER QUE NO SALGA CUANDO SE ABRA EL CE MODAL
+    console.log('render location')
 
     const {locations} = useSelector(state => state.locations)
 
-    const {geolocation} = useSelector(state => state.geolocation)
-
-
-    const [center, setcenter] = useState({...geolocation[0]})
+    const [center, setcenter] = useState({})
 
     useEffect(() => {
 
