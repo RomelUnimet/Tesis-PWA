@@ -5,6 +5,8 @@ import { useNavAnimation } from '../../hooks/navAnimationHook'
 import { useHistory } from 'react-router'
 import Switch from "react-switch";
 import DatePicker from 'react-mobile-datepicker';
+import { useDispatch, useSelector } from 'react-redux'
+import { updateSettings } from '../../actions/settings'
 
 
 export const ReminderScreen = () => {
@@ -13,27 +15,46 @@ export const ReminderScreen = () => {
 
     const history = useHistory()
 
+    const {settings} = useSelector(state => state.settings)
+
+    const dispatch = useDispatch()
+
+
     //SWITCH
-    const [checked, setChecked] = useState(false)
+    const [checked, setChecked] = useState(settings[0].notification.active)
 
     const handleReminderSwitch = () => {
+
+        let [newSettings] = settings
+
+        if(!checked){
+            newSettings.notification = {active: true, time: timePickerState.time.toString()};
+            dispatch( updateSettings(newSettings) )
+        } else {
+            newSettings.notification = {active: false, time: timePickerState.time.toString()};
+            dispatch( updateSettings(newSettings) )
+        }
+
         setChecked((s)=>!s)
+
         if (window.navigator && window.navigator.vibrate) {
             navigator.vibrate(100);
         } else {
             console.log('vibrar')
         }
-        console.log('Change Notification property here')
+        console.log(getTimeFormat())
     }
 
     //TIMEPICKER
 
     const [timePickerState, settimePickerState] = useState({
         isOpen: false,
-        time: new Date()
+        time: new Date(settings[0].notification.time)
+        
     })
 
     const getTimeFormat = () => {
+
         return timePickerState.time.toLocaleString('en-US', {
             hour: 'numeric', // numeric, 2-digit
             minute: 'numeric', // numeric, 2-digit

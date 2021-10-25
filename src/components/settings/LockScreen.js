@@ -4,6 +4,8 @@ import { motion } from "framer-motion"
 import { useNavAnimation } from '../../hooks/navAnimationHook'
 import { useHistory } from 'react-router'
 import Switch from "react-switch";
+import { useDispatch, useSelector } from 'react-redux'
+import { updateSettings } from '../../actions/settings'
 
 export const LockScreen = () => {
 
@@ -11,16 +13,33 @@ export const LockScreen = () => {
 
     const history = useHistory()
 
-    const [checked, setChecked] = useState(false)
+    const {settings} = useSelector(state => state.settings)
+
+    const dispatch = useDispatch()
+
+    const [checked, setChecked] = useState(settings[0].auth)
 
     const handleAuthSwitch = () => {
+
+        let [newSettings] = settings
+
+        //SI NO ESTA PRENDIDO ANTES DEL CAMBIO HACER EL DISPATCH
+        if(!checked){
+            newSettings.auth = true;
+            dispatch( updateSettings(newSettings) )
+        } else {
+            newSettings.auth = false;
+            dispatch( updateSettings(newSettings) )
+        }
+
         setChecked((s)=>!s)
-        console.log('Change lock property here')
+
         if (window.navigator && window.navigator.vibrate) {
             navigator.vibrate(100);
         } else {
             console.log('vibrar')
         }
+
     }
 
 
