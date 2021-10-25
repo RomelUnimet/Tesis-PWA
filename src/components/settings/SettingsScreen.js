@@ -27,7 +27,7 @@ export const SettingsScreen = () => {
             in:{ x:0,transition:{duration:0.35}},
             out:{x:-40,transition:{duration:0.35}}
         })
-        history.push(`/${path}` )
+        history.push(`/profile/settings/${path}` )
     }
 
     return (

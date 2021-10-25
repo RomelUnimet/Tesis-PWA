@@ -62,7 +62,7 @@ export const ProfileScreen = ( /*{ ceModalState }*/ ) => {
        
     const [variants, setvariants] = useState(()=>{
 
-        if(lastLocation?.pathname==='/settings' || lastLocation?.pathname==='/edit'){
+        if(lastLocation?.pathname==='/profile/settings' || lastLocation?.pathname==='/profile/edit'){
         
             return {
                     initial:{x:-40, transition:{duration:0.2} },
@@ -103,7 +103,7 @@ export const ProfileScreen = ( /*{ ceModalState }*/ ) => {
             in:{ x:0,transition:{duration:0.35}},
             out:{x:-40,transition:{duration:0.35}}
         })
-        history.push('/edit')
+        history.push('/profile/edit')
     }
 
     return (
