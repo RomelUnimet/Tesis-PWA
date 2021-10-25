@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLastLocation } from 'react-router-last-location'
 import { useHistory, useLocation } from 'react-router'
 import { storeLastProfilePath } from '../../actions/navigation'
-import { ProfileAllLocations } from '../profile/ProfileAllLocations'
+//import { ProfileAllLocations } from '../profile/ProfileAllLocations'
 import { ProfileAllPhotos } from '../profile/ProfileAllPhotos'
 import { ProfileAllTags } from '../profile/ProfileAllTags'
 import { ProfileAllWeathers } from '../profile/ProfileAllWeathers'
@@ -152,7 +152,6 @@ export const ProfileScreen = ( { ceModalState } ) => {
 
                 <ProfileAllTags key={'tags'}/>
                 
-                <ProfileAllLocations key={'locations'} ceModalState={ceModalState} /> 
 
                 <ProfileAllWeathers key={'weather'} allWeathers={allWeathers} />
                 
