@@ -14,9 +14,9 @@ export const startSettingsStore = () => {
 
         //Considerar añadir un mensaje de error
 
-        const settings = await db.collection('settings').get();
+        const userSettings = await db.collection('userSettings').get();
 
-        dispatch( finishSettingsStore( settings ) );
+        dispatch( finishSettingsStore( userSettings ) );
     }
 }
 
@@ -24,7 +24,7 @@ export const updateSettings = ( newSettings ) => {
 
     return async (dispatch) => {
 
-        await db.collection('settings').set([
+        await db.collection('userSettings').set([
             newSettings,
         ])
 
@@ -36,10 +36,10 @@ export const updateSettings = ( newSettings ) => {
 }
 
 
-const finishSettingsStore = ( settings ) =>{
+const finishSettingsStore = ( userSettings ) =>{
 
     return {
         type:types.settStore,
-        payload: settings
+        payload: userSettings
     }
 }

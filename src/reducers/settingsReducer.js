@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 
 const initialState = {
-    settings: [],    
+    userSettings: [],    
 }
 
 export const settingsReducer = ( state = initialState, action ) => {
@@ -13,14 +13,14 @@ export const settingsReducer = ( state = initialState, action ) => {
 
             return {
                 ...state,
-                settings: action.payload,
+                userSettings: action.payload,
             } 
 
         case types.settUpdate:
 
             return {
                 ...state,
-                settings: action.payload,
+                userSettings: action.payload,
             }
 
         default:

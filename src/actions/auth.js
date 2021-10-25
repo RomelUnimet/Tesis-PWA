@@ -30,7 +30,7 @@ export const startLogin = ( email, password) => {
 
             console.log(userInfo)
 
-            await db.collection('settings').set(
+            await db.collection('userSettings').set(
                 userInfo.settings,
               );
              
@@ -68,7 +68,7 @@ export const startRegister = ( email, password) => {
             const settings = []
             settings.push(body.settings)
 
-            await db.collection('settings').set(
+            await db.collection('userSettings').set(
                 settings
               );
 
@@ -108,7 +108,7 @@ export const startChecking = () => {
         //Aca se muestra como si se hiciera 2 veces pero es mentira
         //Es donde se crean las colecciones en IndexedDB si no se tienen todavia
         await db.collection('cards').get();
-        await db.collection('settings').get();
+        await db.collection('userSettings').get();
         await db.collection('tags').get();
         await db.collection('locations').get();
 

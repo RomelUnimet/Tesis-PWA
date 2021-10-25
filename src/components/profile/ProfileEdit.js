@@ -18,19 +18,19 @@ export const ProfileEdit = () => {
 
     const dispatch = useDispatch()
 
-    const {settings} = useSelector(state => state.settings)
+    const {userSettings} = useSelector(state => state.userSettings)
 
-    const [order, setOrder] = useState(settings[0].order)
+    const [order, setOrder] = useState(userSettings[0].order)
 
     const [ formValues, handleInputChange ] = useForm({
-        diaryName: settings[0].name,
-        description: settings[0].description
+        diaryName: userSettings[0].name,
+        description: userSettings[0].description
     })
 
     const { diaryName, description } = formValues;
 
     //IMAGE
-    const [diaryImg, setdiaryImg] = useState(settings[0].photo)
+    const [diaryImg, setdiaryImg] = useState(userSettings[0].photo)
 
     const fileInput = useRef(null);
 
@@ -61,7 +61,7 @@ export const ProfileEdit = () => {
     const goBack = ()=> {
 
         const updatedSettings = {
-            ...settings[0],
+            ...userSettings[0],
             name: diaryName,
             description: description,
             photo : diaryImg,
@@ -69,7 +69,7 @@ export const ProfileEdit = () => {
         }
         
 
-        if(diaryName!==settings[0].name || description!==settings[0].description || diaryImg!==settings[0].photo || order!==settings[0].order){
+        if(diaryName!==userSettings[0].name || description!==userSettings[0].description || diaryImg!==userSettings[0].photo || order!==userSettings[0].order){
 
             dispatch( updateSettings(updatedSettings) )
 

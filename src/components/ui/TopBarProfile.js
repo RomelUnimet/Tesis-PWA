@@ -6,6 +6,8 @@ export const TopBarProfile = ({diaryName, visible, setvariants}) => {
 
     const history = useHistory()
 
+    console.log(diaryName)
+
     const navigateToSettings = () => {
         setvariants({
             initial:{x:-40, transition:{duration:0.35} },
@@ -26,7 +28,7 @@ export const TopBarProfile = ({diaryName, visible, setvariants}) => {
                 </svg>
                 {
                     visible &&
-                    <h1> {diaryName===""?  diaryName : 'Diary Name' } </h1>
+                    <h1> {diaryName!==""?  diaryName : 'Diary Name' } </h1>
 
                 }
 

@@ -15,17 +15,17 @@ export const ReminderScreen = () => {
 
     const history = useHistory()
 
-    const {settings} = useSelector(state => state.settings)
+    const {userSettings} = useSelector(state => state.userSettings)
 
     const dispatch = useDispatch()
 
 
     //SWITCH
-    const [checked, setChecked] = useState(settings[0].notification.active)
+    const [checked, setChecked] = useState(userSettings[0].notification.active)
 
     const handleReminderSwitch = () => {
 
-        let [newSettings] = settings
+        let [newSettings] = userSettings
 
         if(!checked){
             newSettings.notification = {active: true, time: timePickerState.time.toString()};
@@ -49,7 +49,7 @@ export const ReminderScreen = () => {
 
     const [timePickerState, settimePickerState] = useState({
         isOpen: false,
-        time: new Date(settings[0].notification.time)
+        time: new Date(userSettings[0].notification.time)
         
     })
 

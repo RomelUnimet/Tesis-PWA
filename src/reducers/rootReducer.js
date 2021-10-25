@@ -16,7 +16,7 @@ export const rootReducer = combineReducers({
 
     auth: authReducer,
     cards: cardReducer,
-    settings: settingsReducer,
+    userSettings: settingsReducer,
     weather: weatherReducer,
     tags: tagReducer,
     locations: locationReducer,

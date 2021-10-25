@@ -13,15 +13,15 @@ export const LockScreen = () => {
 
     const history = useHistory()
 
-    const {settings} = useSelector(state => state.settings)
+    const {userSettings} = useSelector(state => state.userSettings)
 
     const dispatch = useDispatch()
 
-    const [checked, setChecked] = useState(settings[0].auth)
+    const [checked, setChecked] = useState(userSettings[0].auth)
 
     const handleAuthSwitch = () => {
 
-        let [newSettings] = settings
+        let [newSettings] = userSettings
 
         //SI NO ESTA PRENDIDO ANTES DEL CAMBIO HACER EL DISPATCH
         if(!checked){
