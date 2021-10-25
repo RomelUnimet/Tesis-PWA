@@ -6,8 +6,6 @@ import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 
 export const ProfileAllLocations = ( {ceModalState} ) => {
 
-    console.log('render location')
-
     const {locations} = useSelector(state => state.locations)
 
     const [center, setcenter] = useState({})

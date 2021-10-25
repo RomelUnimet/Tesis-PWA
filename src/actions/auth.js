@@ -61,16 +61,21 @@ export const startRegister = ( email, password) => {
         
         if( body.ok ){
 
-            await db.collection('token').set([{
+            console.log('Pre-token')
+            await db.collection('token').add({
                 token: body.token,
-              }]);
+              });
             
-            const settings = []
-            settings.push(body.settings)
+            //const settings = []
+            //settings.push(body.settings)
 
-            await db.collection('userSettings').set(
-                settings
+            //El problema esta en un metofo asincrono de settings y creo que es este
+            console.log('Pre-settings')
+            await db.collection('userSettings').add( ///cambie esot a add
+                body.settings 
               );
+
+            console.log('Pre-cards')
 
             await db.collection('cards').delete();
             
