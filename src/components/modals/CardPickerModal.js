@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import '../../scss/modals/cardPickerModal.scss'
 import { animated, useSpring, config } from 'react-spring'
@@ -85,6 +85,15 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
             open()
         }
     }, [modalState,open])
+
+
+    const monthRef = useRef(null)
+
+    const scrollOnClick = (value) => {
+
+        monthRef.current.scrollTop += value*10;
+
+    }
     
   
     return (
@@ -96,15 +105,17 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
             </div>
 
             
-            <animated.div className="modal-card" style={{y: y, touchAction: 'none'}} {...bindModal()} >
+            <animated.div className="modal-card" style={{y: y, touchAction: 'none'}}  {...bindModal()} ref={monthRef}> 
                 
-                <div className="arrow-1">
+                <div className="arrow-1" onClick={()=>scrollOnClick(-1)}>
                     <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </div>
 
-                <div className="month-picker">
+                <div 
+                    className="month-picker"
+                >
                     { 
                         years.map((yearGroup, index)=>(
 
@@ -129,7 +140,7 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
                                                                 {}
                                                             
                                                             }      
-                                                            onMouseUp ={ () => {navigateToCard(card.month, card.year)} }
+                                                            onClick ={ () => {navigateToCard(card.month, card.year)} }
                                                 > 
                                                         <p className="month-picker-name"
                                                         >
@@ -156,7 +167,7 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
                     }
                 </div>
 
-                <div className="arrow-2">
+                <div className="arrow-2" onClick={()=>scrollOnClick(1)}>
                     <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>

@@ -84,7 +84,7 @@ export const ProfileEdit = () => {
         setOrder([...aux]);
     };
 
-    const onSortOver = () => {
+    const vibrate = () => {
         if (window.navigator && window.navigator.vibrate) {
             navigator.vibrate(100);
         } else {
@@ -176,15 +176,19 @@ export const ProfileEdit = () => {
                     />
                 </div>
 
-                <div className="edit-profile-tab">
-                    <h2> Order </h2>
-                    <hr/>
+                <div className="edit-profile-tab" style={{padding:'0px'}}>
+                    <div className="sortable-container-title">
+                        <h2> Order </h2>
+                    </div>
+                        <hr/>
                     <SortableContainer  
                         onSortEnd={onSortEnd} 
                         useDragHandle 
-                        helperClass="sortableHelper" 
+                        helperClass="sortableHelperEdit" 
                         lockAxis={'y'}
-                        onSortOver={onSortOver}
+                        onSortOver={vibrate}
+                        onSortStart={vibrate}
+                        lockToContainerEdges={true}	
                     >
                         {
                             order.map((element, index)=>(

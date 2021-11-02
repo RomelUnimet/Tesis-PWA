@@ -147,11 +147,31 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     <h2> <b>{filteredEntries.length}</b> </h2>
                     <h4> All Diaries </h4>
                 </div>    
+
+
+                {
+                    userSettings[0].order.map((element)=>{
+
+                        switch (element) {
+                            case 'photos':
+                                
+                                return <ProfileAllPhotos allImg={allImg} key={'photos'} />
+
+                            case 'tags':
+                                
+                                return <ProfileAllTags key={'tags'}/>
+
+                            case 'locations':
+                                
+                                return <ProfileAllLocations ceModalState={ceModalState} key={'locations'}/>
+
+                            default:
+                                return <ProfileAllWeathers allWeathers={allWeathers} key={'weather'} />
+                        }
+                    })
                 
-                <ProfileAllPhotos allImg={allImg} />
-                <ProfileAllTags/>
-                <ProfileAllLocations ceModalState={ceModalState} />
-                <ProfileAllWeathers allWeathers={allWeathers} />
+                }
+                
                 
             
             </div>

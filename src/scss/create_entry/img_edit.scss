@@ -53,14 +53,17 @@
 }
 
 .editor-images-container{
-    margin-top: 5rem;
+    position: relative;
+    padding-top: 5rem;
     width: 100%;
 }
 .editor-image-tab{
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: solid $grey-color 1px;
+    background-color: white;
 
     & svg {
         width: 2rem;
@@ -101,8 +104,10 @@
 
 .sortableHelper{
     z-index: 4;
-    opacity: 0.7;
+    opacity: 0.8;
     border-top: solid $grey-color 1px;
+    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 1));
+
 }
 
 .img-edit-drag-handle{

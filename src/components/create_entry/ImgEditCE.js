@@ -60,7 +60,7 @@ export const ImgEditCE = ({imgEditorState, setImgEditorState, entryImgState, set
         swiperRef.current?.swiper.update()
     };
 
-    const onSortOver = () => {
+    const vibrate = () => {
         if (window.navigator && window.navigator.vibrate) {
             navigator.vibrate(100);
          } else {
@@ -190,14 +190,15 @@ export const ImgEditCE = ({imgEditorState, setImgEditorState, entryImgState, set
                 </label>
             </div>
             <div className="editor-images-container">
-
                 <SortableContainer  
                     onSortEnd={onSortEnd} 
                     useDragHandle 
                     helperClass="sortableHelper" 
                     lockAxis={'y'}
-                    onSortOver={onSortOver}
-                    
+                    onSortOver={vibrate}
+                    onSortStart={vibrate}
+                    lockToContainerEdges={true} 
+                    lockOffset={"-40%"}
                 >
                     {
                         entryImgState.map((img, index)=>(

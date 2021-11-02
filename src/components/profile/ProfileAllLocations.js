@@ -8,7 +8,7 @@ export const ProfileAllLocations = ( {ceModalState} ) => {
 
     const {locations} = useSelector(state => state.locations)
 
-    const [center, setcenter] = useState({})
+    const [center, setcenter] = useState({lat: 0, lng:0})
 
     useEffect(() => {
 
@@ -62,7 +62,7 @@ export const ProfileAllLocations = ( {ceModalState} ) => {
 
                 <GoogleMap
                     mapContainerClassName="all-location-map"
-                    zoom= {1}
+                    zoom= {1} //Ver si cambiar
                     center= {center}
                     options = {options}
                     clickableIcons={false}
