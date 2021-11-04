@@ -140,3 +140,86 @@
     font-weight: 500;
 }
 
+//BackUp Restore
+
+.padding-div-br{
+    padding: 0 5% 0 5%;
+}
+.b-r-section-container{
+    & h2 {
+        font-size: 0.8rem;
+        margin-top: 0.8rem;
+    }
+
+    & p {
+        font-size: 0.7rem;
+        font-weight: 300;
+        color: $grey-color;
+        margin: 0.8rem 0 0.8rem 0;
+
+    }
+
+    & hr {
+        margin: 0.6rem 0;
+    }
+
+    & h3 {
+        font-weight: 400;
+        font-size: 0.9rem;
+    }
+}
+
+.select-date-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    
+    & p {
+        color: $black-color;
+        font-weight: 700;
+        font-size: 0.75rem;
+        margin: 0.4rem 0 0.4rem 0;
+    }
+}
+
+.backup-files-container{
+    margin-bottom: 3rem;
+}
+
+.backup-file{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & .arrow-b-r {
+        height: 1rem;
+        width: auto;
+        margin: 0;
+        stroke: $grey-color;
+        transform: rotate(-90deg);
+    }
+}
+
+.backup-name-data {
+    display: flex;
+    align-items: center;
+    & p {
+        margin: 0px;
+    }
+}
+
+.b-r-button-blue{
+    color: white;
+    background-color: $accent-blue;
+    width: 100%;
+    padding: 0.5rem 0 0.5rem 0 ;
+    border: none;
+    border-radius: 100rem;
+    margin: 0.6rem 0;
+}
+
+
+
+
+
