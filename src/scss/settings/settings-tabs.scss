@@ -191,6 +191,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    height: 3rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #e9e9e9;
 
     & .arrow-b-r {
         height: 1rem;
@@ -216,7 +220,14 @@
     padding: 0.5rem 0 0.5rem 0 ;
     border: none;
     border-radius: 100rem;
-    margin: 0.6rem 0;
+    margin: 0.6rem 0 1rem 0;
+}
+
+.input-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
 }
 
 
