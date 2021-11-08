@@ -13,6 +13,8 @@ import {
     Type as ListType
   } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { restoreFromBackupFile } from '../../actions/extra';
 
 
 
@@ -23,6 +25,8 @@ export const BackupRestoreScreen = () => {
     const [variants] = useNavAnimation('profile')
 
     const history = useHistory()
+
+    const {cards} = useSelector(state => state.cards)
 
     const [backUps, setbackUps] = useState([])
 
@@ -36,6 +40,8 @@ export const BackupRestoreScreen = () => {
         time: new Date()
         
     })
+
+    const dispatch = useDispatch()
 
     const fileInput = useRef();
 
@@ -66,6 +72,8 @@ export const BackupRestoreScreen = () => {
 
         await getBackupData( startDayPicker.time, endDayPicker.time );
         await getBackupDataFromIndexedDB()
+
+        //TRIGGER WEBSHARE CON LA ULTIMA DATA CREADA
 
     }
 
@@ -102,27 +110,6 @@ export const BackupRestoreScreen = () => {
     
     }
 
-    /*
-    //BASES DEL JSON
-    const downloadBackup = async () => {
-
-        const data =  await getBackupData()
-
-        const fileName = "data.json"
-
-        var a = document.createElement("a"); 
-        document.body.appendChild(a); 
-        a.style = "display: none"; 
-        var json = JSON.stringify(data), 
-            blob = new Blob([json], {type:"text/json"}), 
-            url = window.URL.createObjectURL(blob); 
-        a.href = url; 
-        a.download = fileName; 
-        a.click(); 
-        window.URL.revokeObjectURL(url);
-    }
-    */
-
     //SWIPE TO DELETE
     const trailingActions = ( backUP ) => (
         <TrailingActions>
@@ -155,7 +142,19 @@ export const BackupRestoreScreen = () => {
     }
 
     const inputJsonBackUp = () => {
-        console.log(fileInput.current?.files[0])
+        
+        const reader = new FileReader();
+        reader.onload = onReaderLoad;
+        reader.readAsText(fileInput.current?.files[0]);
+        
+        function onReaderLoad(event){
+            const backupFileJson = JSON.parse(event.target.result);
+            //console.log(backupFileJson);
+            
+            dispatch( restoreFromBackupFile(backupFileJson, cards[0].uid) )
+
+        }
+    
     }
 
     useEffect(() => {

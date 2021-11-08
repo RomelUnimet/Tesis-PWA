@@ -153,15 +153,15 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     userSettings[0].order.map((element)=>{
 
                         switch (element) {
-                            case 'photos':
+                            case 'Photos':
                                 
                                 return <ProfileAllPhotos allImg={allImg} key={'photos'} />
 
-                            case 'tags':
+                            case 'Tag':
                                 
                                 return <ProfileAllTags key={'tags'}/>
 
-                            case 'locations':
+                            case 'Location':
                                 
                                 return <ProfileAllLocations ceModalState={ceModalState} key={'locations'}/>
 
