@@ -14,25 +14,60 @@ import { motion } from 'framer-motion';
 
 export const EditEntryModal = ({EditModalState, setEditModalState, entry}) => {
      
-    const [datePickerState, setDatePicker] = useState({
-        time: entry?.date,
-        isOpen: false
-    });
-
+    
     const [modalState, setModalState] = useState({
         weather:'',
         tags:[],
         locations:[],
         show:false,
     })
-
+    
     const [selectedWeather, setSelectedWeather] = useState(entry?.weather);
-
+    
     const [tagsCE, setTagsCE] = useState(entry?.tags);
-
+    
     const [locationCE, setLocationCE] = useState(entry?.location);
-
+    
     const [fullscreen, setfullscreen] = useState(false)
+
+    const monthMap = {
+        '1': 'Jan',
+        '2': 'Feb',
+        '3': 'Mar',
+        '4': 'Apr',
+        '5': 'May',
+        '6': 'Jun',
+        '7': 'Jul',
+        '8': 'Aug',
+        '9': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Dec',
+    };
+
+    const dateConfig = {
+        'date': {
+            format: 'DD',
+            caption: 'Day',
+            step: 1,
+        },
+        'month': {
+            format: value => monthMap[value.getMonth() + 1],
+            caption: 'Month',
+            step: 1,
+        },
+        'year': {
+            format: 'YYYY',
+            caption: 'Year',
+            step: 1,
+        },
+    };
+
+
+    const [datePickerState, setDatePicker] = useState({
+        time: entry?.date,
+        isOpen: false
+    });
 
     const handleClick = () => {
         setDatePicker({...datePickerState, isOpen: true });
@@ -212,6 +247,7 @@ export const EditEntryModal = ({EditModalState, setEditModalState, entry}) => {
                     <DatePicker //Tengo que separar este componente //Esto puedo cambiarlo cuando yo quiera ya que es diferente en cada interfaz
                         value={datePickerState.time}
                         isOpen={datePickerState.isOpen}
+                        dateConfig={dateConfig}
                         onSelect={handleSelect}
                         onCancel={handleCancel}
                         theme={'android'}

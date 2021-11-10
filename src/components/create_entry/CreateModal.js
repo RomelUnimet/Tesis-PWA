@@ -16,25 +16,59 @@ import { motion } from 'framer-motion';
 
 export const CreateModal = ({CEModalState, setCEModalState}) => {
     
-    const [datePickerState, setDatePicker] = useState({
-        time: new Date(),
-        isOpen: false
-    });
-
+    
     const [modalState, setModalState] = useState({
         weather:'',
         tags:[],
         locations:[],
         show:false,
     })
-
+    
     const [selectedWeather, setSelectedWeather] = useState('none');
-
+    
     const [tagsCE, setTagsCE] = useState([]);
-
+    
     const [locationCE, setLocationCE] = useState('');
-
+    
     const [fullscreen, setfullscreen] = useState(false)
+    
+    const monthMap = {
+        '1': 'January',
+        '2': 'February',
+        '3': 'March',
+        '4': 'April',
+        '5': 'May',
+        '6': 'June',
+        '7': 'July',
+        '8': 'August',
+        '9': 'September',
+        '10': 'October',
+        '11': 'November',
+        '12': 'December',
+    };
+
+    const dateConfig = {
+        'date': {
+            format: 'DD',
+            caption: 'Day',
+            step: 1,
+        },
+        'month': {
+            format: value => monthMap[value.getMonth() + 1],
+            caption: 'Month',
+            step: 1,
+        },
+        'year': {
+            format: 'YYYY',
+            caption: 'Year',
+            step: 1,
+        },
+    };
+
+    const [datePickerState, setDatePicker] = useState({
+        time: new Date(),
+        isOpen: false
+    });
 
     const handleClick = () => {
         setDatePicker({...datePickerState, isOpen: true });
@@ -146,13 +180,6 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
 
     //ANIMATION
     const SCREEN_HEIGHT = window.innerHeight;
-    /*
-    const transition = useTransition(CEModalState, {
-        from: {x:0, y:SCREEN_HEIGHT},
-        enter: {x:0, y:0},
-        leave: {x:0, y:SCREEN_HEIGHT},
-    });
-    */
 
     const resetValues = () => {
         setTitle('')
@@ -201,6 +228,7 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                     <DatePicker //Tengo que separar este componente //Esto puedo cambiarlo cuando yo quiera ya que es diferente en cada interfaz
                         value={datePickerState.time}
                         isOpen={datePickerState.isOpen}
+                        dateConfig={dateConfig}
                         onSelect={handleSelect}
                         onCancel={handleCancel}
                         theme={'ios'}

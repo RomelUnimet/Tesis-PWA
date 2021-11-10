@@ -30,6 +30,40 @@ export const BackupRestoreScreen = () => {
 
     const [backUps, setbackUps] = useState([])
 
+    const monthMap = {
+        '1': 'Jan',
+        '2': 'Feb',
+        '3': 'Mar',
+        '4': 'Apr',
+        '5': 'May',
+        '6': 'Jun',
+        '7': 'Jul',
+        '8': 'Aug',
+        '9': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Dec',
+    };
+
+    const dateConfig = {
+        'date': {
+            format: 'DD',
+            caption: 'Day',
+            step: 1,
+        },
+        'month': {
+            format: value => monthMap[value.getMonth() + 1],
+            caption: 'Month',
+            step: 1,
+        },
+        'year': {
+            format: 'YYYY',
+            caption: 'Year',
+            step: 1,
+        },
+    };
+
+
     const [startDayPicker, setstartDayPicker] = useState({
         isOpen: false,
         time: new Date(2020,0,1)
@@ -221,10 +255,10 @@ export const BackupRestoreScreen = () => {
                                     <DatePicker //Tengo que separar este componente //Esto puedo cambiarlo cuando yo quiera ya que es diferente en cada interfaz
                                         value={startDayPicker.time}
                                         isOpen={startDayPicker.isOpen}
+                                        dateConfig={dateConfig}
                                         onSelect={handleSelectStart}
                                         onCancel={handleCancelStart}
                                         theme={'ios'}
-                                        showHeader={true}
                                         min={new Date(2020,0,1)}
                                         max={new Date(2023,0,1)}
                                         confirmText={'Done'}
@@ -253,10 +287,10 @@ export const BackupRestoreScreen = () => {
                                     <DatePicker //Tengo que separar este componente //Esto puedo cambiarlo cuando yo quiera ya que es diferente en cada interfaz
                                         value={endDayPicker.time}
                                         isOpen={endDayPicker.isOpen}
+                                        dateConfig={dateConfig}
                                         onSelect={handleSelectEnd}
                                         onCancel={handleCancelEnd}
                                         theme={'ios'}
-                                        showHeader={true}
                                         min={new Date(2020,0,1)}
                                         max={new Date(2023,0,1)}
                                         confirmText={'Done'}
