@@ -1,10 +1,10 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import '../../scss/entries/save-entry-img.scss';
 import { useSelector } from 'react-redux';
 
 import { WeatherFilter } from '../compHelper/WeatherFilter';
 
-import {toJpeg} from 'html-to-image';
+import {toPng} from 'html-to-image';
 
 import { motion } from 'framer-motion';
 
@@ -35,6 +35,7 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
 
     const shareImgRef = useRef()
 
+    /*
     const dataURLtoFile = useCallback(
         (dataurl, filename) => {
             var arr = dataurl.split(","),
@@ -49,25 +50,24 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
           },
         [],
     )
+    */
 
     const shareFile = (file, title, text) => {
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          navigator
-            .share({
-              files: [file],
-              title,
-              text
-            })
-            .then(() => {
-                console.log("Share was successful.")
-                alert("Share was successful")
-                
-            
-        })
-            .catch((error) =>{ 
-                console.log("Sharing failed", error)
-                alert("Sharing failed!")
-            });
+
+                navigator
+                .share({
+                    files: [file],
+                    title,
+                    text
+                })
+                .then(() => {
+                    console.log("Share was successful.")                
+                })
+                    .catch((error) =>{ 
+                        console.log("Sharing failed", error)
+                        alert("Sharing failed!")
+                    });
         } else {
           console.log(`Your system doesn't support sharing files.`);
           alert("Your system doesn't support sharing files")
@@ -76,12 +76,22 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
 
     const shareEntry = () => {
         
-        toJpeg(document.getElementById("entry_img"), { quality: 0.95 }).then(
-          (dataUrl) => {
-            const file = dataURLtoFile(dataUrl, "thanku_poster.png");
-            shareFile(file, "Share Entry", "https://pwacarddiarytesisrc.netlify.app/");
-          }
-        );
+        toPng(document.getElementById("entry_img"))
+            .then(
+            (dataUrl) => {
+
+                const blob = new Blob([dataUrl], {type:"image/png"})
+            
+                const file = new File([blob], 'entry-share.jpeg', {type: "image/png"})
+
+                shareFile(file, "Share Entry", "https://pwacarddiarytesisrc.netlify.app/");
+
+            }
+            ).catch(function (error) {
+
+                console.error('oops, something went wrong!', error);
+
+              });
     };
 
 

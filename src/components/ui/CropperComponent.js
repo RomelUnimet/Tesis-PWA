@@ -7,24 +7,28 @@ import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 
 
-//Pendiente con los Known Issues
-export const CropperComponent = ({ cropperState, setCropperState }) => {
+//Pendiente con los Known Issues                               //Estos tres ultimos params se hicieron para el edit profile
+export const CropperComponent = ({ cropperState, setCropperState, aspect = 7 / 10, isUpdate=true, setImg=null }) => {
 
     const dispatch = useDispatch()
-    const cropperRef = useRef(null);
+    const cropperRef = useRef();
 
     const onCrop = () => {
 
         const imageElement = cropperRef?.current;
         const cropper = imageElement?.cropper;
-
-        console.log(cropper)
       
         //Creo que debo bajarle la resolucion a la imagen en algun punto
         const croppedImg = cropper.getCroppedCanvas().toDataURL( 'image/', 0.5 ); //Numero 1 representa la calidad de la img y va de 0.1 a 1
         
+        if(isUpdate){
 
-        dispatch(cardUpdatePhoto(croppedImg, cropperState.card));
+            dispatch(cardUpdatePhoto(croppedImg, cropperState.card));
+        } else {
+
+            setImg(croppedImg);
+            
+        }
 
         cancel();
     };
@@ -44,9 +48,9 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
     //PARA QUE LAS IMG VERTICALES NO SE COMPORTEN RARO
     useEffect(() => {
 
-        //cropperRef?.current?.cropper.rotateTo(0)
+        reset()
 
-    }, [])
+    }, [cropperRef])
 
     //ANIMATION
     const SCREEN_HEIGHT = window.innerHeight;
@@ -62,7 +66,7 @@ export const CropperComponent = ({ cropperState, setCropperState }) => {
         >
             <Cropper
                 style={{ height: '60%', width: "100%" }}
-                aspectRatio={ 7 / 10 }
+                aspectRatio={ aspect }
                 viewMode={3}
                 background={false}
                 responsive={false}

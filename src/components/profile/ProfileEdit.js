@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import '../../scss/profile/edit-profile.scss'
 import { useHistory } from 'react-router'
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import {  useDispatch, useSelector } from 'react-redux'
 import { useForm } from '../../hooks/useForm'
 
@@ -13,6 +13,7 @@ import {
 import {arrayMoveImmutable} from 'array-move';
 import { useNavAnimation } from '../../hooks/navAnimationHook'
 import { updateSettings } from '../../actions/settings'
+import { CropperComponent } from '../ui/CropperComponent'
 
 export const ProfileEdit = () => {
 
@@ -21,6 +22,11 @@ export const ProfileEdit = () => {
     const {userSettings} = useSelector(state => state.userSettings)
 
     const [order, setOrder] = useState(userSettings[0].order)
+
+    const [cropperState, setCropperState] = useState({
+        show: false,
+        img: ''
+    });
 
     const [ formValues, handleInputChange ] = useForm({
         diaryName: userSettings[0].name,
@@ -45,7 +51,14 @@ export const ProfileEdit = () => {
             
             reader.onload = () => {
 
-                setdiaryImg(reader.result)
+                //setdiaryImg(reader.result)
+
+                setCropperState({
+                    ...cropperState,
+                    show:true,
+                    img: reader.result
+                })
+
             };
         
         }
@@ -116,6 +129,7 @@ export const ProfileEdit = () => {
     ))
 
     return (
+        <>
         <motion.div
             className="profile-edit-container"
             variants={variants}
@@ -124,6 +138,7 @@ export const ProfileEdit = () => {
             exit="out"
             transition={{type:'tween'}}
         >
+
             <div className="top-bar-left-center">
                 <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
                      onClick={goBack}
@@ -136,6 +151,7 @@ export const ProfileEdit = () => {
             <div className="spacing-div">
 
                 <div className="edit-profile-tab">
+                    
                     <h2> DIARY PHOTO </h2>
 
                     <label>
@@ -199,7 +215,24 @@ export const ProfileEdit = () => {
                 </div>
             </div>
 
+
+
             
         </motion.div>
+        <AnimatePresence>
+        
+            { 
+                cropperState.show &&
+                <CropperComponent
+                    cropperState={cropperState}
+                    setCropperState={setCropperState}
+                    aspect={1 / 1}
+                    setImg={setdiaryImg}
+                    isUpdate={false}
+                />
+            }
+
+        </AnimatePresence>
+        </>
     )
 }

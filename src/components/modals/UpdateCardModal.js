@@ -50,11 +50,7 @@ export const UpdateCardModal = ({ modalState, setModalState, cropperState, setCr
                     show:true,
                     img: reader.result
                 })
-                setCropperState({
-                    ...cropperState,
-                    show:true,
-                })
-
+                
                 closeModal();
             };
         
