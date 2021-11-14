@@ -20,6 +20,8 @@ export const ProfileScreen = ( { ceModalState } ) => {
 
     const {entries} = useSelector(state => state.entries)
 
+    const {profileScroll} = useSelector(state => state.scrollMemo)
+
     const filteredEntries = entries.filter( e => e.trash===false)
     
     const getAllImgs = useCallback(
@@ -83,7 +85,7 @@ export const ProfileScreen = ( { ceModalState } ) => {
             out:{x:0, transition:{duration:0} }
         })
         
-    }, [])
+    }, [profileScroll])
 
     //Navigation 
     const dispatch = useDispatch()
@@ -119,6 +121,7 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     diaryName={userSettings[0].name} 
                     visible={visible} 
                     setvariants={setvariants} 
+                    scrollPosition={ref}
                 />
 
                 <div className="profile-container">

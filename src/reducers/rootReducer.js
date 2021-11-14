@@ -6,7 +6,7 @@ import { settingsReducer } from './settingsReducer';
 import { weatherReducer } from './weatherReducer';
 import { tagReducer } from './tagReducer';
 import { locationReducer } from './locationReducer';
-import { pathReducer } from './pathReducer';
+import { scrollMemoReducer } from './scrollMemoReducer';
 import { entryReducer } from './entryReducer';
 import { navigationReducer } from './navigationReducer';
 import { geolocationReducer } from './geolocationReducer';
@@ -20,7 +20,7 @@ export const rootReducer = combineReducers({
     weather: weatherReducer,
     tags: tagReducer,
     locations: locationReducer,
-    lastPath: pathReducer,
+    scrollMemo: scrollMemoReducer,
     entries: entryReducer,
     navigation: navigationReducer,
     geolocation: geolocationReducer

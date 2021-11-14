@@ -2,22 +2,23 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import '../../scss/ui/topbar.scss'
 
-export const TopBarProfile = ({diaryName, visible, setvariants}) => {
+export const TopBarProfile = ({diaryName, visible, setvariants, scrollPosition}) => {
 
     const history = useHistory()
 
     const navigateToSettings = () => {
+
         setvariants({
             initial:{x:-40, transition:{duration:0.35} },
             in:{ x:0,transition:{duration:0.35}},
             out:{x:-40,transition:{duration:0.35}}
         })
+
+
         history.push('profile/settings')
     }
     return (
-        <div className="topbar-container"
-            
-        >
+        <div className="topbar-container">
             <div className="topbar-container-layout">
                 <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"
                     className="search-svg"

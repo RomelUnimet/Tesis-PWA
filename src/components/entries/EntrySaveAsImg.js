@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { WeatherFilter } from '../compHelper/WeatherFilter';
 
-import {toPng} from 'html-to-image';
+import {toJpeg} from 'html-to-image';
 
 import { motion } from 'framer-motion';
 
@@ -76,9 +76,9 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
 
     const shareEntry = () => {
         
-        toPng(document.getElementById("entry_img"))
+        toJpeg(document.getElementById("entry_img"), { quality: 0.95 })
             .then(
-            (dataUrl) => {
+            function (dataUrl) {
 
                 const blob = new Blob([dataUrl], {type:"image/png"})
             
@@ -89,11 +89,12 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
             }
             ).catch(function (error) {
 
-                console.error('oops, something went wrong!', error);
+                alert('oops, something went wrong!', error);
 
               });
     };
 
+ 
 
       
     //NO ME DEJA HACER EL TRIGGER DE LA WEB SHARE API AUTOMATICAMENTE

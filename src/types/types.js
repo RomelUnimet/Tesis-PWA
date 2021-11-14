@@ -23,8 +23,11 @@ export const types = {
     //GEOLOCATION
     geolocationStore: '[geolocation] Store geolocation in state',
 
-    //Routes - Paths
-    lastPathStore: '[routes-path] Store last path/route in state',
+    //Scroll memo
+    storeMemoScrollCardTab: '[scroll memo] Store scroll memorization card tab',
+    storeMemoScrollProfile: '[scroll memo] Store scroll memorization profile',
+    storeCardMemo: '[scroll memo] Store card memorization',
+
 
     //Navigation
     lastCardPathStore: '[navigation] Store last Card Section Path',    

@@ -18,6 +18,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useLastLocation } from 'react-router-last-location';
 import { useLocation } from 'react-router';
 import { storeLastCardPath } from '../../actions/navigation';
+import { storeCardMemoScroll } from '../../actions/scroll';
 
 
 
@@ -28,12 +29,27 @@ export const CardScreen = ( ) => {
         show: false,
         card: {}
     });
+    
+    const {cardMemo} = useSelector(state => state.scrollMemo)
 
-    const [cardModalState, setCardModalState] = useState({
-        show: false,
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-    });
+    const [cardModalState, setCardModalState] = useState(
+        
+            ()=> {
+                if(cardMemo===''){
+                    return {
+                        show: false,
+                        year: new Date().getFullYear(), //Cambiarlo directo aqui
+                        month: new Date().getMonth(),
+                    }
+                }else {
+                    return {
+                        show: false,
+                        year: cardMemo.year, //Cambiarlo directo aqui
+                        month: cardMemo.card,
+                    }
+                }
+            }
+        );
 
     const [cropperState, setCropperState] = useState({
         show: false,
@@ -50,6 +66,7 @@ export const CardScreen = ( ) => {
     const {cards} = useSelector(state => state.cards) //Esto puede traer un error ya que en una instancia es vacio (Probablemente por el dispatch async) => Tal vez necesita un check
 
     const months = cards.filter( (card) => card.year === cardModalState.year )  //Hay que guardar ese Year en un State lo mas probable
+
 
     const swiperRef = useRef(null);  
 
@@ -71,10 +88,9 @@ export const CardScreen = ( ) => {
 
     }, [cardModalState.month, cards]);
 
-    const navigateCard = ( month ) =>{
+    const navigateCard = ( month, speed=200 ) =>{
 
-        swiperRef.current?.swiper.slideTo(month,200);
-        
+        swiperRef.current?.swiper.slideTo(month, speed);
         if(month===11){
             setSwiperPosition({
                 isBeginning: false,
@@ -87,7 +103,6 @@ export const CardScreen = ( ) => {
                 isEnd: false,
             })
         }
-
     }
 
     const checkEnd = () =>{
@@ -118,6 +133,12 @@ export const CardScreen = ( ) => {
             month:swiperRef.current?.swiper.activeIndex,
 
         })
+
+        dispatch( storeCardMemoScroll({ 
+                card: swiperRef.current?.swiper.activeIndex,
+                year: cardModalState.year
+        }))
+  
 
     }
 
@@ -197,6 +218,9 @@ export const CardScreen = ( ) => {
         
     }, [dispatch, pathname])
 
+    
+
+
     if (cards.length===0){
         console.log(cards)
         return(
@@ -206,7 +230,6 @@ export const CardScreen = ( ) => {
                 </>
                 )
     }
-    
     
 
     return (
