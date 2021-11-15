@@ -16,7 +16,7 @@ import { animated, useSpring, config } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
 import { AnimatePresence } from 'framer-motion';
 
-export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmpty, fullscreen, setfullscreen, isEdit=false, setfixedScrolling}) => {
+export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmpty, fullscreen, setfullscreen, isEdit=false}) => {
 
 
     const swiperRef = useRef(null);  
@@ -166,7 +166,6 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
 
     const goToEditImg = (e) => {
         e.preventDefault();
-        setfixedScrolling(false)
         setImgEditorState(true)
     }
 

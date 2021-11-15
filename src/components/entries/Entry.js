@@ -54,7 +54,14 @@ export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState, swip
                     />
             }
 
-            <div style={photos.length!==0? {marginTop:'42vh'}:{}}>
+            {
+                fullscreen &&
+                <div style={{height:'42vh'}}>
+
+                </div>
+            }
+
+            <div>
                 { title!=="" &&
                     <h1
                         style={photos.length!==0? {marginTop:'1.6rem'} : {marginTop:'4rem'}}
