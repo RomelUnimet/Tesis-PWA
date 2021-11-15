@@ -14,7 +14,7 @@ export const useNavAnimation = ( prevPathname = '', initialState = {} ) => {
 
     const [variants, setvariants] = useState(()=>{
 
-        if(lastLocation?.pathname.includes(prevPathname)){ //Poner una manera de que settings funcione
+        if(lastLocation?.pathname.includes(prevPathname)){ 
 
             //CASO ESPECIAL PARA LA NAVEGACION DE SETTINGS
             if(lastLocation?.pathname.includes('/profile/settings/')){
@@ -24,7 +24,6 @@ export const useNavAnimation = ( prevPathname = '', initialState = {} ) => {
                     out:{x:0, transition:{duration:0} }
                     }
             }
-
 
             return  {
                     initial:{x:SCREEN_WIDTH, transition:{ ease:'easeOut'}},
@@ -65,6 +64,7 @@ export const useNavAnimation = ( prevPathname = '', initialState = {} ) => {
     const {navigatingTo} = useSelector(state => state.navigation)
 
     useEffect(() => {
+
         if(!navigatingTo.includes(prevPathname) && navigatingTo!=='' ){ 
             setvariants({
                 initial:{x:0,opacity:1, transition:{duration:0} },
@@ -72,6 +72,7 @@ export const useNavAnimation = ( prevPathname = '', initialState = {} ) => {
                 out:{x:0, opacity:0, transition:{duration:0} }
             })
         }
+
     }, [navigatingTo, prevPathname])
 
     return [ variants, setvariants ];

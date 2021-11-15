@@ -62,6 +62,8 @@ export const Card = ( {cid, color, entries, month, photo, uid, year, modalState,
         history.push(`/cards/detailedcard/${cid}`);
     }
 
+   
+
     return (
         <div className="card-component" style={ hasPhoto? bImgStyles :{backgroundColor:color}}
         onClick={goToCardDetails}

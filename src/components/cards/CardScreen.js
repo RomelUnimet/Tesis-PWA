@@ -24,7 +24,7 @@ import { storeCardMemoScroll } from '../../actions/scroll';
 
 export const CardScreen = ( ) => {
 
-
+  
     const [modalState, setModalState] = useState({
         show: false,
         card: {}
@@ -56,7 +56,6 @@ export const CardScreen = ( ) => {
         card:{},
         img: ''
     });
-    
 
     const [swiperPosition, setSwiperPosition] = useState({
         isEnd: false,

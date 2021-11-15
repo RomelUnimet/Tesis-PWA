@@ -17,6 +17,7 @@ import { TrashScreen } from '../components/settings/trash/TrashScreen';
 
 
 
+
 export const RoutesApp = () => {
 
     //CAMBIE LOS STORES DE ESTA RUTA A LA RUTA PRINCIPAL PARA QUE NO SE LLAMARAN TANTO

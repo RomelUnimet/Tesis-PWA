@@ -21,9 +21,9 @@ export const Navbar = ({CEModalState, setCEModalState, setusedNavbar}) => {
 
       	setTimeout(() => {
         	if(lastCardPath==='' || pathname.includes('/detailed')){
-        		history.push('/cards');
+        		history.replace('/cards');
         	}else{
-          	history.push(lastCardPath)
+          		history.replace(lastCardPath)
         	}
       	}, 25);
       
@@ -35,9 +35,9 @@ export const Navbar = ({CEModalState, setCEModalState, setusedNavbar}) => {
 
       	setTimeout(() => {
         	if(lastProfilePath==='' || pathname.includes('/settings')){
-          		history.push('/profile');
+          		history.replace('/profile');
         	}else{
-        	    history.push(lastProfilePath)
+        	    history.replace(lastProfilePath)
         	}
       	}, 25);
       
