@@ -249,14 +249,15 @@ export const CardScreen = ( ) => {
                     setCardModalState={setCardModalState}
                 />
 
-                <div className="month-selector"
-                    onClick={showCardModal}
-                >
-                    <h1>{cardModalState.year}</h1>
-                    <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" stroke="#333333" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                </div>
+                <div className="card-screen-content-container">
+                    <div className="month-selector"
+                        onClick={showCardModal}
+                    >
+                        <h1>{cardModalState.year}</h1>
+                        <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" stroke="#333333" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                    </div>
                     <Swiper
                         ref={swiperRef}
                         spaceBetween={40}
@@ -293,7 +294,7 @@ export const CardScreen = ( ) => {
 
                     <button className="calendar-btn">CALENDAR</button>
                 
-                    
+                </div>
 
                     {
                         modalState.show &&
