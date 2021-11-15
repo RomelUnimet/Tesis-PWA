@@ -227,6 +227,11 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
     
     }
 
+
+    //Prueba de position fixed
+    const [fixedScrolling, setfixedScrolling] = useState(true)
+
+
     //EVALUAR PASAR LA BARRA DE ARRIBA A OTRO COMPONENTE PARA QUE SEA MAS LIMPIO
     return (
         
@@ -236,6 +241,7 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
             animate={{x:0, y: 0 }}
             exit={{x:0, y: SCREEN_HEIGHT }}
             transition={{duration:0.3}}
+            style={ fixedScrolling? {position: 'fixed'} : {position: 'absolute'} }
         >
             <div className="ce-container">
                         
@@ -295,6 +301,7 @@ export const CreateModal = ({CEModalState, setCEModalState}) => {
                         setImgInputIsEmpty={setImgInputIsEmpty}
                         fullscreen={fullscreen}
                         setfullscreen={setfullscreen}
+                        setfixedScrolling={setfixedScrolling}
                     />
                 }
 
