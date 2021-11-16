@@ -52,21 +52,20 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
     )
     */
 
-    const shareFile = (file, title, text) => {
+    const shareFile = (file, title) => {
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
 
                 navigator
                 .share({
                     files: [file],
                     title,
-                    text
                 })
                 .then(() => {
                     console.log("Share was successful.")                
                 })
                     .catch((error) =>{ 
                         console.log("Sharing failed", error)
-                        alert("Sharing failed!")
+                        alert("Sharing failed!", error)
                     });
         } else {
           console.log(`Your system doesn't support sharing files.`);
@@ -84,7 +83,7 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
             
                 const file = new File([blob], 'entry-share.jpeg', {type: "image/png"})
 
-                shareFile(file, "Share Entry", "https://pwacarddiarytesisrc.netlify.app/");
+                shareFile(file, "PWA CD Share Entry",);
 
             }
             ).catch(function (error) {

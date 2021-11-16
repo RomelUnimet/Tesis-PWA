@@ -33,6 +33,8 @@ const getBackupData = async ( startDate, endDate) => {
     }
 
     await db.collection('backUpData').add({ ...backUpData })
+
+    return backUpData;
 }
 
 

@@ -131,7 +131,7 @@ export const TrashScreen = () => {
 
         <>
             <motion.div
-                style={{height:'100vh', width:'100vw', position: 'absolute', top:0, zIndex:2, backgroundColor:'#ffffff', overflowY:'auto'}} 
+                style={{height:'100vh', width:'100vw', position: 'absolute', top:0, zIndex:2, backgroundColor:'#ffffff', overflowY:'auto',}} 
                 variants={variants}
                     initial="initial"
                     animate="in"

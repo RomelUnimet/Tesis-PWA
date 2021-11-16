@@ -104,10 +104,11 @@ export const BackupRestoreScreen = () => {
 
     const createBackupData = async () => {
 
-        await getBackupData( startDayPicker.time, endDayPicker.time );
-        await getBackupDataFromIndexedDB()
+        const dataToShare = await getBackupData( startDayPicker.time, endDayPicker.time );
 
-        //TRIGGER WEBSHARE CON LA ULTIMA DATA CREADA
+        shareBackupFile(dataToShare);
+
+        await getBackupDataFromIndexedDB()
 
     }
 
@@ -125,7 +126,7 @@ export const BackupRestoreScreen = () => {
           navigator
             .share({
               files: [file],
-              title: 'BackUpData',
+              title: 'PWA CardDiary Share Backup File',
             })
             .then(() => {
                 console.log("Share was successful.")
@@ -135,7 +136,7 @@ export const BackupRestoreScreen = () => {
         })
             .catch((error) =>{ 
                 console.log("Sharing failed", error)
-                alert("Sharing failed!")
+                alert("Sharing failed!", error)
             });
         } else {
           console.log(`Your system doesn't support sharing files.`);
@@ -164,6 +165,7 @@ export const BackupRestoreScreen = () => {
 
     const getBackupDataFromIndexedDB = async () => {
         const data = await db.collection('backUpData').get();
+
         setbackUps([...data])
     }
 
@@ -183,7 +185,6 @@ export const BackupRestoreScreen = () => {
         
         function onReaderLoad(event){
             const backupFileJson = JSON.parse(event.target.result);
-            //console.log(backupFileJson);
             
             dispatch( restoreFromBackupFile(backupFileJson, cards[0].uid) )
 
@@ -206,7 +207,7 @@ export const BackupRestoreScreen = () => {
 
     return (
         <motion.div
-            style={{height:'100vh', width:'100vw', position: 'absolute', top:0, zIndex:2, backgroundColor:'white'}} 
+            style={{height:'100vh', width:'100vw', position: 'absolute', top:0, zIndex:2, backgroundColor:'white', overflowY:'auto'}} 
             variants={variants}
                 initial="initial"
                 animate="in"
@@ -360,7 +361,7 @@ export const BackupRestoreScreen = () => {
 
                         <hr/>
 
-                        <div className="b-r-section-container">
+                        <div className="b-r-section-container" style={{marginBottom:'10rem'}}>
 
                             <h2>Restore</h2>
 
