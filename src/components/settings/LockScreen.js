@@ -36,6 +36,7 @@ export const LockScreen = () => {
 
     const handleCreateCredentials = async (  ) => {
 
+
         let challengeString = generateID()
 
         console.log(userSettings[0].sid)
@@ -58,7 +59,7 @@ export const LockScreen = () => {
               }
             ],
             authenticatorSelection: {
-                authenticatorAttachment: "platform",
+                //authenticatorAttachment: "platform",
                 requireResidentKey: false,
                 userVerification: "discouraged"
             },
