@@ -24,6 +24,9 @@ export const LockScreen = () => {
     const [checked, setChecked] = useState(userSettings[0].auth)
 
 
+    const [state, setstate] = useState('')
+
+
     //String to array buffer
     const str2ab = (str) => {
         var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
@@ -39,47 +42,90 @@ export const LockScreen = () => {
 
         //Puede ser el formado de los Strings
         //Puede ser algo de windows hello
-        let challengeString = generateID()
 
-        console.log(userSettings[0].sid)
-        const optionsFromServer = {
 
-            challenge: str2ab(challengeString), // need to convert to ArrayBuffer
-            rp: { // my website info
-              name: "PWA Card Diary Tesis",
-              id: window.location.hostname  //Revisar cuando se hostee
-            },
-            user: { // user info
-              name: "romeletoty@gmail.com",                  
-              displayName: "Usuario_PWA_Card_Diary",
-              id: str2ab('ABCDEFGHIJKLMNOP') // need to convert to ArrayBuffer
-            },
-            pubKeyCredParams: [
-              {
-                "type": "public-key",
-                "alg": -7 // Accepted Algorithm
-              }
-            ],
-            authenticatorSelection: {
-                authenticatorAttachment: "platform",
-                requireResidentKey: false,
-                userVerification: "discouraged"
-            },
-            timeout: 60000 // in milliseconds
-        };
-
-        console.log(optionsFromServer)
-
-        const credential = await navigator.credentials.create({
-            publicKey: optionsFromServer 
-        });
-
-        console.log(credential)
-        alert(credential.id)
+        try {
+            
+            let challengeString = generateID()
+    
+            console.log(userSettings[0].sid)
+            const optionsFromServer = {
+    
+                challenge: str2ab(challengeString), // need to convert to ArrayBuffer
+                rp: { // my website info
+                  name: "PWA Card Diary Tesis",
+                  id: window.location.hostname  //Revisar cuando se hostee
+                },
+                user: { // user info
+                  name: "romeletoty@gmail.com",                  
+                  displayName: "Usuario_PWA_Card_Diary",
+                  id: str2ab('ABCDEFGHIJKLMNOP') // need to convert to ArrayBuffer
+                },
+                pubKeyCredParams: [
+                  {
+                    "type": "public-key",
+                    "alg": -7 // Accepted Algorithm
+                  }
+                ],
+                authenticatorSelection: {
+                    authenticatorAttachment: "platform",
+                    requireResidentKey: false,
+                    userVerification: "discouraged"
+                },
+                timeout: 60000 // in milliseconds
+            };
+    
+            console.log(optionsFromServer)
+    
+            const credential = await navigator.credentials.create({
+                publicKey: optionsFromServer 
+            });
+    
+            console.log(credential)
+            alert(credential.id)
+    
+            setstate(credential.id)
+        } catch (error) {
+            console.log('ERROR ', error)
+            alert(error)
+        }
 
     }
 
     const testLogin = async () => {
+
+        try {
+            
+            let challengeString = generateID()
+            console.log(state)
+    
+            const optionsFromServer = {
+                challenge: str2ab(challengeString), // Need to convert to ArrayBuffer
+                timeout: 60000,
+                rpId: window.location.hostname,
+                allowCredentials: [
+                  {
+                    type: "public-key",
+                    id: str2ab(state), // Need to convert to ArrayBuffer
+                    transports: ["internal"]
+                  }
+                ]
+            }
+    
+            const assertion = await navigator.credentials.get({
+                publicKey: optionsFromServer
+            });
+    
+            console.log(assertion)
+            alert(assertion.id)
+        } catch (error) {
+            console.log('ERROR, ', error)
+            alert(error)
+        }
+
+
+
+
 
 
         /*
