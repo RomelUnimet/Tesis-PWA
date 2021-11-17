@@ -43,7 +43,6 @@ export const LockScreen = () => {
                         userVerification: "preferred"
                     },
                     timeout: 60000,
-                    attestation: "direct"
                 }
             };
 
