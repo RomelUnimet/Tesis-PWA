@@ -31,9 +31,11 @@ export const createLockIdStore = ( publicKeyID ) => {
 
     return async (dispatch) => {
 
-        await db.collection('lock').set([{
+
+        await db.collection('lock').delete()
+        await db.collection('lock').add({
             publicKeyID: publicKeyID
-        }]);
+        });
         
         dispatch(startLockStore())   
     }

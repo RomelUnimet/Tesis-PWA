@@ -81,6 +81,7 @@ export const LockScreen = () => {
     
             console.log(credential)
             alert(credential.id)
+
     
             dispatch( createLockIdStore(credential.rawId) )
 
@@ -96,7 +97,6 @@ export const LockScreen = () => {
         try {
             
             const [userCredential] = await db.collection('lock').get();
-
 
             let challengeString = generateID()
     
@@ -128,7 +128,6 @@ export const LockScreen = () => {
     const handleAuthSwitch = async () => {
 
         let [newSettings] = userSettings
-
 
         //SI NO ESTA PRENDIDO ANTES DEL CAMBIO HACER EL DISPATCH
         if(!checked){
