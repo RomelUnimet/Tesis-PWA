@@ -17,7 +17,7 @@ const db = new Localbase('pwa-card-diary');
 
 export const LockScreen = () => {
 
-    const [userCredential] = await db.collection('lock').get();
+    const [userCredential] =  db.collection('lock').get();
 
 
     const [variants] = useNavAnimation('profile')
