@@ -17,9 +17,6 @@ const db = new Localbase('pwa-card-diary');
 
 export const LockScreen = () => {
 
-    const [userCredential] =  db.collection('lock').get();
-
-
     const [variants] = useNavAnimation('profile')
 
     const history = useHistory()
@@ -98,9 +95,11 @@ export const LockScreen = () => {
     //Esta fallando el login
     const handleLogin = async () => {
 
+        const [userCredential] = await db.collection('lock').get();
+
+
         try {
             
-            const [userCredential] = await db.collection('lock').get();
 
             let rawID = userCredential.publicKeyID
 
@@ -113,7 +112,7 @@ export const LockScreen = () => {
                 allowCredentials: [
                   {
                     type: "public-key",
-                    id: userCredential.publicKeyID, // Need to convert to ArrayBuffer
+                    id: rawID, // Need to convert to ArrayBuffer
                     transports: ["internal"]
                   }
                 ]
