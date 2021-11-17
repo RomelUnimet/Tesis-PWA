@@ -69,7 +69,8 @@ export const LockScreen = () => {
 
     const testLogin = async () => {
 
-        alert(publicKeyID)
+        alert(publicKeyID.publickKeyID)
+        console.log(publicKeyID.publickKeyID)
 
         try {
                 
@@ -79,7 +80,7 @@ export const LockScreen = () => {
                     allowCredentials: [
                         { 
                             type: "public-key", 
-                            id: Uint8Array.from(publicKeyID, c => c.charCodeAt(0)) , 
+                            id: Uint8Array.from(publicKeyID.publickKeyID, c => c.charCodeAt(0)) , 
                             transports: ["internal"] 
                         },
                     ],
