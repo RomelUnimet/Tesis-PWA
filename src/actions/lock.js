@@ -25,12 +25,12 @@ export const startLockStore = () => {
     }
 }
 
-export const createLockIdStore = ( publickKeyID ) => {
+export const createLockIdStore = ( publicKeyID ) => {
 
     return async (dispatch) => {
 
         await db.collection('lock').set([{
-            publickKeyID: publickKeyID
+            publicKeyID: publicKeyID
         }]);
         
         dispatch(startLockStore())   
@@ -38,10 +38,10 @@ export const createLockIdStore = ( publickKeyID ) => {
 }
 
 
-const finishLockIdStore = ( publickKeyID ) =>{
+const finishLockIdStore = ( publicKeyID ) =>{
 
     return {
         type: types.lockIDStore,
-        payload: publickKeyID
+        payload: publicKeyID
     }
 }

@@ -5,8 +5,9 @@ import { useNavAnimation } from '../../hooks/navAnimationHook'
 import { useHistory } from 'react-router'
 import Switch from "react-switch";
 import { useDispatch, useSelector } from 'react-redux'
-import { createLockIdStore } from '../../actions/lock'
-//import { updateSettings } from '../../actions/settings'
+//import { createLockIdStore } from '../../actions/lock'
+import { updateSettings } from '../../actions/settings'
+import { generateID } from '../../helpers/generateId'
 
 export const LockScreen = () => {
 
@@ -16,58 +17,69 @@ export const LockScreen = () => {
 
     const {userSettings} = useSelector(state => state.userSettings)
 
-    const {publicKeyID} = useSelector(state => state.lock)
-
+    //const {publicKeyID} = useSelector(state => state.lock)
 
     const dispatch = useDispatch()
 
     const [checked, setChecked] = useState(userSettings[0].auth)
 
-    const handleCreateCredentials = async ( newSettings ) => {
-        try {
-            const options = {
-                publicKey: {
-                    challenge: Uint8Array.from(
-                        'UZSK85T9RFC', c => c.charCodeAt(0)),
-                    rp: {
-                        name: "PWACardDiary.com",
-                    },
-                    user: {
-                        id: Uint8Array.from('UKRL45T9AAC', c => c.charCodeAt(0)), //un error puede ser aqui
-                        name: "card-diary-PWA-user@CD-PWA.com",
-                        displayName: "PWA-Card-Diary-User",
-                    },
-                    pubKeyCredParams: [{alg: -7, type: "public-key"}],
-                    authenticatorSelection: {
-                        authenticatorAttachment: "platform",
-                        userVerification: "preferred"
-                    },
-                    timeout: 60000,
-                }
-            };
 
-            //Error en la autenticacion  DOMException: The relying party ID is not a registrable domain suffix of, nor equal to the current domain.
-            console.log(options)
-            const publicKeyCredential = await navigator.credentials.create(options);
-            console.log(publicKeyCredential)
-
-            //Store esto en algun lugar
-            alert(publicKeyCredential.id)
-            //Store en Redux e IndexedDB
-
-            dispatch( createLockIdStore(publicKeyCredential.id) )
-
-
-
-
-        } catch (error) {
-            alert(error)
-            console.log('Error en la autenticacion ',error)
+    //String to array buffer
+    const str2ab = (str) => {
+        var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+        var bufView = new Uint16Array(buf);
+        for (var i=0, strLen=str.length; i < strLen; i++) {
+          bufView[i] = str.charCodeAt(i);
         }
+        return buf;
+      }
+
+    const handleCreateCredentials = async (  ) => {
+
+        let challengeString = generateID()
+
+        console.log(userSettings[0].sid)
+        const optionsFromServer = {
+
+            challenge: str2ab(challengeString), // need to convert to ArrayBuffer
+            rp: { // my website info
+              name: "PWA Card Diary Tesis",
+              id: window.location.hostname  //Revisar cuando se hostee
+            },
+            user: { // user info
+              name: "romeletoty@gmail.com",                  
+              displayName: "Usuario_PWA_Card_Diary",
+              id: str2ab('ABCDEFGHIJKLMNOP') // need to convert to ArrayBuffer
+            },
+            pubKeyCredParams: [
+              {
+                "type": "public-key",
+                "alg": -7 // Accepted Algorithm
+              }
+            ],
+            authenticatorSelection: {
+                authenticatorAttachment: "platform",
+                requireResidentKey: false,
+                userVerification: "discouraged"
+            },
+            timeout: 60000 // in milliseconds
+        };
+
+        console.log(optionsFromServer)
+
+        const credential = await navigator.credentials.create({
+            publicKey: optionsFromServer 
+        });
+
+        console.log(credential)
+        alert(credential)
+
     }
 
     const testLogin = async () => {
 
+
+        /*
         alert(publicKeyID.publickKeyID)
         console.log(publicKeyID.publickKeyID)
 
@@ -99,6 +111,7 @@ export const LockScreen = () => {
             console.log(error)
 
         }
+        */
     }
 
     const handleAuthSwitch = async () => {
@@ -108,22 +121,14 @@ export const LockScreen = () => {
 
         //SI NO ESTA PRENDIDO ANTES DEL CAMBIO HACER EL DISPATCH
         if(!checked){
-            //newSettings.auth = true;
-            //dispatch( updateSettings(newSettings) )
+            newSettings.auth = true;
+            dispatch( updateSettings(newSettings) )
 
             //Aqui debo llamar a Web Auth Api
-            await handleCreateCredentials(newSettings);
-
             
-
         } else {
-            //newSettings.auth = false;
-            //dispatch( updateSettings(newSettings) )
-
-            
-            
-
-            
+            newSettings.auth = false;
+            dispatch( updateSettings(newSettings) )
         }
 
 
@@ -180,6 +185,7 @@ export const LockScreen = () => {
                 </div>
                 <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
 
+                <button onClick={handleCreateCredentials} >Create Credentials</button>
                 <button onClick={testLogin} >Test Login</button>
 
             </div>
