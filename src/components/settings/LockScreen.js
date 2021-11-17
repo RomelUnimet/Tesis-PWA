@@ -84,7 +84,8 @@ export const LockScreen = () => {
             console.log(credential)
             alert(credential.id)
     
-            setstate(credential.id)
+            setstate(credential.rawId)
+
         } catch (error) {
             console.log('ERROR ', error)
             alert(error)
@@ -106,7 +107,7 @@ export const LockScreen = () => {
                 allowCredentials: [
                   {
                     type: "public-key",
-                    id: str2ab(state), // Need to convert to ArrayBuffer
+                    id: state, // Need to convert to ArrayBuffer
                     transports: ["internal"]
                   }
                 ]
