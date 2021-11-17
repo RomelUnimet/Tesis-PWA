@@ -4,8 +4,8 @@ import { motion } from "framer-motion"
 import { useNavAnimation } from '../../hooks/navAnimationHook'
 import { useHistory } from 'react-router'
 import Switch from "react-switch";
-import { useDispatch, useSelector } from 'react-redux'
-import { updateSettings } from '../../actions/settings'
+import { /*useDispatch,*/ useSelector } from 'react-redux'
+//import { updateSettings } from '../../actions/settings'
 
 export const LockScreen = () => {
 
@@ -15,30 +15,98 @@ export const LockScreen = () => {
 
     const {userSettings} = useSelector(state => state.userSettings)
 
-    const dispatch = useDispatch()
+    //const dispatch = useDispatch()
 
     const [checked, setChecked] = useState(userSettings[0].auth)
 
-    const handleAuthSwitch = () => {
+
+    const handleAuthSwitch = async () => {
 
         let [newSettings] = userSettings
 
+
         //SI NO ESTA PRENDIDO ANTES DEL CAMBIO HACER EL DISPATCH
         if(!checked){
-            newSettings.auth = true;
-            dispatch( updateSettings(newSettings) )
+            //newSettings.auth = true;
+            //dispatch( updateSettings(newSettings) )
+
+            //Aqui debi llamar a Web Auth Api
+            try {
+                const options = {
+                    publicKey: {
+                        challenge: Uint8Array.from(
+                            'UZSK85T9RFC', c => c.charCodeAt(0)),
+                        rp: {
+                            name: "PWACardDiary.com",
+                        },
+                        user: {
+                            id: Uint8Array.from(newSettings.sid, c => c.charCodeAt(0)), //un error puede ser aqui
+                            name: "card-diary-PWA-user@CD-PWA.com",
+                            displayName: "PWA-Card-Diary-User",
+                        },
+                        pubKeyCredParams: [{alg: -7, type: "public-key"}],
+                        authenticatorSelection: {
+                            authenticatorAttachment: "platform",
+                            userVerification: "preferred"
+                        },
+                        timeout: 60000,
+                        attestation: "direct"
+                    }
+                };
+
+                //Error en la autenticacion  DOMException: The relying party ID is not a registrable domain suffix of, nor equal to the current domain.
+                console.log(options)
+                const publicKeyCredential = await navigator.credentials.create(options);
+                console.log(publicKeyCredential)
+
+            } catch (error) {
+                alert(error)
+                console.log('Error en la autenticacion ',error)
+            }
+
+            
+
         } else {
-            newSettings.auth = false;
-            dispatch( updateSettings(newSettings) )
+            //newSettings.auth = false;
+            //dispatch( updateSettings(newSettings) )
+
+            /*
+            try {
+                
+                const options = {
+                    publicKey: {
+                        challenge: Uint8Array.from('UZRL45T9AAC', c => c.charCodeAt(0)),  
+                        allowCredentials: [
+                            { type: "public-key", id: Uint8Array.from("UZSL85T9AFC", c => c.charCodeAt(0)) , transports: ["internal"] },
+                            // ... more Credential IDs can be supplied.
+                        ]
+                    }
+                };
+                
+                const publicKeyCredential = await navigator.credentials.get(options);
+    
+                console.log(publicKeyCredential)
+
+            } catch (error) {
+                
+                console.log(error)
+
+            }
+
+            */
+            
         }
 
-        setChecked((s)=>!s)
 
         if (window.navigator && window.navigator.vibrate) {
             navigator.vibrate(100);
         } else {
             console.log('vibrar')
         }
+
+        setChecked((s)=>!s)
+
+
 
     }
 

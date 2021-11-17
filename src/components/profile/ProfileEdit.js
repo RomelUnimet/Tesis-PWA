@@ -88,7 +88,7 @@ export const ProfileEdit = () => {
 
         }
 
-        history.goBack()
+        history.push('/profile')
     }
 
     //Sortable

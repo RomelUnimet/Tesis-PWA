@@ -104,6 +104,7 @@ export const ProfileScreen = ( { ceModalState } ) => {
         })
         history.push('/profile/edit')
     }
+  
 
     return (
         <motion.div

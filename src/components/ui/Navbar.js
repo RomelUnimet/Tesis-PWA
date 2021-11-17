@@ -23,7 +23,13 @@ export const Navbar = ({CEModalState, setCEModalState, setusedNavbar}) => {
         	if(lastCardPath==='' || pathname.includes('/detailed')){
         		history.replace('/cards');
         	}else{
-          		history.replace(lastCardPath)
+				
+				if(history.location.pathname==='/profile'){
+					history.replace(lastCardPath)
+				}else {
+					history.push(lastCardPath)
+				}
+          	
         	}
       	}, 25);
       
@@ -37,7 +43,11 @@ export const Navbar = ({CEModalState, setCEModalState, setusedNavbar}) => {
         	if(lastProfilePath==='' || pathname.includes('/settings')){
           		history.replace('/profile');
         	}else{
-        	    history.replace(lastProfilePath)
+				if(history.location.pathname==='/cards'){
+					history.replace(lastProfilePath)
+				}else {
+					history.push(lastProfilePath)
+				}
         	}
       	}, 25);
       
