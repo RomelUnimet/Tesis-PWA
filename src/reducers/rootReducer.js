@@ -10,6 +10,7 @@ import { scrollMemoReducer } from './scrollMemoReducer';
 import { entryReducer } from './entryReducer';
 import { navigationReducer } from './navigationReducer';
 import { geolocationReducer } from './geolocationReducer';
+import { lockReducer } from './lockReducer';
 
 
 export const rootReducer = combineReducers({
@@ -23,6 +24,7 @@ export const rootReducer = combineReducers({
     scrollMemo: scrollMemoReducer,
     entries: entryReducer,
     navigation: navigationReducer,
-    geolocation: geolocationReducer
+    geolocation: geolocationReducer,
+    lock: lockReducer,
 
 });

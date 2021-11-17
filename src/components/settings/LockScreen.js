@@ -4,7 +4,8 @@ import { motion } from "framer-motion"
 import { useNavAnimation } from '../../hooks/navAnimationHook'
 import { useHistory } from 'react-router'
 import Switch from "react-switch";
-import { /*useDispatch,*/ useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { createLockIdStore } from '../../actions/lock'
 //import { updateSettings } from '../../actions/settings'
 
 export const LockScreen = () => {
@@ -15,10 +16,90 @@ export const LockScreen = () => {
 
     const {userSettings} = useSelector(state => state.userSettings)
 
-    //const dispatch = useDispatch()
+    const {publicKeyID} = useSelector(state => state.lock)
+
+
+    const dispatch = useDispatch()
 
     const [checked, setChecked] = useState(userSettings[0].auth)
 
+    const handleCreateCredentials = async ( newSettings ) => {
+        try {
+            const options = {
+                publicKey: {
+                    challenge: Uint8Array.from(
+                        'UZSK85T9RFC', c => c.charCodeAt(0)),
+                    rp: {
+                        name: "PWACardDiary.com",
+                    },
+                    user: {
+                        id: Uint8Array.from(newSettings.sid, c => c.charCodeAt(0)), //un error puede ser aqui
+                        name: "card-diary-PWA-user@CD-PWA.com",
+                        displayName: "PWA-Card-Diary-User",
+                    },
+                    pubKeyCredParams: [{alg: -7, type: "public-key"}],
+                    authenticatorSelection: {
+                        authenticatorAttachment: "platform",
+                        userVerification: "preferred"
+                    },
+                    timeout: 60000,
+                    attestation: "direct"
+                }
+            };
+
+            //Error en la autenticacion  DOMException: The relying party ID is not a registrable domain suffix of, nor equal to the current domain.
+            console.log(options)
+            const publicKeyCredential = await navigator.credentials.create(options);
+            console.log(publicKeyCredential)
+
+            //Store esto en algun lugar
+            alert(publicKeyCredential.id)
+            //Store en Redux e IndexedDB
+
+            dispatch( createLockIdStore(publicKeyCredential.id) )
+
+
+
+
+        } catch (error) {
+            alert(error)
+            console.log('Error en la autenticacion ',error)
+        }
+    }
+
+    const testLogin = async () => {
+
+        alert(publicKeyID)
+
+        try {
+                
+            const options = {
+                publicKey: {
+                    challenge: Uint8Array.from('UZRL45T9AAC', c => c.charCodeAt(0)),  
+                    allowCredentials: [
+                        { 
+                            type: "public-key", 
+                            id: Uint8Array.from(publicKeyID, c => c.charCodeAt(0)) , 
+                            transports: ["internal"] 
+                        },
+                    ],
+                    timeout: 60000,
+                }
+            };
+            
+            const publicKeyCredential = await navigator.credentials.get(options);
+
+            console.log(publicKeyCredential)
+
+            alert('Vamos carajo')
+
+        } catch (error) {
+
+            alert(error)
+            console.log(error)
+
+        }
+    }
 
     const handleAuthSwitch = async () => {
 
@@ -30,41 +111,8 @@ export const LockScreen = () => {
             //newSettings.auth = true;
             //dispatch( updateSettings(newSettings) )
 
-            //Aqui debi llamar a Web Auth Api
-            try {
-                const options = {
-                    publicKey: {
-                        challenge: Uint8Array.from(
-                            'UZSK85T9RFC', c => c.charCodeAt(0)),
-                        rp: {
-                            name: "PWACardDiary.com",
-                        },
-                        user: {
-                            id: Uint8Array.from(newSettings.sid, c => c.charCodeAt(0)), //un error puede ser aqui
-                            name: "card-diary-PWA-user@CD-PWA.com",
-                            displayName: "PWA-Card-Diary-User",
-                        },
-                        pubKeyCredParams: [{alg: -7, type: "public-key"}],
-                        authenticatorSelection: {
-                            authenticatorAttachment: "platform",
-                            userVerification: "preferred"
-                        },
-                        timeout: 60000,
-                        attestation: "direct"
-                    }
-                };
-
-                //Error en la autenticacion  DOMException: The relying party ID is not a registrable domain suffix of, nor equal to the current domain.
-                console.log(options)
-                const publicKeyCredential = await navigator.credentials.create(options);
-                console.log(publicKeyCredential)
-
-                alert(publicKeyCredential.id)
-
-            } catch (error) {
-                alert(error)
-                console.log('Error en la autenticacion ',error)
-            }
+            //Aqui debo llamar a Web Auth Api
+            await handleCreateCredentials(newSettings);
 
             
 
@@ -73,28 +121,7 @@ export const LockScreen = () => {
             //dispatch( updateSettings(newSettings) )
 
             
-            try {
-                
-                const options = {
-                    publicKey: {
-                        challenge: Uint8Array.from('UZRL45T9AAC', c => c.charCodeAt(0)),  
-                        allowCredentials: [
-                            { type: "public-key", id: Uint8Array.from("UZSL85T9AFC", c => c.charCodeAt(0)) , transports: ["internal"] },
-                            // ... more Credential IDs can be supplied.
-                        ]
-                    }
-                };
-                
-                const publicKeyCredential = await navigator.credentials.get(options);
-    
-                console.log(publicKeyCredential)
-
-            } catch (error) {
-
-                alert(error)
-                console.log(error)
-
-            }
+            
 
             
         }
@@ -152,6 +179,8 @@ export const LockScreen = () => {
                     />
                 </div>
                 <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
+
+                <button onClick={testLogin} >Test Login</button>
 
             </div>
 

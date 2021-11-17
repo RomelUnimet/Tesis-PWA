@@ -22,6 +22,7 @@ import { startGetWeather } from '../actions/extra';
 import { startTagStore } from '../actions/tag'
 import { startLocationStore } from '../actions/location'
 import { startEntryStore } from '../actions/entry'
+import { startLockStore } from '../actions/lock';
 
 export const AppRouter = () => {
 
@@ -36,6 +37,7 @@ export const AppRouter = () => {
         dispatch( startLocationStore() );
         dispatch( startEntryStore() );
         dispatch( startGetWeather() );
+        dispatch( startLockStore() )
         
     }, [dispatch])
 
