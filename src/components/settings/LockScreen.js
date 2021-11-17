@@ -8,6 +8,12 @@ import { useDispatch, useSelector } from 'react-redux'
 //import { createLockIdStore } from '../../actions/lock'
 import { updateSettings } from '../../actions/settings'
 import { generateID } from '../../helpers/generateId'
+import { createLockIdStore } from '../../actions/lock'
+
+import Localbase from 'localbase';
+
+
+const db = new Localbase('pwa-card-diary');
 
 export const LockScreen = () => {
 
@@ -17,15 +23,9 @@ export const LockScreen = () => {
 
     const {userSettings} = useSelector(state => state.userSettings)
 
-    //const {publicKeyID} = useSelector(state => state.lock)
-
     const dispatch = useDispatch()
 
     const [checked, setChecked] = useState(userSettings[0].auth)
-
-
-    const [state, setstate] = useState('')
-
 
     //String to array buffer
     const str2ab = (str) => {
@@ -39,10 +39,8 @@ export const LockScreen = () => {
 
     const handleCreateCredentials = async (  ) => {
 
-
         //Puede ser el formado de los Strings
         //Puede ser algo de windows hello
-
 
         try {
             
@@ -57,7 +55,7 @@ export const LockScreen = () => {
                   id: window.location.hostname  //Revisar cuando se hostee
                 },
                 user: { // user info
-                  name: "romeletoty@gmail.com",                  
+                  name: "pwa_card_diary_user@gmail.com",                  
                   displayName: "Usuario_PWA_Card_Diary",
                   id: str2ab('ABCDEFGHIJKLMNOP') // need to convert to ArrayBuffer
                 },
@@ -84,7 +82,7 @@ export const LockScreen = () => {
             console.log(credential)
             alert(credential.id)
     
-            setstate(credential.rawId)
+            dispatch( createLockIdStore(credential.rawId) )
 
         } catch (error) {
             console.log('ERROR ', error)
@@ -93,12 +91,14 @@ export const LockScreen = () => {
 
     }
 
-    const testLogin = async () => {
+    const handleLogin = async () => {
 
         try {
             
+            const [userCredential] = await db.collection('lock').get();
+
+
             let challengeString = generateID()
-            console.log(state)
     
             const optionsFromServer = {
                 challenge: str2ab(challengeString), // Need to convert to ArrayBuffer
@@ -107,7 +107,7 @@ export const LockScreen = () => {
                 allowCredentials: [
                   {
                     type: "public-key",
-                    id: state, // Need to convert to ArrayBuffer
+                    id: userCredential.publicKeyID, // Need to convert to ArrayBuffer
                     transports: ["internal"]
                   }
                 ]
@@ -123,45 +123,6 @@ export const LockScreen = () => {
             console.log('ERROR, ', error)
             alert(error)
         }
-
-
-
-
-
-
-        /*
-        alert(publicKeyID.publickKeyID)
-        console.log(publicKeyID.publickKeyID)
-
-        try {
-                
-            const options = {
-                publicKey: {
-                    challenge: Uint8Array.from('UZRL45T9AAC', c => c.charCodeAt(0)),  
-                    allowCredentials: [
-                        { 
-                            type: "public-key", 
-                            id: Uint8Array.from(publicKeyID.publickKeyID, c => c.charCodeAt(0)) , 
-                            transports: ["internal"] 
-                        },
-                    ],
-                    timeout: 60000,
-                }
-            };
-            
-            const publicKeyCredential = await navigator.credentials.get(options);
-
-            console.log(publicKeyCredential)
-
-            alert('Vamos carajo')
-
-        } catch (error) {
-
-            alert(error)
-            console.log(error)
-
-        }
-        */
     }
 
     const handleAuthSwitch = async () => {
@@ -171,27 +132,43 @@ export const LockScreen = () => {
 
         //SI NO ESTA PRENDIDO ANTES DEL CAMBIO HACER EL DISPATCH
         if(!checked){
+
             newSettings.auth = true;
             dispatch( updateSettings(newSettings) )
 
             //Aqui debo llamar a Web Auth Api
+            await handleCreateCredentials()
+
+            if (window.navigator && window.navigator.vibrate) {
+                navigator.vibrate(100);
+            } else {
+                console.log('vibrar')
+            }
+    
+            setChecked((s)=>!s)
             
         } else {
-            newSettings.auth = false;
-            dispatch( updateSettings(newSettings) )
+
+            try {
+                await handleLogin()
+
+                newSettings.auth = false;
+                dispatch( updateSettings(newSettings) )
+
+                if (window.navigator && window.navigator.vibrate) {
+                    navigator.vibrate(100);
+                } else {
+                    console.log('vibrar')
+                }
+        
+                setChecked((s)=>!s)
+
+            } catch (error) {
+                
+                alert('Login Failed')
+
+            }
         }
-
-
-        if (window.navigator && window.navigator.vibrate) {
-            navigator.vibrate(100);
-        } else {
-            console.log('vibrar')
-        }
-
-        setChecked((s)=>!s)
-
-
-
     }
 
 
@@ -236,7 +213,7 @@ export const LockScreen = () => {
                 <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
 
                 <button onClick={handleCreateCredentials} >Create Credentials</button>
-                <button onClick={testLogin} >Test Login</button>
+                <button onClick={handleLogin} >Test Login</button>
 
             </div>
 
