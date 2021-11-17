@@ -34,7 +34,7 @@ export const createLockIdStore = ( publicKeyID ) => {
 
         await db.collection('lock').delete()
         await db.collection('lock').add({
-            publicKeyID: publicKeyID
+            publicKeyID
         });
         
         dispatch(startLockStore())   

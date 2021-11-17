@@ -35,7 +35,7 @@ export const LockScreen = () => {
           bufView[i] = str.charCodeAt(i);
         }
         return buf;
-      }
+    }
 
     const handleCreateCredentials = async (  ) => {
 
@@ -46,7 +46,6 @@ export const LockScreen = () => {
             
             let challengeString = generateID()
     
-            console.log(userSettings[0].sid)
             const optionsFromServer = {
     
                 challenge: str2ab(challengeString), // need to convert to ArrayBuffer
@@ -73,16 +72,13 @@ export const LockScreen = () => {
                 timeout: 60000 // in milliseconds
             };
     
-            console.log(optionsFromServer)
     
             const credential = await navigator.credentials.create({
                 publicKey: optionsFromServer 
             });
     
-            console.log(credential)
             alert(credential.id)
 
-    
             dispatch( createLockIdStore(credential.rawId) )
 
         } catch (error) {
@@ -94,15 +90,11 @@ export const LockScreen = () => {
 
     //Esta fallando el login
     const handleLogin = async () => {
-
-        const [userCredential] = await db.collection('lock').get();
-
-
+        
         try {
+
+            const [userCredential] = await db.collection('lock').get();
             
-
-            let rawID = userCredential.publicKeyID
-
             let challengeString = generateID()
     
             const optionsFromServer = {
@@ -112,7 +104,7 @@ export const LockScreen = () => {
                 allowCredentials: [
                   {
                     type: "public-key",
-                    id: rawID, // Need to convert to ArrayBuffer
+                    id: userCredential.publicKeyID, // Need to convert to ArrayBuffer
                     transports: ["internal"]
                   }
                 ]
@@ -154,6 +146,7 @@ export const LockScreen = () => {
         } else {
 
             try {
+
                 await handleLogin()
 
                 newSettings.auth = false;
