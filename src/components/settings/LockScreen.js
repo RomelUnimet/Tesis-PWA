@@ -59,6 +59,8 @@ export const LockScreen = () => {
                 const publicKeyCredential = await navigator.credentials.create(options);
                 console.log(publicKeyCredential)
 
+                alert(publicKeyCredential.id)
+
             } catch (error) {
                 alert(error)
                 console.log('Error en la autenticacion ',error)
@@ -70,7 +72,7 @@ export const LockScreen = () => {
             //newSettings.auth = false;
             //dispatch( updateSettings(newSettings) )
 
-            /*
+            
             try {
                 
                 const options = {
@@ -88,12 +90,12 @@ export const LockScreen = () => {
                 console.log(publicKeyCredential)
 
             } catch (error) {
-                
+
+                alert(error)
                 console.log(error)
 
             }
 
-            */
             
         }
 
