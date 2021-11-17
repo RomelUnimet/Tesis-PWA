@@ -33,7 +33,7 @@ export const LockScreen = () => {
                         name: "PWACardDiary.com",
                     },
                     user: {
-                        id: Uint8Array.from(newSettings.sid, c => c.charCodeAt(0)), //un error puede ser aqui
+                        id: Uint8Array.from('UKRL45T9AAC', c => c.charCodeAt(0)), //un error puede ser aqui
                         name: "card-diary-PWA-user@CD-PWA.com",
                         displayName: "PWA-Card-Diary-User",
                     },
