@@ -14,8 +14,6 @@ export const startLockStore = () => {
 
         let key;
 
-        console.log(publicKeyIDArray.length)
-
         if(publicKeyIDArray.length === 0){
             key=''
         }else{

@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux'
 //import { createLockIdStore } from '../../actions/lock'
 import { updateSettings } from '../../actions/settings'
 import { generateID } from '../../helpers/generateId'
-import { createLockIdStore } from '../../actions/lock'
 
 import Localbase from 'localbase';
 
@@ -25,7 +24,10 @@ export const LockScreen = () => {
 
     const dispatch = useDispatch()
 
+    console.log(userSettings)
+
     const [checked, setChecked] = useState(userSettings[0].auth)
+
 
     //String to array buffer
     const str2ab = (str) => {
@@ -79,7 +81,7 @@ export const LockScreen = () => {
     
             alert(credential.id)
 
-            dispatch( createLockIdStore(credential.rawId) )
+            //dispatch( createLockIdStore(credential.rawId) ) //ESTE DISPATCH ES EL QUE GENERABA ERRORES
 
         } catch (error) {
             console.log('ERROR ', error)
@@ -129,11 +131,12 @@ export const LockScreen = () => {
         //SI NO ESTA PRENDIDO ANTES DEL CAMBIO HACER EL DISPATCH
         if(!checked){
 
+            //Aqui debo llamar a Web Auth Api
+            await handleCreateCredentials()
+
             newSettings.auth = true;
             dispatch( updateSettings(newSettings) )
 
-            //Aqui debo llamar a Web Auth Api
-            await handleCreateCredentials()
 
             if (window.navigator && window.navigator.vibrate) {
                 navigator.vibrate(100);
@@ -150,7 +153,7 @@ export const LockScreen = () => {
                 await handleLogin()
 
                 newSettings.auth = false;
-                dispatch( updateSettings(newSettings) )
+                dispatch( updateSettings(userSettings[0]) )
 
                 if (window.navigator && window.navigator.vibrate) {
                     navigator.vibrate(100);
