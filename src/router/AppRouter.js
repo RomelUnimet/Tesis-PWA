@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import {
     Switch,
     Redirect,
@@ -34,10 +34,7 @@ export const AppRouter = () => {
 
     const dispatch = useDispatch();
 
-    const btnref = useRef()
-
-    useEffect(() => {
-        
+    useEffect(  () => {
     
         dispatch( startChecking() );
         dispatch( startSettingsStore() );
@@ -47,19 +44,13 @@ export const AppRouter = () => {
         dispatch( startEntryStore() );
         dispatch( startGetWeather() );
         
-        setTimeout(() => {
-            
-            btnref.current.click()
-            
-        }, 1000);
-
     }, [dispatch])
 
-   
-
-    const handleAuth = async () => {
-
-        const [userSettings] = await db.collection('userSettings').get();
+    useEffect(() => {
+        //Funcion para trigger la Autenticacion de la pagina
+        async function runAuth() {
+            
+            const [userSettings] = await db.collection('userSettings').get();
 
             if( !!userSettings && userSettings.auth && navigator.credentials ){ //si no esta inicuado fa ettor
                 //PONER A TRIGGER AUTH COMO UN HELPER QUE SE USE EN LOCK COMO AQUI
@@ -75,22 +66,27 @@ export const AppRouter = () => {
         
                 } catch (error) {
         
-                    alert(error)
-                    alert('Cant Identify')
+                    alert('WebAuthn Doesnt Allow to call Create if its not triggered by an user action')
                     
                 }
             }
-        
-    }
+        }
+                
+        runAuth();
+    }, [])
+
+
 
     const { checking, uid } = useSelector( state => state.auth);
-
-    console.log(checking)
   
     const location = useLocation();
 
 
- 
+    if ( checking ) {
+        return (<h5>Espere...</h5>);
+        //Componente de espera
+    }
+
     return (
         
             <div>
@@ -117,8 +113,6 @@ export const AppRouter = () => {
                         <Redirect to="" />   
                     </Switch>
                 </AnimatePresence>
-
-                <button ref={btnref} onClick={handleAuth} style={{display:'none'}}></button>
 
             </div>
         
