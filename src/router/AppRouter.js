@@ -49,6 +49,11 @@ export const AppRouter = () => {
             
             const [userSettings] = await db.collection('userSettings').get();
 
+            if(!navigator.credentials.preventSilentAccess){
+                alert('No previene el Silent Acces')
+            }
+
+
             if( !!userSettings && userSettings.auth && navigator.credentials ){ //si no esta inicuado fa ettor
                 //PONER A TRIGGER AUTH COMO UN HELPER QUE SE USE EN LOCK COMO AQUI
                 try {
