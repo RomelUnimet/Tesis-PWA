@@ -112,9 +112,6 @@ export const LockScreen = () => {
                 Toggle
             </button>
             
-            
-
-
         </motion.div>
     )
 }
