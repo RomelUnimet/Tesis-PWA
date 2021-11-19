@@ -23,11 +23,7 @@ import { startTagStore } from '../actions/tag'
 import { startLocationStore } from '../actions/location'
 import { startEntryStore } from '../actions/entry'
 
-import Localbase from 'localbase';
-import { creteOptionsObject } from '../helpers/createOptionsCredential';
 
-
-const db = new Localbase('pwa-card-diary');
 
 
 export const AppRouter = () => {
@@ -44,39 +40,7 @@ export const AppRouter = () => {
         dispatch( startEntryStore() );
         dispatch( startGetWeather() );
 
-        //Funcion para trigger la Autenticacion de la pagina
-        async function runAuth() {
-            
-            const [userSettings] = await db.collection('userSettings').get();
-
-            if(!navigator.credentials.preventSilentAccess){
-                alert('No previene el Silent Acces')
-            }
-
-
-            if( !!userSettings && userSettings.auth && navigator.credentials ){ //si no esta inicuado fa ettor
-                //PONER A TRIGGER AUTH COMO UN HELPER QUE SE USE EN LOCK COMO AQUI
-                try {
-
-                    const optionsFromServer = creteOptionsObject()
-        
-                    const credential = await navigator.credentials.create({
-                        publicKey: optionsFromServer 
-                    });
-        
-                    console.log(credential)
-        
-                } catch (error) {
-        
-                    alert(error)
-                    alert('Cant Identify')
-                    
-                }
-
-            }
-            
-          }
-          runAuth();
+       
         
     }, [dispatch])
 
