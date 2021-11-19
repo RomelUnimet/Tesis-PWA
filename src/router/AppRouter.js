@@ -47,7 +47,7 @@ export const AppRouter = () => {
         dispatch( startEntryStore() );
         dispatch( startGetWeather() );
         
-
+        btnref.current.click()
     }, [dispatch])
 
    
@@ -79,23 +79,13 @@ export const AppRouter = () => {
     }
 
     const { checking, uid } = useSelector( state => state.auth);
+
+    console.log(checking)
   
     const location = useLocation();
 
 
-    if ( checking ) {
-
-        handleAuth()
-
-        return (
-            <>
-                <h5>Espere...</h5>
-                <button ref={btnref} onClick={handleAuth} style={{display:'none'}}></button>
-            </>
-        );
-        //Componente de espera
-    }
-
+ 
     return (
         
             <div>
@@ -122,6 +112,8 @@ export const AppRouter = () => {
                         <Redirect to="" />   
                     </Switch>
                 </AnimatePresence>
+
+                <button ref={btnref} onClick={handleAuth} style={{display:'none'}}></button>
 
             </div>
         
