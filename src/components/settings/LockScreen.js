@@ -49,7 +49,6 @@ export const LockScreen = () => {
 
         } catch (error) {
 
-            alert('WebAuthn Failed')
             setChecked((s)=>!s);
 
         }

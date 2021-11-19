@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
     Switch,
     Redirect,
@@ -34,6 +34,8 @@ export const AppRouter = () => {
 
     const dispatch = useDispatch();
 
+    const btnref = useRef()
+
     useEffect(() => {
         
     
@@ -45,13 +47,14 @@ export const AppRouter = () => {
         dispatch( startEntryStore() );
         dispatch( startGetWeather() );
         
+
     }, [dispatch])
 
-    useEffect(() => {
-        //Funcion para trigger la Autenticacion de la pagina
-        async function runAuth() {
-            
-            const [userSettings] = await db.collection('userSettings').get();
+   
+
+    const handleAuth = async () => {
+
+        const [userSettings] = await db.collection('userSettings').get();
 
             if( !!userSettings && userSettings.auth && navigator.credentials ){ //si no esta inicuado fa ettor
                 //PONER A TRIGGER AUTH COMO UN HELPER QUE SE USE EN LOCK COMO AQUI
@@ -72,12 +75,8 @@ export const AppRouter = () => {
                     
                 }
             }
-        }
-                
-        runAuth();
-    }, [])
-
-
+        
+    }
 
     const { checking, uid } = useSelector( state => state.auth);
   
@@ -85,7 +84,15 @@ export const AppRouter = () => {
 
 
     if ( checking ) {
-        return (<h5>Espere...</h5>);
+
+        handleAuth()
+
+        return (
+            <>
+                <h5>Espere...</h5>
+                <button ref={btnref} onClick={handleAuth} style={{display:'none'}}></button>
+            </>
+        );
         //Componente de espera
     }
 
