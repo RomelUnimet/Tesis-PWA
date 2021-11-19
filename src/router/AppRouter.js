@@ -47,7 +47,12 @@ export const AppRouter = () => {
         dispatch( startEntryStore() );
         dispatch( startGetWeather() );
         
-        btnref.current.click()
+        setTimeout(() => {
+            
+            btnref.current.click()
+            
+        }, 1000);
+
     }, [dispatch])
 
    
