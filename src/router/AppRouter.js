@@ -67,6 +67,7 @@ export const AppRouter = () => {
                 } catch (error) {
         
                     alert('WebAuthn Doesnt Allow to call Create if its not triggered by an user action')
+                    alert(error)
                     
                 }
             }

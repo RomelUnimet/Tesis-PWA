@@ -50,6 +50,7 @@ export const LockScreen = () => {
         } catch (error) {
 
             setChecked((s)=>!s);
+            alert(error)
 
         }
     }
