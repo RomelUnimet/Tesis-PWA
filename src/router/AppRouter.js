@@ -34,7 +34,8 @@ export const AppRouter = () => {
 
     const dispatch = useDispatch();
 
-    useEffect(  () => {
+    useEffect(() => {
+        
     
         dispatch( startChecking() );
         dispatch( startSettingsStore() );
@@ -43,7 +44,10 @@ export const AppRouter = () => {
         dispatch( startLocationStore() );
         dispatch( startEntryStore() );
         dispatch( startGetWeather() );
+        
+    }, [dispatch])
 
+    useEffect(() => {
         //Funcion para trigger la Autenticacion de la pagina
         async function runAuth() {
             
@@ -69,12 +73,9 @@ export const AppRouter = () => {
                 }
             }
         }
-        setTimeout(() => {
                 
-            runAuth();
-        }, 10);
-        
-    }, [dispatch])
+        runAuth();
+    }, [])
 
 
 
