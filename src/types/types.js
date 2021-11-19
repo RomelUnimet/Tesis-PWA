@@ -46,8 +46,4 @@ export const types = {
     //Entries
     entriesStore: '[entry] Store entries in state',
 
-
-    //Lock ID
-    lockIDStore: '[lock] Store credential ID of user'
-
 }

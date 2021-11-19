@@ -25,6 +25,8 @@ export const RoutesApp = () => {
 
     const [CEModalState, setCEModalState] = useState(false);
 
+    
+
     return (
         <>
             <AnimatePresence>
