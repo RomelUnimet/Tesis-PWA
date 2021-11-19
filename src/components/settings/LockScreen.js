@@ -55,6 +55,16 @@ export const LockScreen = () => {
         }
     }
 
+    const handleTurn = () => {
+        let [newSettings] = userSettings
+
+        setChecked((s)=>!s);
+
+        newSettings.auth = !checked;
+
+        dispatch( updateSettings(newSettings) )
+    }
+
 
     return (
         <motion.div
@@ -96,6 +106,14 @@ export const LockScreen = () => {
                 </div>
                 <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
             </div>
+
+
+            <button onClick={handleTurn}>
+                Toggle
+            </button>
+            
+            
+
 
         </motion.div>
     )
