@@ -7,6 +7,9 @@ importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js');
 
 
 
+//POR AHORA ESTE SW LO MANTENEMOS PERO CREO QUE AHORA CAMBIA TODO A FIREBASE-MESSAGING-SW A MENOS DE QUE QUERRAMOS HACERLO DOBLE
+
+
 // Switch debug logging on/off here. Default is on in dev and off in prod.
 workbox.setConfig({debug: false});
 
@@ -18,10 +21,12 @@ workbox.routing.registerRoute(
   
   self.addEventListener('push', function(e) {
 
+      console.log('Notification Recieved')
+
       if (Notification.permission === 'granted') {
 
         var options = {
-          body: 'Here is a notification body!',
+          body: 'Open PWA Card Diary',
           icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg',
           vibrate: [100, 50, 100],
           data: {
@@ -34,10 +39,11 @@ workbox.routing.registerRoute(
           ]
 
         };
-
         e.waitUntil(
+
           self.registration.showNotification('PWA Card Diary Tesis Push', options)
-        )
+          )
+        
       }
   });
 
@@ -58,8 +64,6 @@ self.addEventListener('notificationclick', function(e) {
   }
 });
 
-
-  
 firebase.initializeApp({
   apiKey: "AIzaSyDY0tuyRgv0HVBTnmoYKCSgGWTmkTlg0MA",
   authDomain: "pwa-card-diary-tesis.firebaseapp.com",
@@ -69,4 +73,13 @@ firebase.initializeApp({
   appId: "1:602718662060:web:ea64e957e1f8d249739e09",
   measurementId: "G-R8FG0HMP47"
 });
+
 const messaging = firebase.messaging();
+/*
+messaging.onBackgroundMessage(function(payload) {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+})
+*/
+
+
+  

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../scss/settings/settings-tabs.scss'
 import { motion } from "framer-motion"
 import { useNavAnimation } from '../../hooks/navAnimationHook'
@@ -7,6 +7,8 @@ import Switch from "react-switch";
 import DatePicker from 'react-mobile-datepicker';
 import { useDispatch, useSelector } from 'react-redux'
 import { updateSettings } from '../../actions/settings'
+import { askForPermissionToReceiveNotificationsAlert } from '../../notification';
+
 
 
 export const ReminderScreen = () => {
@@ -19,6 +21,8 @@ export const ReminderScreen = () => {
 
     const dispatch = useDispatch()
 
+    //PARA LA PRUBA DE ENVIAR NOTIFICACIONES AL TELF
+    const [token, settoken] = useState('')
 
     //SWITCH
     const [checked, setChecked] = useState(userSettings[0].notification.active)
@@ -85,6 +89,22 @@ export const ReminderScreen = () => {
         },
         
     }
+
+    useEffect(() => {
+        //PRUEBA PARA LA NOTIFICACIONES
+        async function fetchData() {
+            // You can await here
+            const tokenNotif = await askForPermissionToReceiveNotificationsAlert();
+            settoken(tokenNotif)
+          }
+
+        fetchData()
+    }, [])
+
+   
+
+
+
 
     return (
         <motion.div
@@ -157,6 +177,11 @@ export const ReminderScreen = () => {
                 </div>
 
                 <hr style={{margin:'0.6rem 5% 0.6rem 5%'}} />
+
+                <div>
+
+                    <p > {token} </p>
+                </div>
 
             </div>
             

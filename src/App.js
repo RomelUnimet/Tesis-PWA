@@ -40,6 +40,7 @@ function subscribeUser() {
 subscribeUser()
 
 
+/*
 function displayNotification() {
   if ('Notification' in window && navigator.serviceWorker) {
     if (Notification.permission === 'granted') {
@@ -65,7 +66,9 @@ function displayNotification() {
   }
 }
 
+
 displayNotification()
+*/
 
 
 
