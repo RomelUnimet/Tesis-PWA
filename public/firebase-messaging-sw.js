@@ -34,8 +34,18 @@ const urlsToCache = [
   '/styles/styles.css',
   '/script/webpack-bundle.js',
   '/manifest.json',
-  '/firebase-messaging-sw.js'
+  '/firebase-messaging-sw.js',
+  '/cards',
+  '/static/js/bundle.js',
+  '/static/js/vendors~main.chunk.js',
+  '/static/js/main.chunk.js'
 ];
+
+/*
+/static/js/bundle.js
+/static/js/vendors~main.chunk.js
+/static/js/main.chunk.js
+*/
 
 self.addEventListener('install', function(event) {
 
@@ -50,6 +60,21 @@ self.addEventListener('install', function(event) {
       })
   );
 });
+
+//PROBAR ESTE INSTALL
+/*
+self.addEventListener('install', event => {
+  event.waitUntil(
+     caches.open($CACHE_STORE)
+     .then(cache => {
+        return cache.addAll($FILES);
+     })
+     .then(() => {
+        return self.skipWaiting();
+     })
+  );
+});
+*/
   
 
 self.addEventListener('fetch', function(event) {
@@ -60,6 +85,56 @@ self.addEventListener('fetch', function(event) {
         })
     );
 });
+
+//PROBAR ESTE FETCH TAMBIEN
+/*
+const fetchHandler = async e => {
+  const {request} = e;
+  const {url} = request;
+
+  log('[Service Worker] Fetch', url, request.method);
+
+  if(url.includes('/download')) {
+    // e.respondWith(
+    e.request.blob().then(file => {
+
+      const response = new Response(file);
+      response.headers.append('Content-Length', file.size);
+      response.headers.append('Content-Disposition', `attachment; filename="${file.name}"`);
+      log(response);
+      return response;
+    })
+    .catch(e => {
+      log(e);
+    });
+
+    // );
+  }
+  else {
+    e.respondWith(
+      caches.match(e.request, {ignoreSearch: true})
+      .then(response => response ? response : fetch(e.request)
+      .catch(err => console.error('fetch error:', err))
+      )
+    );
+  }
+};
+
+*/
+
+//PROBAR ESTE FETCH
+/*
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.open(cacheName)
+      .then(cache => cache.match(event.request, {ignoreSearch: true}))
+      .then(response => {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+*/ 
 
 
 

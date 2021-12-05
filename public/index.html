@@ -48,7 +48,7 @@
       //PUEDE SER NECESARIO CAMBIAR COMO LO INICIALIZAMOS
       if('serviceWorker' in navigator){
         //window.addEventListener( 'load', ()=> {
-          navigator.serviceWorker.register('firebase-messaging-sw.js',{scope:'.'}) //AQUI PODRIAMOS PONERLE UN SCOPE PARA QUE NO ESOS ERRORES CHIMBOS
+          navigator.serviceWorker.register('firebase-messaging-sw.js',{scope:'/'}) //AQUI PODRIAMOS PONERLE UN SCOPE PARA QUE NO ESOS ERRORES CHIMBOS
                 .then((reg) =>{ 
                     console.log('Success: ', reg.scope)
                     /
