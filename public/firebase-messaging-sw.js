@@ -30,8 +30,11 @@ const CACHE_NAME = 'pwa-card-diary-tesis-v1';
 
 const urlsToCache = [
   '/',
+  '/index.html',
   '/styles/styles.css',
-  '/script/webpack-bundle.js'
+  '/script/webpack-bundle.js',
+  '/manifest.json',
+  '/firebase-messaging-sw.js'
 ];
 
 self.addEventListener('install', function(event) {
@@ -65,7 +68,7 @@ const activateHandler = e => {
   
 
 self.addEventListener('fetch', function(event) {
-    //console.log(event.request.url);
+    console.log(event.request.url);
     event.respondWith(
         caches.match(event.request, {ignoreSearch: true}).then(function(response) {
             return response || fetch(event.request);
