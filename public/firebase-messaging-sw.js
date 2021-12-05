@@ -39,19 +39,6 @@ self.addEventListener('install', function(event) {
   //SKIP WAITING ME GENERA PROBLEMAS GRAVES
   //this.skipWaiting()
 
-  //Esta funcionando bien aqui pero no se si es el lugar correcto para ponerlo
-  //En tal caso pasar esto a index
-  //Tambien debo investigar como estructurar esto mejor
-  this.pushManager.getSubscription().then(function(sub) {
-    if (sub === null) {
-      // Update UI to ask user to register for Push
-      console.log('Not subscribed to push service!');
-    } else {
-      // We have a subscription, update the database
-      console.log('Subscription object: ', sub);
-    }
-  });
-
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {
@@ -60,16 +47,33 @@ self.addEventListener('install', function(event) {
       })
   );
 });
+
+const activateHandler = e => {
+  console.log('[ServiceWorker] Activate');
+
+  e.waitUntil(
+    caches.keys()
+    .then(names => Promise.all(
+      names
+      .filter(name => name !== CACHE_NAME)
+      .map(name => caches.delete(name))
+    ))
+  );
+
+  return self.clients.claim();
+};
   
 
 self.addEventListener('fetch', function(event) {
     //console.log(event.request.url);
     event.respondWith(
-        caches.match(event.request).then(function(response) {
+        caches.match(event.request, {ignoreSearch: true}).then(function(response) {
             return response || fetch(event.request);
         })
     );
 });
+
+
 
 
 
