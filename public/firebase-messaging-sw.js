@@ -28,17 +28,15 @@ workbox.routing.registerRoute(
 
 const CACHE_NAME = 'pwa-card-diary-tesis-v1';
 
+//PROBAR LOS DE EL VIDEO DEL PANA INFU
 const urlsToCache = [
-  '/',
+  '/static/js/main.chunk.js',
+  '/static/js/vendors~main.chunk.js',
+  '/static/js/bundle.js',
   '/index.html',
-  '/styles/styles.css',
-  '/script/webpack-bundle.js',
+  '/',
   '/manifest.json',
   '/firebase-messaging-sw.js',
-  '/cards',
-  '/static/js/bundle.js',
-  '/static/js/vendors~main.chunk.js',
-  '/static/js/main.chunk.js'
 ];
 
 /*
