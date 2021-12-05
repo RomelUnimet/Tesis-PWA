@@ -50,21 +50,6 @@ self.addEventListener('install', function(event) {
       })
   );
 });
-
-const activateHandler = e => {
-  console.log('[ServiceWorker] Activate');
-
-  e.waitUntil(
-    caches.keys()
-    .then(names => Promise.all(
-      names
-      .filter(name => name !== CACHE_NAME)
-      .map(name => caches.delete(name))
-    ))
-  );
-
-  return self.clients.claim();
-};
   
 
 self.addEventListener('fetch', function(event) {
