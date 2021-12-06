@@ -42,6 +42,7 @@ const assets_to_cache = [
 	'/static/js/vendors~main.chunk.js',
 	'/static/js/main.chunk.js',
 	'/static/js/main.chunk.js.map',
+  'firebase-messaging-sw.js',
 	'/manifest.json',
 	'/icons/manifest-icon-192.png',
 
@@ -88,13 +89,14 @@ self.addEventListener('fetch', e =>  { //EN EL TUTORIAL DE NINJA, HACE ALGO PARA
 
 	e.respondWith(
 		caches.match(e.request, {ignoreSearch: true}).then( chachesRes => {
-			return chachesRes || fetch(e.request).then( fetchRes => {
-				return caches.open(cache_name).then( cache => {
+			return chachesRes || fetch(e.request)/*.then( fetchRes => {
+				return caches.open(cache_name) .then( cache => {
 					cache.put(e.request.url, fetchRes.clone());
 					return fetchRes
 				}).catch(err => console.error('dynamic cache error:', err))
 
-			}).catch( err => console.error('fetch error:', err)) 
+			})*/
+      .catch( err => console.error('fetch error:', err)) 
 			
 			//SI QUEREMOS PONER OFFLINE FALLBACK ENTONCES NECESITAMOS QUE SEA AQUI
 		} )
