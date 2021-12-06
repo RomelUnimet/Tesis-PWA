@@ -69,11 +69,15 @@ self.addEventListener('install', e =>  {
 		caches.open(cache_name).then( cache => {
 			console.log('Caching Assets')
 			cache.addAll(assets_to_cache)
-		})
+		}).then(
+      self.skipWaiting()
+    )
 	)
 	
 
 })
+
+//asfd
 
 //Activate SW
 self.addEventListener('activate', e =>  {
