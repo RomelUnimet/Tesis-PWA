@@ -20,20 +20,26 @@ export const startGetWeather = () => {
 
         await navigator.geolocation.getCurrentPosition( async (position) => {
 
-            let lat = position.coords.latitude;
-            let lon = position.coords.longitude;
-
-            const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-        
-            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-
-            const res = await fetch(apiUrl);
-            const {weather, wind} = await res.json()
+            try {
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
+    
+                const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
             
-            const weatherLabel = defineWeather(weather[0], wind)
+                const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    
+                const res = await fetch(apiUrl);
+                const {weather, wind} = await res.json()
+                
+                const weatherLabel = defineWeather(weather[0], wind)
+    
+                dispatch( storeGeolocation({lat:lat, lng:lon}) )
+                dispatch( finishStoreWeather(weatherLabel) )
+            }catch (e){
+                console.log('ERROR ON LOCATION', e)
+            }
 
-            dispatch( storeGeolocation({lat:lat, lng:lon}) )
-            dispatch( finishStoreWeather(weatherLabel) )
+            
 
         });
       }

@@ -1,140 +1,105 @@
 //importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.2.0/workbox-sw.js');
 //PUEDE SER NECESARIO CAMBIARLO A NPM
 
+//PODRIA MOVERLO A SRC
+
 importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js'); //POR ALGUNA RAZON CUANDO LO PONGO EN MI VERSION DA ERROR
 importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js'); //POR ALGUNA RAZON CUANDO LO PONGO EN MI VERSION DA ERROR
 
-
+/*
+  FIREBASE CON IMPORTS
+  import { initializeApp } from 'firebase/app';
+  import { getMessaging } from "firebase/messaging";
+  import { onBackgroundMessage } from "firebase/messaging/sw";
+*/
 
 //VER TUTORIAL DE THE NET NINJA PWA
 
+//PWA CACHE ROUTING PARA FUNCIONALIDAD OFFLINE
 
+//CAMBIE START_URL EN EL MANIFEST A ./
 
-// Switch debug logging on/off here. Default is on in dev and off in prod.
-/*
-workbox.setConfig({debug: false});
+const cache_name = 'cache-pwa-card-diary-tesis'
+//Estos son requests fetch
+const assets_to_cache = [
+	'/',
+	'/index.html',
+	'/cards',
+	'/auth',
+	'/profile',
+	'/profile/edit',
+	'/profile/settings',
+	'/profile/settings/backup-restore',
+	'/profile/settings/trash',
+	'/profile/settings/lock',
+	'/profile/settings/reminder',
+	//google Fonts - FONTS
+	'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap',
+	'https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap',
+	'https://fonts.gstatic.com/s/sourcesanspro/v18/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu3cOWxw.woff2',
 
-workbox.routing.registerRoute(
-  ({request}) => request.destination === 'image',
-  new workbox.strategies.CacheFirst()
-  );
-  
-workbox.routing.registerRoute(
-  '/',
-  new workbox.strategies.CacheFirst()
-  );
+	'/static/js/bundle.js',
+	'/static/js/vendors~main.chunk.js',
+	'/static/js/main.chunk.js',
+	'/static/js/main.chunk.js.map',
+	'/manifest.json',
+	'/icons/manifest-icon-192.png',
 
-*/
+	//RESP DEL WEATHER
+	'https://api.openweathermap.org/data/2.5/weather?lat=10.4988672&lon=-66.7942912&appid=7372e41bb8b70d0180980c8eee814b19',
 
-const CACHE_NAME = 'pwa-card-diary-tesis-v1';
+	//PARA EL MESSAGING (NO SE SI SEA NECCESARIA)
+	//'https://fcm.googleapis.com/fcm/send/dj2duvdkEiU:APA91bGFwtmXLlokTSq1xYUEbXxvJoszQiLMemlQcUr5EBKRkJfp3GmPhfKbO8l-Sxjp-Npyv5JBcDfTT5TT-EQaHZdJxIzk7McU-AE3G4SlEy08vFrrpmCN4vnCByHqKGx8xQMS72xK',
+	
+	//ME PREOCUPA UN POCO QUE NO TENGA NADA DE ESTILO (REVISAR DESPUES)
+]
 
-//PROBAR LOS DE EL VIDEO DEL PANA INFU
-const urlsToCache = [
-  '/static/js/main.chunk.js',
-  '/static/js/vendors~main.chunk.js',
-  '/static/js/bundle.js',
-  '/index.html',
-  '/',
-  '/manifest.json',
-  '/firebase-messaging-sw.js',
-];
+//Install SW
+//EVENTO DE INSTALL SOLO SE HACE CUANDO CAMBIA EL FILE
+self.addEventListener('install', e =>  {
+	//console.log('Service Worker Installed')
+	e.waitUntil(
+		caches.open(cache_name).then( cache => {
+			console.log('Caching Assets')
+			cache.addAll(assets_to_cache)
+		})
+	)
+	
 
-/*
-/static/js/bundle.js
-/static/js/vendors~main.chunk.js
-/static/js/main.chunk.js
-*/
+})
 
-self.addEventListener('install', function(event) {
+//Activate SW
+self.addEventListener('activate', e =>  {
+	//console.log('Service Worker Activated')
 
-  //SKIP WAITING ME GENERA PROBLEMAS GRAVES
-  //this.skipWaiting()
+	e.waitUntil(
+		caches.keys().then( keys => {
+			//console.log(keys) 
+			return Promise.all(
+				keys.filter( key => key !== cache_name )
+					.map( key => caches.delete(key))
+			)
+		})
+	)
+})
 
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
-        // Open a cache and cache our files
-        return cache.addAll(urlsToCache);
-      })
-  );
-});
+//Fetch Event SW
+self.addEventListener('fetch', e =>  { //EN EL TUTORIAL DE NINJA, HACE ALGO PARA LA RUTAS DINAMICAS
 
-//PROBAR ESTE INSTALL
-/*
-self.addEventListener('install', event => {
-  event.waitUntil(
-     caches.open($CACHE_STORE)
-     .then(cache => {
-        return cache.addAll($FILES);
-     })
-     .then(() => {
-        return self.skipWaiting();
-     })
-  );
-});
-*/
-  
+	e.respondWith(
+		caches.match(e.request, {ignoreSearch: true}).then( chachesRes => {
+			return chachesRes || fetch(e.request).then( fetchRes => {
+				return caches.open(cache_name).then( cache => {
+					cache.put(e.request.url, fetchRes.clone());
+					return fetchRes
+				}).catch(err => console.error('dynamic cache error:', err))
 
-self.addEventListener('fetch', function(event) {
-    console.log(event.request.url);
-    event.respondWith(
-        caches.match(event.request, {ignoreSearch: true}).then(function(response) {
-            return response || fetch(event.request);
-        })
-    );
-});
-
-//PROBAR ESTE FETCH TAMBIEN
-/*
-const fetchHandler = async e => {
-  const {request} = e;
-  const {url} = request;
-
-  log('[Service Worker] Fetch', url, request.method);
-
-  if(url.includes('/download')) {
-    // e.respondWith(
-    e.request.blob().then(file => {
-
-      const response = new Response(file);
-      response.headers.append('Content-Length', file.size);
-      response.headers.append('Content-Disposition', `attachment; filename="${file.name}"`);
-      log(response);
-      return response;
-    })
-    .catch(e => {
-      log(e);
-    });
-
-    // );
-  }
-  else {
-    e.respondWith(
-      caches.match(e.request, {ignoreSearch: true})
-      .then(response => response ? response : fetch(e.request)
-      .catch(err => console.error('fetch error:', err))
-      )
-    );
-  }
-};
-
-*/
-
-//PROBAR ESTE FETCH
-/*
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.open(cacheName)
-      .then(cache => cache.match(event.request, {ignoreSearch: true}))
-      .then(response => {
-      return response || fetch(event.request);
-    })
-  );
-});
-
-*/ 
-
-
+			}).catch( err => console.error('fetch error:', err)) 
+			
+			//SI QUEREMOS PONER OFFLINE FALLBACK ENTONCES NECESITAMOS QUE SEA AQUI
+		} )
+	)
+})
 
 
 
