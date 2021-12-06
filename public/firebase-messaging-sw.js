@@ -38,6 +38,7 @@ const assets_to_cache = [
 	'https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap',
 	'https://fonts.gstatic.com/s/sourcesanspro/v18/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu3cOWxw.woff2',
 
+  //COSAS CON LO QUE FUNCIONA OFFLINE EN LOCALHOST
 	'/static/js/bundle.js',
 	'/static/js/vendors~main.chunk.js',
 	'/static/js/main.chunk.js',
@@ -45,6 +46,12 @@ const assets_to_cache = [
   'firebase-messaging-sw.js',
 	'/manifest.json',
 	'/icons/manifest-icon-192.png',
+
+  //COSAS QUE EM PIDE EN LA APP HOSTEADA
+  '/static/css/main.cc754aab.chunk.css',
+  '/static/css/2.730d4aff.chunk.css',
+  '/static/js/2.f70eaa42.chunk.js',
+  '/static/js/main.d86fcfc2.chunk.js',
 
 	//RESP DEL WEATHER
 	'https://api.openweathermap.org/data/2.5/weather?lat=10.4988672&lon=-66.7942912&appid=7372e41bb8b70d0180980c8eee814b19',
@@ -54,7 +61,6 @@ const assets_to_cache = [
 	
 	//ME PREOCUPA UN POCO QUE NO TENGA NADA DE ESTILO (REVISAR DESPUES)
 ]
-
 //Install SW
 //EVENTO DE INSTALL SOLO SE HACE CUANDO CAMBIA EL FILE
 self.addEventListener('install', e =>  {
