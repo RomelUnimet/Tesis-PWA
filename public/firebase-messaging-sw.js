@@ -64,7 +64,7 @@ const assets_to_cache = [
 //Install SW
 //EVENTO DE INSTALL SOLO SE HACE CUANDO CAMBIA EL FILE
 self.addEventListener('install', e =>  {
-	//console.log('Service Worker Installed')
+	console.log('Service Worker Installed')
 	e.waitUntil(
 		caches.open(cache_name).then( cache => {
 			console.log('Caching Assets')
@@ -81,8 +81,7 @@ self.addEventListener('install', e =>  {
 
 //Activate SW
 self.addEventListener('activate', e =>  {
-	//console.log('Service Worker Activated')
-
+	console.log('Service Worker Activated')
 	e.waitUntil(
 		caches.keys().then( keys => {
 			//console.log(keys) 

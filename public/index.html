@@ -50,9 +50,7 @@
         //window.addEventListener( 'load', ()=> {
           navigator.serviceWorker.register('firebase-messaging-sw.js',{scope:'.'}) //AQUI PODRIAMOS PONERLE UN SCOPE PARA QUE NO ESOS ERRORES CHIMBOS
                 .then((reg) =>{ 
-                    console.log('Success: ', reg.scope)
-                    self.alert('succes')
-                
+                    console.log('Success: ', reg.scope)                
                     reg.pushManager.getSubscription().then(function(sub) {
                       if (sub === null) {
                         // Update UI to ask user to register for Push
