@@ -6,7 +6,79 @@
 importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js'); //POR ALGUNA RAZON CUANDO LO PONGO EN MI VERSION DA ERROR
 importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js'); //POR ALGUNA RAZON CUANDO LO PONGO EN MI VERSION DA ERROR
 
-/*
+
+self.addEventListener('notificationclick', function(e) {
+  var notification = e.notification;
+  //var primaryKey = notification.data.primaryKey;
+  var action = e.action;
+
+  if (action === 'close') {
+    notification.close();
+    console.log('Close Notif')
+  } else {
+    clients.openWindow('https://pwacarddiarytesisrc.netlify.app/');
+    notification.close();
+    console.log('Open Notif')
+  }
+});
+
+firebase.initializeApp({
+  apiKey: "AIzaSyDY0tuyRgv0HVBTnmoYKCSgGWTmkTlg0MA",
+  authDomain: "pwa-card-diary-tesis.firebaseapp.com",
+  projectId: "pwa-card-diary-tesis",
+  storageBucket: "pwa-card-diary-tesis.appspot.com",
+  messagingSenderId: "602718662060",
+  appId: "1:602718662060:web:ea64e957e1f8d249739e09",
+  measurementId: "G-R8FG0HMP47"
+});
+
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage(function(payload) {
+  
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  
+  //AL IGUAL QUE EL ON PUSH ESTO ME MUESTRA 2 NOTIFICACIONES, TENGO QUE VER COMO HACER PARA NO MOSTRAR LA DE FIREBASE SI ES POSIBLE
+  //SI NO ENCUENTRO MANERA DE HACERLO ENTONCES DEBO CONFIGURARLAS DESDE FIREBASE O EL CLIENTE, COSA QUE NO SERIA PROBLEMA
+  // Customize notification here
+  /*
+  const notificationTitle = 'PWA Card Diary Tesis';
+  const notificationOptions = {
+    body: 'Here is a notification body!',
+    icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg',
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1
+    },
+    actions: [
+      {action: 'open', title: 'Add an Entry Today',
+      icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg'},
+      
+    ]
+    
+  };
+  
+  self.registration.showNotification(
+    notificationTitle,
+    notificationOptions
+    );
+    
+    */ 
+   
+  })
+  //Install SW
+  //EVENTO DE INSTALL SOLO SE HACE CUANDO CAMBIA EL FILE
+  
+  self.addEventListener('install', e =>  {
+    console.log('Service Worker Installed')
+    self.skipWaiting()
+  })
+
+
+
+
+  /*
   FIREBASE CON IMPORTS
   import { initializeApp } from 'firebase/app';
   import { getMessaging } from "firebase/messaging";
@@ -14,11 +86,7 @@ importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js');
 */
 
 //VER TUTORIAL DE THE NET NINJA PWA
-
-//PWA CACHE ROUTING PARA FUNCIONALIDAD OFFLINE
-
-//CAMBIE START_URL EN EL MANIFEST A ./
-
+/*
 const cache_name = 'cache-pwa-card-diary-tesis'
 //Estos son requests fetch
 const assets_to_cache = [
@@ -61,24 +129,9 @@ const assets_to_cache = [
 	
 	//ME PREOCUPA UN POCO QUE NO TENGA NADA DE ESTILO (REVISAR DESPUES)
 ]
-//Install SW
-//EVENTO DE INSTALL SOLO SE HACE CUANDO CAMBIA EL FILE
 
-self.addEventListener('install', e =>  {
-	console.log('Service Worker Installed')
-  self.skipWaiting()
-	e.waitUntil(
-		caches.open(cache_name).then( cache => {
-			console.log('Caching Assets')
-			cache.addAll(assets_to_cache)
-		})
-    
-  
-	)
-	
 
-})
-
+/*
 //asfd
 
 //Activate SW
@@ -106,7 +159,7 @@ self.addEventListener('fetch', e =>  { //EN EL TUTORIAL DE NINJA, HACE ALGO PARA
 					return fetchRes
 				}).catch(err => console.error('dynamic cache error:', err))
 
-			})*/
+			})
       .catch( err => console.error('fetch error:', err)) 
 			
 			//SI QUEREMOS PONER OFFLINE FALLBACK ENTONCES NECESITAMOS QUE SEA AQUI
@@ -148,66 +201,6 @@ self.addEventListener('fetch', e =>  { //EN EL TUTORIAL DE NINJA, HACE ALGO PARA
   });
 */
 
-
-self.addEventListener('notificationclick', function(e) {
-  var notification = e.notification;
-  //var primaryKey = notification.data.primaryKey;
-  var action = e.action;
-
-  if (action === 'close') {
-    notification.close();
-    console.log('Close Notif')
-  } else {
-    clients.openWindow('https://pwacarddiarytesisrc.netlify.app/');
-    notification.close();
-    console.log('Open Notif')
-  }
-});
-
-firebase.initializeApp({
-  apiKey: "AIzaSyDY0tuyRgv0HVBTnmoYKCSgGWTmkTlg0MA",
-  authDomain: "pwa-card-diary-tesis.firebaseapp.com",
-  projectId: "pwa-card-diary-tesis",
-  storageBucket: "pwa-card-diary-tesis.appspot.com",
-  messagingSenderId: "602718662060",
-  appId: "1:602718662060:web:ea64e957e1f8d249739e09",
-  measurementId: "G-R8FG0HMP47"
-});
-
-const messaging = firebase.messaging();
-
-messaging.onBackgroundMessage(function(payload) {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-
-  //AL IGUAL QUE EL ON PUSH ESTO ME MUESTRA 2 NOTIFICACIONES, TENGO QUE VER COMO HACER PARA NO MOSTRAR LA DE FIREBASE SI ES POSIBLE
-  //SI NO ENCUENTRO MANERA DE HACERLO ENTONCES DEBO CONFIGURARLAS DESDE FIREBASE O EL CLIENTE, COSA QUE NO SERIA PROBLEMA
-  // Customize notification here
-  /*
-  const notificationTitle = 'PWA Card Diary Tesis';
-  const notificationOptions = {
-    body: 'Here is a notification body!',
-    icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg',
-    vibrate: [100, 50, 100],
-    data: {
-      dateOfArrival: Date.now(),
-      primaryKey: 1
-    },
-    actions: [
-      {action: 'open', title: 'Add an Entry Today',
-        icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg'},
-
-    ]
-
-  };
-
-  self.registration.showNotification(
-    notificationTitle,
-    notificationOptions
-    );
-
-   */ 
-  
-})
 
 
 

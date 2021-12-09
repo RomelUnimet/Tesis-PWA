@@ -2,13 +2,14 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.2.0/workbox
 //PUEDE SER NECESARIO CAMBIARLO A NPM
 
 
+
+
 //FUNCIONA A LA PERFECCION, PERO ES NECESARIO OPTIMIZARLO
 if (workbox) {
   workbox.setConfig({ debug: false });
  
   //Dejarlo si es necesario
   //workbox.skipWaiting();
-
 
   workbox.routing.registerRoute(
     // Check to see if the request is a navigation to a new page
@@ -39,24 +40,7 @@ if (workbox) {
     })  
   );
 
-  /*
-  //MAPS
-  workbox.routing.registerRoute(
-    ({url}) => url.origin === 'https://maps.googleapis.com',
-    new workbox.strategies.CacheFirst({
-        cacheName: 'google-maps-cache',
-        plugins: [
-          new workbox.expiration.ExpirationPlugin({
-            maxEntries: 1,
-            maxAgeSeconds: 5 , // 5 minutes
-          }),
-          new workbox.cacheableResponse.CacheableResponsePlugin({
-            statuses: [0, 200],
-          }),
-        ],
-    })
-  );
-  */
+  
 
   //HAY QUE HACER ALGO CON RESPECTO A LA IMAGENES QUE TOMAN DEMASIADO ESPACIO
   //DEJAR LAS IMAGENES Y DESPUES VER SI ES NECESARIO
@@ -107,6 +91,33 @@ if (workbox) {
     })
   );
   
+  //process.env.REACT_APP_API_URL
+
+//BACKGROUND SYNC
+
+const queue = new workbox.backgroundSync.Queue('myQueueName');
+
+self.addEventListener('fetch', (event) => {
+  // Add in your own criteria here to return early if this
+  // isn't a request that should use background sync.
+  if (event.request.method === 'GET') {
+    return;
+  }
+
+  const bgSyncLogic = async () => {
+    try {
+      const response = await fetch(event.request.clone());
+      return response;
+    } catch (error) {
+      await queue.pushRequest({request: event.request});
+      return error;
+    }
+  };
+
+  event.respondWith(bgSyncLogic());
+});
+
+
 
   /*
   //DEFAULT CACHING
@@ -135,6 +146,25 @@ if (workbox) {
       }
   );
 */
+
+/*
+  //MAP CACHING QUE NO SE USA POR AHORA
+  workbox.routing.registerRoute(
+    ({url}) => url.origin === 'https://maps.googleapis.com',
+    new workbox.strategies.CacheFirst({
+        cacheName: 'google-maps-cache',
+        plugins: [
+          new workbox.expiration.ExpirationPlugin({
+            maxEntries: 1,
+            maxAgeSeconds: 5 , // 5 minutes
+          }),
+          new workbox.cacheableResponse.CacheableResponsePlugin({
+            statuses: [0, 200],
+          }),
+        ],
+    })
+  );
+  */
   
 } else {
   console.log(`No workbox on this browser 😬`);
