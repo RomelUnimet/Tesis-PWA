@@ -213,10 +213,8 @@ export const ProfileEdit = () => {
                         }
                     </SortableContainer>
                 </div>
+
             </div>
-
-
-
             
         </motion.div>
         <AnimatePresence>

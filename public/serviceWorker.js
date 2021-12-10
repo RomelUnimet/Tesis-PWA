@@ -95,6 +95,8 @@ if (workbox) {
 
 //BACKGROUND SYNC
 
+
+//Creo que no funciona en iOS por como lo estoy implementando aqui solo con el Queue
 const queue = new workbox.backgroundSync.Queue('myQueueName');
 
 self.addEventListener('fetch', (event) => {

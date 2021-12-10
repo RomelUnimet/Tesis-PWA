@@ -35,6 +35,8 @@ export const CardScreen = ( ) => {
     const [cardModalState, setCardModalState] = useState(
         
             ()=> {
+
+
                 if(cardMemo===''){
                     return {
                         show: false,
@@ -57,9 +59,18 @@ export const CardScreen = ( ) => {
         img: ''
     });
 
-    const [swiperPosition, setSwiperPosition] = useState({
-        isEnd: false,
-        isBeginning: false,
+    const [swiperPosition, setSwiperPosition] = useState(()=>{
+
+                if( cardModalState.month===0 && cardModalState.year!==2020 ){
+                    //Es beggining
+                    return { isEnd: false, isBeginning: true};
+                } else if( cardModalState.month===11 && cardModalState.year!==2022 ){
+                    //Es end
+                    return { isEnd: true, isBeginning: false};
+                }else{
+                    //No es ninguno
+                    return { isEnd: false, isBeginning: false};
+                }        
     });
 
     const {cards} = useSelector(state => state.cards) //Esto puede traer un error ya que en una instancia es vacio (Probablemente por el dispatch async) => Tal vez necesita un check
@@ -158,6 +169,11 @@ export const CardScreen = ( ) => {
                 isBeginning: true,
                 isEnd: false,
             })
+
+            dispatch( storeCardMemoScroll({ 
+                card: swiperRef.current?.swiper.activeIndex,
+                year: cardModalState.year+1
+            }))
         }
     }
 
@@ -181,6 +197,11 @@ export const CardScreen = ( ) => {
                 isBeginning: false,
                 isEnd: true,
             })
+
+            dispatch( storeCardMemoScroll({ 
+                card: swiperRef.current?.swiper.activeIndex,
+                year: cardModalState.year-1
+            }))
         }
     }
 
