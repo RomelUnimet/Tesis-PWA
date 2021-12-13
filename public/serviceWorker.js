@@ -2,8 +2,6 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.2.0/workbox
 //PUEDE SER NECESARIO CAMBIARLO A NPM
 
 
-
-
 //FUNCIONA A LA PERFECCION, PERO ES NECESARIO OPTIMIZARLO
 if (workbox) {
   workbox.setConfig({ debug: false });
@@ -97,6 +95,73 @@ if (workbox) {
 
 
 //Creo que no funciona en iOS por como lo estoy implementando aqui solo con el Queue
+
+  //Creo que ya sirve, solo falta probarlo
+
+  const bgSyncPluginPost = new workbox.backgroundSync.BackgroundSyncPlugin('POST_Queue', {
+    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
+  });
+
+  workbox.routing.registerRoute(
+    ({ url }) => url.pathname.includes('/api/'),
+    new workbox.strategies.NetworkOnly({
+      plugins: [bgSyncPluginPost]
+    }),
+    'POST'
+  );
+
+  const bgSyncPluginPut = new workbox.backgroundSync.BackgroundSyncPlugin('PUT_Queue', {
+    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
+  });
+
+  workbox.routing.registerRoute(
+    ({ url }) => url.pathname.includes('/api/'),
+    new workbox.strategies.NetworkOnly({
+      plugins: [bgSyncPluginPut]
+    }),
+    'PUT'
+  );
+
+  const bgSyncPluginDelete = new workbox.backgroundSync.BackgroundSyncPlugin('DELETE_Queue', {
+    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
+  });
+
+  workbox.routing.registerRoute(
+    ({ url }) => url.pathname.includes('/api/'),
+    new workbox.strategies.NetworkOnly({
+      plugins: [bgSyncPluginDelete]
+    }),
+    'DELETE'
+  );
+
+  
+/*
+  self.addEventListener('fetch', (event) => {
+    // Add in your own criteria here to return early if this
+    // isn't a request that should use background sync.
+
+    console.log(event)
+    console.log(event.request.url.startsWith('/api/'))
+
+    if (event.request.method === 'GET') {
+      return;
+    }
+  
+    const bgSyncLogic = async () => {
+      try {
+        const response = await fetch(event.request.clone());
+        return response;
+      } catch (error) {
+        await queue.pushRequest({request: event.request});
+        return error;
+      }
+    };
+    event.respondWith(bgSyncLogic());
+  });
+
+  */
+
+/*
 const queue = new workbox.backgroundSync.Queue('myQueueName');
 
 self.addEventListener('fetch', (event) => {
@@ -115,10 +180,9 @@ self.addEventListener('fetch', (event) => {
       return error;
     }
   };
-
   event.respondWith(bgSyncLogic());
 });
-
+*/
 
 
   /*
