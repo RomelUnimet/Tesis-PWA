@@ -293,6 +293,16 @@ export const LocHandleCE = ({handlerState, setHandlerState, locationCE, setLocat
                             setUpdateData={setLocUpdateState}
                         />
                     }
+                    {
+                        menuModalState.show &&
+                        <HandlerMenuModal
+                            modalState={menuModalState}
+                            setModalState={setMenuModalState}
+                            setUpdateInputModal={setUpdateModal}
+                            setDeleteModal={setDeleteModal} 
+                            key={'Handler Menu Modal Key'}
+                        />
+                    }
                     { 
                         deleteModal &&
                         <ConfirmModal
@@ -303,16 +313,8 @@ export const LocHandleCE = ({handlerState, setHandlerState, locationCE, setLocat
                             confirmAction={()=>{deleteLocation()}}
                             isActive={deleteModal}
                             setIsActive={setDeleteModal}     
+                            key={'Confirm Modal Key'}
                         />  
-                    }
-                    {
-                        menuModalState.show &&
-                        <HandlerMenuModal
-                            modalState={menuModalState}
-                            setModalState={setMenuModalState}
-                            setUpdateInputModal={setUpdateModal}
-                            setDeleteModal={setDeleteModal} 
-                        />
                     }
                 </AnimatePresence>
         </>

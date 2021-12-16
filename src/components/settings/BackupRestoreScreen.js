@@ -112,13 +112,21 @@ export const BackupRestoreScreen = () => {
 
     }
 
-    const shareBackupFile = (backUpData) => {
+    const shareBackupFile = async (backUpData) => {
 
         const fileName = `${backUpData.backupName}.json`
 
         const json = JSON.stringify(backUpData)
 
         const blob = new Blob([json], {type:"application/json"})
+
+        const href = await URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = href;
+        link.download = "file";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
         
         const file = new File([blob], fileName, {type: "application/json"})
         

@@ -312,7 +312,7 @@ const deleteEidFromCardTagLocation = async ( entry ) => {
             for (let index = 0; index < tagsInEntry.length; index++) {
                 
                 //Quitar eid del array de entries y guardar el cambio
-                tagsInEntry[index].entries.splice( tagsInEntry[index].entries.indexOf(entry.eid) ,1 )
+                tagsInEntry[index].entries.splice( tagsInEntry[index].entries.indexOf(entry.eid), 1)
 
                 await db.collection('tags').doc({ tid: tagsInEntry[index].tid }).update({
                     entries: tagsInEntry[index].entries,

@@ -256,6 +256,7 @@ export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) 
                             setIsActive={setInputModal}
                             inputValue ={inputValue}
                             setInputValue={setInputValue}
+
                         />
                     }
                     
@@ -266,6 +267,8 @@ export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) 
                             setModalState={setMenuModalState}
                             setUpdateInputModal={setUpdateInputModal}
                             setDeleteModal={setDeleteModal} 
+                            key={'Handler Modal Key'}
+
                         /> 
                     }
 
@@ -282,6 +285,7 @@ export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) 
                             setIsActive={setUpdateInputModal}
                             inputValue ={updateInputModalValue}
                             setInputValue={setUpdateInputModalValue}
+
                         />
                     }
 
@@ -294,7 +298,8 @@ export const TagHandleCE = ({handlerState, setHandlerState, tagsCE, setTagsCE}) 
                             leftText={'Cancel'}
                             confirmAction={()=>{deleteTag()}}
                             isActive={deleteModal}
-                            setIsActive={setDeleteModal}       
+                            setIsActive={setDeleteModal}    
+                            key={'Confirm Modal Key'}   
                         />
                     }
 
