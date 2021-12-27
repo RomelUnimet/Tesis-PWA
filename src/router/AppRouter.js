@@ -26,6 +26,8 @@ import { startEntryStore } from '../actions/entry'
 import Localbase from 'localbase';
 import { creteOptionsObject } from '../helpers/createOptionsCredential';
 
+import { askForPermissionToReceiveNotifications } from '../notification';
+
 
 const db = new Localbase('pwa-card-diary');
 
@@ -43,6 +45,10 @@ export const AppRouter = () => {
         dispatch( startLocationStore() );
         dispatch( startEntryStore() );
         dispatch( startGetWeather() );
+
+        //PROBAR QUE ESTO NO HACE QUE DEJE DE FUNCIONAR
+        //NECESITO TAMBIEN COLOCAR ESTO AQUI PARA HACER EL CHECK CADA VEZ QUE SE ABRE LA APP
+        askForPermissionToReceiveNotifications()
         
     }, [dispatch])
 

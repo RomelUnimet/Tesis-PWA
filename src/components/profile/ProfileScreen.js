@@ -123,9 +123,10 @@ export const ProfileScreen = ( { ceModalState } ) => {
                     visible={visible} 
                     setvariants={setvariants} 
                     scrollPosition={ref}
+                    
                 />
 
-                <div className="profile-container">
+                <div className="profile-container" id="section1">
                     <div className="profile-picture-container"
                         style={{backgroundImage: `url(${userSettings[0].photo})`}}
                     >
@@ -177,7 +178,8 @@ export const ProfileScreen = ( { ceModalState } ) => {
                 }
                 
                 
-            
+                <a href="#section1">Click Me to Smooth Scroll to Section 1 Above</a>
+
             </div>
         </motion.div>
     )

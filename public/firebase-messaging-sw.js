@@ -41,7 +41,7 @@ messaging.onBackgroundMessage(function(payload) {
   //AL IGUAL QUE EL ON PUSH ESTO ME MUESTRA 2 NOTIFICACIONES, TENGO QUE VER COMO HACER PARA NO MOSTRAR LA DE FIREBASE SI ES POSIBLE
   //SI NO ENCUENTRO MANERA DE HACERLO ENTONCES DEBO CONFIGURARLAS DESDE FIREBASE O EL CLIENTE, COSA QUE NO SERIA PROBLEMA
   // Customize notification here
-  /*
+  
   const notificationTitle = 'PWA Card Diary Tesis';
   const notificationOptions = {
     body: 'Here is a notification body!',
@@ -62,21 +62,10 @@ messaging.onBackgroundMessage(function(payload) {
   self.registration.showNotification(
     notificationTitle,
     notificationOptions
-    );
+  );
     
-    */ 
    
   })
-  //Install SW
-  //EVENTO DE INSTALL SOLO SE HACE CUANDO CAMBIA EL FILE
-  
-  self.addEventListener('install', e =>  {
-    console.log('Service Worker Installed')
-    self.skipWaiting()
-  })
-
-
-
 
   /*
   FIREBASE CON IMPORTS
@@ -85,93 +74,7 @@ messaging.onBackgroundMessage(function(payload) {
   import { onBackgroundMessage } from "firebase/messaging/sw";
 */
 
-//VER TUTORIAL DE THE NET NINJA PWA
 /*
-const cache_name = 'cache-pwa-card-diary-tesis'
-//Estos son requests fetch
-const assets_to_cache = [
-	'/',
-	'/index.html',
-	'/cards',
-	'/auth',
-	'/profile',
-	'/profile/edit',
-	'/profile/settings',
-	'/profile/settings/backup-restore',
-	'/profile/settings/trash',
-	'/profile/settings/lock',
-	'/profile/settings/reminder',
-	//google Fonts - FONTS
-	'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap',
-	'https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap',
-	'https://fonts.gstatic.com/s/sourcesanspro/v18/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu3cOWxw.woff2',
-
-  //COSAS CON LO QUE FUNCIONA OFFLINE EN LOCALHOST
-	'/static/js/bundle.js',
-	'/static/js/vendors~main.chunk.js',
-	'/static/js/main.chunk.js',
-	'/static/js/main.chunk.js.map',
-  'firebase-messaging-sw.js',
-	'/manifest.json',
-	'/icons/manifest-icon-192.png',
-
-  //COSAS QUE EM PIDE EN LA APP HOSTEADA
-  '/static/css/main.cc754aab.chunk.css',
-  '/static/css/2.730d4aff.chunk.css',
-  '/static/js/2.f70eaa42.chunk.js',
-  '/static/js/main.d86fcfc2.chunk.js',
-
-	//RESP DEL WEATHER
-	'https://api.openweathermap.org/data/2.5/weather?lat=10.4988672&lon=-66.7942912&appid=7372e41bb8b70d0180980c8eee814b19',
-
-	//PARA EL MESSAGING (NO SE SI SEA NECCESARIA)
-	//'https://fcm.googleapis.com/fcm/send/dj2duvdkEiU:APA91bGFwtmXLlokTSq1xYUEbXxvJoszQiLMemlQcUr5EBKRkJfp3GmPhfKbO8l-Sxjp-Npyv5JBcDfTT5TT-EQaHZdJxIzk7McU-AE3G4SlEy08vFrrpmCN4vnCByHqKGx8xQMS72xK',
-	
-	//ME PREOCUPA UN POCO QUE NO TENGA NADA DE ESTILO (REVISAR DESPUES)
-]
-
-
-/*
-//asfd
-
-//Activate SW
-self.addEventListener('activate', e =>  {
-	console.log('Service Worker Activated')
-	e.waitUntil(
-		caches.keys().then( keys => {
-			//console.log(keys) 
-			return Promise.all(
-				keys.filter( key => key !== cache_name )
-					.map( key => caches.delete(key))
-			)
-		})
-	)
-})
-
-//Fetch Event SW
-self.addEventListener('fetch', e =>  { //EN EL TUTORIAL DE NINJA, HACE ALGO PARA LA RUTAS DINAMICAS
-
-	e.respondWith(
-		caches.match(e.request, {ignoreSearch: true}).then( chachesRes => {
-			return chachesRes || fetch(e.request)/*.then( fetchRes => {
-				return caches.open(cache_name) .then( cache => {
-					cache.put(e.request.url, fetchRes.clone());
-					return fetchRes
-				}).catch(err => console.error('dynamic cache error:', err))
-
-			})
-      .catch( err => console.error('fetch error:', err)) 
-			
-			//SI QUEREMOS PONER OFFLINE FALLBACK ENTONCES NECESITAMOS QUE SEA AQUI
-		} )
-	)
-})
-
-
-
-//Este metodo no es necesario para las Notificaciones de Firebase por lo que lo dejamos asi. 
-//Tenemos que ver como podemos customizar lo
-/*  
   self.addEventListener('push', function(e) {
 
       console.log('Notification Recieved')
@@ -199,9 +102,9 @@ self.addEventListener('fetch', e =>  { //EN EL TUTORIAL DE NINJA, HACE ALGO PARA
         
       }
   });
+
+
 */
-
-
 
 
 

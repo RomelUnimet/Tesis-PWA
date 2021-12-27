@@ -15,17 +15,10 @@ import { BackupRestoreScreen } from '../components/settings/BackupRestoreScreen'
 import { ReminderScreen } from '../components/settings/ReminderScreen';
 import { TrashScreen } from '../components/settings/trash/TrashScreen';
 
-
-
-
 export const RoutesApp = () => {
 
-    //CAMBIE LOS STORES DE ESTA RUTA A LA RUTA PRINCIPAL PARA QUE NO SE LLAMARAN TANTO
-    //SI HAY UN ERROR CON ESO ES MUY PROBABLE QUE SEA AHI
 
     const [CEModalState, setCEModalState] = useState(false);
-
-    
 
     return (
         <>

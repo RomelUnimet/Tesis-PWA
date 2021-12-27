@@ -1,6 +1,10 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken } from "firebase/messaging";
 
+import Localbase from 'localbase';
+import { fetchWithToken } from './helpers/fetch';
+
+const db = new Localbase('pwa-card-diary');
 
 export const initializeFirebase = () => {
   initializeApp({
@@ -14,60 +18,74 @@ export const initializeFirebase = () => {
   });
 }
 
-
+//LO COLOQUE AL FINAL DE PROCESO DE CREAR USUARIO Y FUNCIONA CON UN NUEVO USUARIO
+//PROBAR EN APP ROUTER PARA ASEGURARNOS DE QUE NO DE ERRORES PORQUE TAMBIEN ES NECESARIO TENERLO AHI
 export const askForPermissionToReceiveNotifications = async () => {
   try {
+    await Notification.requestPermission( (status) => {
+      console.log('Notification permission status:', status);
+    });
     const messaging = getMessaging();
     const token = await getToken(messaging, {vapidKey:'BKUuJTxd0ifo32qSdjXSel_4_pzpHIxv2iUpbfaUB7rbwIhHBH68GkKN9SA9e9gf5NvWNV3pRblprbCLUE0feKs'});
     console.log('Your token is:', token);
     
+    await subscribeUser()
+
+    //AQUI ACTUALIZAMOS EL TOKEN
+    await updateToken(token)
+    
+
     return token;
   } catch (error) {
     console.error(error);
   }
 }
 
-export const askForPermissionToReceiveNotificationsAlert = async () => {
-  try {
-    const messaging = getMessaging();
-    const token = await getToken(messaging, {vapidKey:'BKUuJTxd0ifo32qSdjXSel_4_pzpHIxv2iUpbfaUB7rbwIhHBH68GkKN9SA9e9gf5NvWNV3pRblprbCLUE0feKs'});
-    console.log('Your token is:', token);
-    alert(token);
-    
-    return token;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-//Este metodo no es necesario para las Notificaciones de Firebase por lo que lo dejamos asi. 
-//Tenemos que ver como podemos customizar lo
-/*  
-  self.addEventListener('push', function(e) {
-
-      console.log('Notification Recieved')
-
-      if (Notification.permission === 'granted') {
-
-        var options = {
-          body: 'Open PWA Card Diary',
-          icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg',
-          vibrate: [100, 50, 100],
-          data: {
-            dateOfArrival: Date.now(),
-            primaryKey: 1
-          },
-          actions: [
-            {action: 'open', title: 'Add an Entry Today',
-              icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg'},
-          ]
-
-        };
-        e.waitUntil(
-
-          self.registration.showNotification('PWA Card Diary Tesis Push', options)
-          )
+export const subscribeUser = async () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready.then(function(reg) {
+      reg.pushManager.subscribe({
         
+        userVisibleOnly: true,
+        applicationServerKey: 'BKUuJTxd0ifo32qSdjXSel_4_pzpHIxv2iUpbfaUB7rbwIhHBH68GkKN9SA9e9gf5NvWNV3pRblprbCLUE0feKs', 
+        
+      }).then(function(sub) {
+        
+        console.log(JSON.stringify(sub));
+        
+      }).catch(function(e) {
+        
+        if (Notification.permission === 'denied') {
+          console.warn('Permission for notifications was denied');
+        } else {
+          console.error('Unable to subscribe to push', e);
+        }
+      });
+    })
+  }}
+  
+
+  const updateToken = async (token) => {
+
+    const [userSettings] = await db.collection('userSettings').get();
+
+    if(token!==userSettings.notification.token){
+
+      let newSettings = {
+        ...userSettings,
+        notification: {
+          ...userSettings.notification,
+          token:token,
+        }
       }
-  });
-*/
+
+      await db.collection('userSettings').set([
+        newSettings,
+      ])
+  
+      //Posible que haya un error aqui // Si llega a haber
+      fetchWithToken(`settings/${newSettings.sid}`, newSettings, 'PUT')
+
+    }
+
+  }

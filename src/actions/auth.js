@@ -6,6 +6,7 @@ import Localbase from 'localbase';
 import { decodeToken } from '../helpers/decodeToken';
 import { startCardStore } from './cards';
 import { startSettingsStore } from './settings';
+import { askForPermissionToReceiveNotifications } from '../notification';
 
 
 const db = new Localbase('pwa-card-diary');
@@ -89,6 +90,9 @@ export const startRegister = ( email, password) => {
 
             await dispatch( startCardStore() )
             await dispatch( startSettingsStore() )
+
+            //PEDIMOS PERMISO PARA LA NOTIFICACION
+            await askForPermissionToReceiveNotifications()
 
             dispatch( login ({
                 uid:body.uid,
