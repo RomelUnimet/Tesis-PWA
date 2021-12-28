@@ -37,26 +37,17 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage(function(payload) {
   
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  
-  //AL IGUAL QUE EL ON PUSH ESTO ME MUESTRA 2 NOTIFICACIONES, TENGO QUE VER COMO HACER PARA NO MOSTRAR LA DE FIREBASE SI ES POSIBLE
-  //SI NO ENCUENTRO MANERA DE HACERLO ENTONCES DEBO CONFIGURARLAS DESDE FIREBASE O EL CLIENTE, COSA QUE NO SERIA PROBLEMA
-  // Customize notification here
-  
+    
   const notificationTitle = 'PWA Card Diary Tesis';
   const notificationOptions = {
-    body: 'Here is a notification body!',
+    body: 'Write down your special feelings today.',
     icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg',
+    badge: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
       primaryKey: 1
     },
-    actions: [
-      {action: 'open', title: 'Add an Entry Today',
-      icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg'},
-      
-    ]
-    
   };
   
   self.registration.showNotification(
@@ -66,45 +57,4 @@ messaging.onBackgroundMessage(function(payload) {
     
    
   })
-
-  /*
-  FIREBASE CON IMPORTS
-  import { initializeApp } from 'firebase/app';
-  import { getMessaging } from "firebase/messaging";
-  import { onBackgroundMessage } from "firebase/messaging/sw";
-*/
-
-/*
-  self.addEventListener('push', function(e) {
-
-      console.log('Notification Recieved')
-
-      if (Notification.permission === 'granted') {
-
-        var options = {
-          body: 'Open PWA Card Diary',
-          icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg',
-          vibrate: [100, 50, 100],
-          data: {
-            dateOfArrival: Date.now(),
-            primaryKey: 1
-          },
-          actions: [
-            {action: 'open', title: 'Add an Entry Today',
-              icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg'},
-          ]
-
-        };
-        e.waitUntil(
-
-          self.registration.showNotification('PWA Card Diary Tesis Push', options)
-          )
-        
-      }
-  });
-
-
-*/
-
-
 

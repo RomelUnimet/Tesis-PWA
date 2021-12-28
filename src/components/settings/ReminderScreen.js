@@ -8,8 +8,6 @@ import DatePicker from 'react-mobile-datepicker';
 import { useDispatch, useSelector } from 'react-redux'
 import { updateSettings } from '../../actions/settings'
 
-
-
 export const ReminderScreen = () => {
 
     const [variants] = useNavAnimation('profile')
@@ -20,14 +18,13 @@ export const ReminderScreen = () => {
 
     const dispatch = useDispatch()
 
-
     //SWITCH
     const [checked, setChecked] = useState(userSettings[0].notification.active)
 
     const handleReminderSwitch = () => {
 
         let [newSettings] = userSettings
-
+        //ESTO ME BORRA DE TOKEN DE INDEXED DB ==> DEBO SOLUCIONAR
         if(!checked){
             newSettings.notification = {
                     ...newSettings.notification,
