@@ -40,7 +40,7 @@ messaging.onBackgroundMessage(function(payload) {
   const notificationOptions = {
     body: 'Write down your special feelings today.',
     icon: 'https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/95/22/9d/95229d6e-621b-ec09-6564-205b924aa380/source/200x200bb.jpg',
-    badge: '../src/svgs/diary.svg',
+    badge: './prueba.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
