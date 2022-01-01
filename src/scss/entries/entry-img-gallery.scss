@@ -11,17 +11,24 @@
     position: relative;
     
     & svg {
-        position: absolute;
-        top: 0;
-        left: 0;
+        
         fill: $back-color;
         background-color: rgba(0, 0, 0, 0);
         z-index: 1;
         height: 2rem;
         width: 2rem;
-        padding: 1rem;
+        padding: 1rem 1.4rem;
     }
 }
+.close-download-icon-container{
+    position: absolute;
+    top: 0;
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+    z-index: 10;
+}
+
 .entry-img-gallery-swiper-container{
     height: 100%;
 }
