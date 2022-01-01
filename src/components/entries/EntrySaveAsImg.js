@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { WeatherFilter } from '../compHelper/WeatherFilter';
 
-import {toJpeg} from 'html-to-image';
+import domtoimage from 'dom-to-image';
 
 import { motion } from 'framer-motion';
 
@@ -35,23 +35,6 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
 
     const shareImgRef = useRef()
 
-    /*
-    const dataURLtoFile = useCallback(
-        (dataurl, filename) => {
-            var arr = dataurl.split(","),
-              mimeType = arr[0].match(/:(.*?);/)[1],
-              decodedData = atob(arr[1]),
-              lengthOfDecodedData = decodedData.length,
-              u8array = new Uint8Array(lengthOfDecodedData);
-            while (lengthOfDecodedData--) {
-              u8array[lengthOfDecodedData] = decodedData.charCodeAt(lengthOfDecodedData);
-            }
-            return new File([u8array], filename, { type: mimeType });
-          },
-        [],
-    )
-    */
-
     const shareFile = (file, title) => {
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
 
@@ -74,23 +57,14 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
     };
 
     const shareEntry = () => {
-        
-        toJpeg(document.getElementById("entry_img"), { quality: 0.95 })
-            .then(
-            function (dataUrl) {
 
-                const blob = new Blob([dataUrl], {type:"image/jpeg"})
-            
-                const file = new File([blob], 'entry-share.jpeg', {type: "image/jpeg"})
-
+        domtoimage.toBlob(document.getElementById('entry_img'))
+            .then(function (blob) {
+                const file = new File([blob], 'entry-share.png', {type: "image/png"})
                 shareFile(file, "PWA CD Share Entry",);
 
-            }
-            ).catch(function (error) {
-
-                alert('oops, something went wrong!', error);
-
-              });
+            });     
+       
     };
 
  
@@ -111,10 +85,10 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
             animate={{x:0, y: 0 }}
             exit={{x:0, y: SCREEN_HEIGHT }}
             transition={{duration:0.3}}
+            id={'entry_img'}
         >
             <div 
             ref={shareImgRef}
-            id={'entry_img'}
             className="save-image-container"
             onClick={(e)=>{shareEntry(e)}}
             >

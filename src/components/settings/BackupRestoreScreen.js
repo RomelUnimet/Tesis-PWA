@@ -114,13 +114,15 @@ export const BackupRestoreScreen = () => {
 
     const shareBackupFile = async (backUpData) => {
 
-        const fileName = `${backUpData.backupName}.text`
+        const fileName = `${backUpData.backupName}.json`
 
         const json = JSON.stringify(backUpData)
 
-        const blob = new Blob([json], {type:"text/plain"})
+        const blob = new Blob([json], {type:"application/json"})
 
-        const file = new File([blob], fileName, {type: "text/plain"})
+        const href = await URL.createObjectURL(blob);
+        
+        const file = new File([blob], fileName, {type: "application/json"})
         
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           navigator
@@ -133,14 +135,22 @@ export const BackupRestoreScreen = () => {
                 alert("Share was successful")
                 
             
-        })
+            })
             .catch((error) =>{ 
-                console.log("Sharing failed", error)
-                alert("Sharing failed!", error)
+                const link = document.createElement('a');
+                link.href = href;
+                link.download = backUpData.backupName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             });
         } else {
-          console.log(`Your system doesn't support sharing files.`);
-          alert("Your system doesn't support sharing files")
+            let link = document.createElement('a');
+            link.href = href;
+            link.download = backUpData.backupName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     
     }
@@ -372,7 +382,7 @@ export const BackupRestoreScreen = () => {
                             
 
                             <label>
-                                <input type="file" id="cardPhotoInput" onChange={inputJsonBackUp} ref={fileInput} accept="text/plain"/>
+                                <input type="file" id="cardPhotoInput" onChange={inputJsonBackUp} ref={fileInput} accept="application/json"/>
                                 <div className="b-r-button-blue input-div">
                                     Import Carddiary Backup file (.json)
                                 </div>
