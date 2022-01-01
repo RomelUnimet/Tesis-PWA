@@ -52,7 +52,6 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
             })
         }
         dispatch( trashEntry(entries[entrySwiperState.activeEntry]))
-
     }
 
     return (
@@ -90,7 +89,9 @@ export const EntrySwiper = ({ entries, entrySwiperState, setEntrySwiperState }) 
                                 setfullscreen={setfullscreen}
                                 setEditModalState={setEditModalState}
                                 swiperRef={swiperRef}
+                                index = {index}
                             />
+
                         </SwiperSlide>
                     ))
                 }

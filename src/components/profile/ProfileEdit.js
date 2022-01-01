@@ -4,7 +4,6 @@ import { useHistory } from 'react-router'
 import { AnimatePresence, motion } from "framer-motion"
 import {  useDispatch, useSelector } from 'react-redux'
 import { useForm } from '../../hooks/useForm'
-
 import {
     sortableContainer,
     sortableElement,
@@ -80,12 +79,9 @@ export const ProfileEdit = () => {
             photo : diaryImg,
             order : order,
         }
-        
 
         if(diaryName!==userSettings[0].name || description!==userSettings[0].description || diaryImg!==userSettings[0].photo || order!==userSettings[0].order){
-
             dispatch( updateSettings(updatedSettings) )
-
         }
 
         history.push('/profile')
@@ -105,7 +101,6 @@ export const ProfileEdit = () => {
         }
     }
 
-    //HAY QUE BUSCAR UNA MANERA DE HACER QUE NO PUEDAN SUBIR MAS DE UN CIERTO PUNTO
     //Definicion de los componentes del sortable
     const SortableItem = sortableElement(({element, index}) => {
     return(
@@ -128,6 +123,10 @@ export const ProfileEdit = () => {
         </svg>
     ))
 
+    const [focused, setFocused] = useState(false)
+    const onFocus = () => {setFocused(true)}
+    const onBlur = () => setFocused(false)
+
     return (
         <>
         <motion.div
@@ -137,6 +136,7 @@ export const ProfileEdit = () => {
             animate="in"
             exit="out"
             transition={{type:'tween'}}
+            style={ focused? { zIndex:3 } : { }}
         >
 
             <div className="top-bar-left-center">
@@ -179,7 +179,10 @@ export const ProfileEdit = () => {
                         name="diaryName"
                         value={ diaryName }
                         onChange={ handleInputChange }
-                    />
+                        //Para arreglar el error del navbar subiendo mucho
+                        onFocus={onFocus} 
+                        onBlur={onBlur} 
+                        />
                 </div>
 
                 <div className="edit-profile-tab">
@@ -189,6 +192,9 @@ export const ProfileEdit = () => {
                         name="description"
                         value={ description }
                         onChange={ handleInputChange }
+                        //Para arreglar el error del navbar subiendo mucho
+                        onFocus={onFocus} 
+                        onBlur={onBlur} 
                     />
                 </div>
 

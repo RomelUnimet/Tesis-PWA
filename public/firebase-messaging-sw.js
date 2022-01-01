@@ -52,6 +52,5 @@ messaging.onBackgroundMessage(function(payload) {
     notificationOptions
   );
     
-   
-  })
+})
 

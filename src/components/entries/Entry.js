@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 import useDoubleClick from 'use-double-click';
 
-export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState, swiperRef}) => {
+export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState, swiperRef, index}) => {
 
     const { photos, date, title, text, weather, location, tags} = entry;
 
@@ -40,18 +40,35 @@ export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState, swip
         latency: 250
     });
 
+
     return (
         <div className="detailed-entry-container swiper-lazy"
              ref={entryRef}
         >
             {
-                photos.length!==0 &&
-                    <EntryImgGallery
+                photos.length!==0 && 
+                <>
+                    {
+                        swiperRef.current?.swiper.activeIndex===index? 
+
+                        <EntryImgGallery
                         images={photos}
                         fullscreen={fullscreen}
                         setfullscreen={setfullscreen}
                         prevswiperRef={swiperRef}
-                    />
+                        />
+                        :
+                        //Placeholder para mejorar el performance
+                        <div style={{   width: '100%', 
+                                        height: '42vh', 
+                                        backgroundPosition: 'center',
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundSize: 'cover',
+                                        backgroundImage: `url(${photos[0].photo})`
+                                        }}
+                        />
+                    }
+                </>
             }
 
             {
