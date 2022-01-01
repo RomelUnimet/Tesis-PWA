@@ -212,7 +212,7 @@ export const ImgCarrousel = ({ entryImgState, setEntryImgState, setImgInputIsEmp
 
         if(fullscreen===false){
             openFS()
-            setfullscreen(!fullscreen)
+            setfullscreen(true)
         }
     }
 

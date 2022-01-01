@@ -71,7 +71,7 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
     const fullScreenAction = () => {
         if(fullscreen===false){
             openFS()
-            setfullscreen(!fullscreen)
+            setfullscreen(true)
         }
         //PREVENT SWIPE WHEN IS ONLY ONE IMAGE
         prevswiperRef.current.swiper.allowTouchMove=false
