@@ -114,13 +114,13 @@ export const BackupRestoreScreen = () => {
 
     const shareBackupFile = async (backUpData) => {
 
-        const fileName = `${backUpData.backupName}.json`
+        const fileName = `${backUpData.backupName}.text`
 
-        const json = JSON.stringify(backUpData)
+        //const json = JSON.stringify(backUpData)
 
-        const blob = new Blob([json], {type:"application/json"})
+        const blob = new Blob([backUpData], {type:"text/plain"})
         
-        const file = new File([blob], fileName, {type: "application/json"})
+        const file = new File([blob], fileName, {type: "text/plain"})
 
         alert(navigator.canShare({
             files: [file],
@@ -377,7 +377,7 @@ export const BackupRestoreScreen = () => {
                             
 
                             <label>
-                                <input type="file" id="cardPhotoInput" onChange={inputJsonBackUp} ref={fileInput} accept="application/json"/>
+                                <input type="file" id="cardPhotoInput" onChange={inputJsonBackUp} ref={fileInput} accept="text/plain"/>
                                 <div className="b-r-button-blue input-div">
                                     Import Carddiary Backup file (.json)
                                 </div>
