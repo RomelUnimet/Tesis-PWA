@@ -116,16 +116,11 @@ export const BackupRestoreScreen = () => {
 
         const fileName = `${backUpData.backupName}.text`
 
-        //const json = JSON.stringify(backUpData)
+        const json = JSON.stringify(backUpData)
 
-        const blob = new Blob([backUpData], {type:"text/plain"})
-        
+        const blob = new Blob([json], {type:"text/plain"})
+
         const file = new File([blob], fileName, {type: "text/plain"})
-
-        alert(navigator.canShare({
-            files: [file],
-            title: 'PWA CardDiary Share Backup File',
-          }))
         
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           navigator
@@ -140,8 +135,8 @@ export const BackupRestoreScreen = () => {
             
         })
             .catch((error) =>{ 
-                console.log(error)
-                alert("Sharing failed!")
+                console.log("Sharing failed", error)
+                alert("Sharing failed!", error)
             });
         } else {
           console.log(`Your system doesn't support sharing files.`);
