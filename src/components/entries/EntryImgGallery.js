@@ -80,19 +80,7 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
     const getimgsize = (img) => {
         var i = new Image(); 
         i.src = img.photo; 
-
-        if(i.width>i.height){
-            return {width:'100%'}
-        } else {
-            i.style.height = "100%";
-
-            if(i.width>window.innerWidth){
-    
-                return { maxWidth:'100%', maxHeight:'100%'}
-            } else {
-                return { height: '100%' }
-            }
-        }
+        return i.width>i.height || i.width<window.innerWidth
 
     }
 
@@ -171,9 +159,8 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
                                         >
                                             {fullscreen?
                                             <img src={img.photo} alt='Altrernative' 
-                                                 style={getimgsize(img)} 
-                                                 //Se podria lograr si pudiesemos distinguir si el width cuando 
-                                                 //la altura es 100% es menor que el ancho de la pantalla 
+                                            style={getimgsize(img)?{ width:'100%'}:{ maxHeight:'100%',maxWidth:'100%'}}
+                                                
                                             />
                                             :
                                             <></>
