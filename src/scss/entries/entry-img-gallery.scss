@@ -11,14 +11,15 @@
     position: relative;
     
     & svg {
-        height: 2rem;
-        position: fixed;
-        
+        position: absolute;
+        top: 0;
+        left: 0;
         fill: $back-color;
         background-color: rgba(0, 0, 0, 0);
-        z-index: 5;
+        z-index: 1;
+        height: 2rem;
+        width: 2rem;
         padding: 1rem;
-        
     }
 }
 .entry-img-gallery-swiper-container{
@@ -28,9 +29,9 @@
 .entry-img-gallery-swiper-slide{
     width: 100%;
     height: 100%;
-    border-radius: 0px;
-    filter: drop-shadow(0px 4px 15px rgba(143, 143, 143, 0));  
     top: auto;
+    border-radius: 0px;
+    filter: none; 
  }
 
 .entry-img-gallery-swiper-image-container{
@@ -52,15 +53,7 @@
     background-size: cover;
 }
 
-.close-icon-fullscreen{
-    top: 0px;
-    left: 5px;
-}
 
-.download-icon-fullscreen{
-    top: 0px;
-    right: 5px;
-}
 
 .ce-swiper-img-container{
     display: flex;
