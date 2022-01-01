@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux';
 
 import { WeatherFilter } from '../compHelper/WeatherFilter';
 
-import domtoimage from 'dom-to-image';
+import html2canvas from 'html2canvas';
+
 
 import { motion } from 'framer-motion';
 
@@ -56,15 +57,15 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
         }
     };
 
-    const shareEntry = () => {
+    const shareEntry = async () => {
 
-        domtoimage.toBlob(document.getElementById('entry_img'))
-            .then(function (blob) {
-                const file = new File([blob], 'entry-share.png', {type: "image/png"})
-                shareFile(file, "PWA CD Share Entry",);
+        const canvas = await html2canvas(shareImgRef.current);
+        const dataUrl = canvas.toDataURL();
+        const blob = await (await fetch(dataUrl)).blob();
+        const file= new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() });
 
-            });     
-       
+        shareFile(file, "PWA CD Share Entry",);
+
     };
 
  
@@ -85,7 +86,6 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
             animate={{x:0, y: 0 }}
             exit={{x:0, y: SCREEN_HEIGHT }}
             transition={{duration:0.3}}
-            id={'entry_img'}
         >
             <div 
             ref={shareImgRef}
