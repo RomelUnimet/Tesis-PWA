@@ -39,7 +39,7 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
             setopacity(0)
             if(fullscreen){
             if (last) {           //Hay que hacer una funcion que haga el close
-                Math.abs(my) > 20 ?  closeFS() : openFS()
+                Math.abs(my) > 50 ?  closeFS() : openFS()
               } else{
                   if(Math.abs(my)===0){
                     setopacity(1)
