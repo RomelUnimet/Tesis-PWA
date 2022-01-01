@@ -79,9 +79,9 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
             .then(
             function (dataUrl) {
 
-                const blob = new Blob([dataUrl], {type:"image/png"})
+                const blob = new Blob([dataUrl], {type:"image/jpeg"})
             
-                const file = new File([blob], 'entry-share.jpeg', {type: "image/png"})
+                const file = new File([blob], 'entry-share.jpeg', {type: "image/jpeg"})
 
                 shareFile(file, "PWA CD Share Entry",);
 
