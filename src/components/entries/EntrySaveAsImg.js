@@ -47,12 +47,10 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
                 .then(() => {
                     console.log("Share was successful.")                
                 })
-                    .catch((error) =>{ 
-                        console.log("Sharing failed", error)
-                        alert("Sharing failed!", error)
-                    });
+                .catch((error) =>{ 
+                    alert(error)
+                });
         } else {
-          console.log(`Your system doesn't support sharing files.`);
           alert("Your system doesn't support sharing files")
         }
     };
@@ -67,16 +65,6 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
         shareFile(file, "PWA CD Share Entry",);
 
     };
-
- 
-
-      
-    //NO ME DEJA HACER EL TRIGGER DE LA WEB SHARE API AUTOMATICAMENTE
-    /*
-    useEffect(() => {
-        shareCanvas()
-    }, [shareCanvas])
-    */
 
     return (
 
