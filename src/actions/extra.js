@@ -292,7 +292,7 @@ export const restoreFromBackupFile = (backupFileJson, userID) => {
     return async (dispatch) =>{
 
         console.log(backupFileJson)
-/*
+
         //ACOMODAR LOS DATOS DEL BACKUP FILE PARA QUE TENGAN EL UID DEL USUARIO QUE HACE EL RESTORE
 
         //EL OBJETO JSON COLOCO LAS FECHAS COMO STRINGS ENTONCES LAS TUVIMOS QUE RECONVERTIR
@@ -491,7 +491,6 @@ export const restoreFromBackupFile = (backupFileJson, userID) => {
         
         fetchWithToken('restore', restoreData, 'PUT');
 
-        */
     }
 }
 
