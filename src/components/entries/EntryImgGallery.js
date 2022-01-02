@@ -12,8 +12,7 @@ import SwiperCore, {
 import '../../scss/create_entry/img_carrousel.scss'
 
 import { animated, useSpring, config } from 'react-spring'
-import { useDrag, useGesture } from 'react-use-gesture'
-
+import { useDrag } from 'react-use-gesture'
 
 //Se renderiza demasiado porque es cada galeria individual la que lo hace
 export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRef}) => {
@@ -112,21 +111,6 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
         
     }, [images])
 
-    const [crop, setCrop] = useState({ x: 0, y: 0, scale: 1 });
-    useGesture(
-        {
-        onDrag: ({ offset: [dx, dy] }) => {
-            setCrop((crop) => ({ ...crop, x: dx, y: dy }));
-        },
-        onPinch: ({ offset: [d] }) => {
-            setCrop((crop) => ({ ...crop, scale: 1 + d / 50 }));
-        },
-        },
-        {
-        eventOptions: { passive: false },
-        }
-    );
-
     
    
     return (
@@ -171,28 +155,11 @@ export const EntryImgGallery = ({images, fullscreen, setfullscreen, prevswiperRe
                                         <div
                                             className='entry-img-gallery-swiper-image-container'
                                             style={!fullscreen? {backgroundImage: `url(${img.photo})`}:{}}
-                                            >
+                                        >
                                             {fullscreen?
                                             <img src={img.photo} alt='Altrernative' 
-                                                 style={getimgsize(img)?
-                                                            { 
-                                                                width:'100%',
-                                                                left: crop.x,
-                                                                top: crop.y,
-                                                                transform: `scale(${crop.scale})`,
-                                                                touchAction: "none",
-                                                            }
-                                                            :
-                                                            { 
-                                                                maxHeight:'100%',
-                                                                maxWidth:'100%',
-                                                                left: crop.x,
-                                                                top: crop.y,
-                                                                transform: `scale(${crop.scale})`,
-                                                                touchAction: "none",
-                                                            }
-                                                        }
-                                                                                                  
+                                            style={getimgsize(img)?{ width:'100%'}:{ maxHeight:'100%',maxWidth:'100%'}}
+                                                
                                             />
                                             :
                                             <></>

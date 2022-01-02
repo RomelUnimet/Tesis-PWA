@@ -114,15 +114,15 @@ export const BackupRestoreScreen = () => {
 
     const shareBackupFile = async (backUpData) => {
 
-        const fileName = `${backUpData.backupName}.json`
+        const fileName = `${backUpData.backupName}.text`
 
         const json = JSON.stringify(backUpData)
 
-        const blob = new Blob([json], {type:"application/json"})
+        const blob = new Blob([json], {type:"text/plain"})
 
         const href = await URL.createObjectURL(blob);
         
-        const file = new File([blob], fileName, {type: "application/json"})
+        const file = new File([blob], fileName, {type: "text/plain"})
         
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           navigator
