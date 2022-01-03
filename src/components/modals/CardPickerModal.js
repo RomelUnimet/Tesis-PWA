@@ -105,69 +105,84 @@ export const CardPickerModal = ({ modalState, setModalState, navigateCard }) => 
             </div>
 
             
-            <animated.div className="modal-card" style={{y: y, touchAction: 'none'}}  {...bindModal()} ref={monthRef}> 
+            <animated.div className="modal-card" style={{y: y, touchAction: 'none'}}   ref={monthRef}> 
                 
-                <div className="arrow-1" onClick={()=>scrollOnClick(-1)}>
+                <div className="arrow-1" onClick={()=>scrollOnClick(-1)}
+                {...bindModal()}
+                >
                     <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </div>
 
-                <div 
-                    className="month-picker"
-                >
-                    { 
-                        years.map((yearGroup, index)=>(
+                <div className='card-picker-content-container'>
+
+                
+                        <div className='side-handlers' {...bindModal()} />
+                        
+                  
+                    <div 
+                        className="month-picker"
+                    >
+                        { 
+                            years.map((yearGroup, index)=>(
 
 
-                            <div className="year" key={index}>
-                                <h1> {yearGroup[0].year} </h1>
+                                <div className="year" key={index}>
+                                    <h1> {yearGroup[0].year} </h1>
 
-                                <div className="month-grid">
-                                    { 
-                                        yearGroup.map((card, index)=>{
-                                            
-                                            let monthName = new Date(card.year,card.month)
-                                            let shortMonthName = monthName.toLocaleString('en-US', { month: 'short' }).toUpperCase()
+                                    <div className="month-grid">
 
-                                            return(
+                                        { 
+                                            yearGroup.map((card, index)=>{
+                                                
+                                                let monthName = new Date(card.year,card.month)
+                                                let shortMonthName = monthName.toLocaleString('en-US', { month: 'short' }).toUpperCase()
 
-                                                <div className="month-picker-selector" key={index} 
-                                                    style={ 
-                                                            modalState.month===card.month && modalState.year===card.year? 
-                                                                {color:'#3CDAFD', border:'1px solid #3CDAFD'}
-                                                                :
-                                                                {}
-                                                            
-                                                            }      
-                                                            onClick ={ () => {navigateToCard(card.month, card.year)} }
-                                                > 
-                                                        <p className="month-picker-name"
-                                                        >
-                                                            {shortMonthName}
-                                                        </p> 
-                                                        
-                                                        <p className="month-picker-entries"
-                                                            style={ 
+                                                return(
+
+                                                    <div className="month-picker-selector" key={index} 
+                                                        style={ 
                                                                 modalState.month===card.month && modalState.year===card.year? 
-                                                                    {color:'#3CDAFD'}
+                                                                    {color:'#3CDAFD', border:'1px solid #3CDAFD'}
                                                                     :
                                                                     {}
-                                                                }   
-                                                        >
-                                                            {card.entries.length}
-                                                        </p>
-                                                </div>
-                                            )
-                                    })
-                                    }
+                                                                
+                                                                }      
+                                                                onClick ={ () => {navigateToCard(card.month, card.year)} }
+                                                    > 
+                                                            <p className="month-picker-name"
+                                                            >
+                                                                {shortMonthName}
+                                                            </p> 
+                                                            
+                                                            <p className="month-picker-entries"
+                                                                style={ 
+                                                                    modalState.month===card.month && modalState.year===card.year? 
+                                                                        {color:'#3CDAFD'}
+                                                                        :
+                                                                        {}
+                                                                    }   
+                                                            >
+                                                                {card.entries.length}
+                                                            </p>
+                                                    </div>
+                                                )
+                                        })
+                                        }
+                                    </div>
                                 </div>
-                            </div>
-                        )) 
-                    }
+                            )) 
+                        }
+                  
+                        </div>
+                        <div className='side-handlers' {...bindModal()} />
+                        
                 </div>
 
-                <div className="arrow-2" onClick={()=>scrollOnClick(1)}>
+                <div className="arrow-2" onClick={()=>scrollOnClick(1)}
+                     {...bindModal()}
+                >
                     <svg  viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5.83325 13.125L17.4999 24.7917L29.1666 13.125" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>

@@ -26,9 +26,7 @@ export const askForPermissionToReceiveNotifications = async () => {
       console.log('Notification permission status:', status);
     });
     const messaging = getMessaging();
-    const token = await getToken(messaging, {vapidKey:'BKUuJTxd0ifo32qSdjXSel_4_pzpHIxv2iUpbfaUB7rbwIhHBH68GkKN9SA9e9gf5NvWNV3pRblprbCLUE0feKs'});
-    console.log('Your token is:', token);
-
+    const token = await getToken(messaging, {vapidKey: process.env.REACT_APP_FIREBASE});
     
     await subscribeUser()
     
@@ -52,7 +50,6 @@ export const subscribeUser = async () => {
         
       }).then(function(sub) {
         
-        console.log(JSON.stringify(sub));
         console.log(sub);
         
       }).catch(function(e) {
