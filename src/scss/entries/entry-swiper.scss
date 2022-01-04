@@ -12,8 +12,7 @@
     flex-direction: column;
 
     overflow-y: hidden;
-    
-  
+     
 }
 
 .entry-swiper{
@@ -35,14 +34,14 @@
     bottom: 0;
     height: 5rem;
     width: 100%;
-    border-top: 1px solid $grey-color;
+    border-top: 1px solid #e7e7e7;
     display: flex;
     justify-content: space-between;
     background-color: white;
     z-index: 1;
 
     & svg {
-        height: 2.2rem;
+        height: 2rem;
         fill: $black-color;
         margin: 1rem;
         margin-top: 0.6rem;

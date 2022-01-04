@@ -23,7 +23,7 @@
 .input-modal{
     position: absolute;
     background-color: white;
-    width: 80%;
+    width: 75%;
     border-radius: 10px;
     text-align: center;
 
@@ -33,7 +33,7 @@
     animation: zoominoutsinglefeatured 0.3s ;
 
     top: 20%;
-    margin: 0 10% 0 10%;
+    margin: 0 12.5%;
     
     h1 {
         width: 75%;
@@ -63,7 +63,7 @@
     border-radius: 0px 0px 0px 12px;
     border-style: solid;
     border-width: 2px 1px 0px 0px;
-    border-color: $grey-color;
+    border-color: #e7e7e7;
     color: $red-color;
 }
 .input-modal-right-button{
@@ -71,7 +71,7 @@
     border-radius: 0px 0px 12px 0px;
     border-style: solid;
     border-width: 2px 0px 0px 1px;
-    border-color: $grey-color;
+    border-color: #e7e7e7;
     color:$accent-blue;
 }
 

@@ -41,6 +41,7 @@
         position: absolute;
         left: 50%;
         transform: translate(-50%);
+        font-weight: 600;
     }
 
     & h2 {
@@ -50,7 +51,7 @@
     }
 
     & svg {
-        height: 2rem;
+        height: 1.6rem;
         fill: $black-color;
         margin-left: 0.8rem;
     }

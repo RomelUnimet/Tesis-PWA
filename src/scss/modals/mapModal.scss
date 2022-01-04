@@ -19,7 +19,7 @@
     align-items: center;
     background-color: white;
     z-index: 12;
-    padding-top: 2.4rem;
+    padding-top: 1.4rem;
     padding-bottom: 0.6rem;
 
     background-color: white;
@@ -53,9 +53,9 @@
     border-top-right-radius: 12px;
 
     & svg {
-        height: 1.8rem;
-        margin-left:  1.4rem; 
-        margin-right: 1.4rem;
+        height: 1.6rem;
+        margin: 0 1.6rem;
+    
     }
 }
 .map-container{
@@ -68,9 +68,9 @@
 
 .center-marker-map{
     z-index:1;
-    height: 2.6rem;
+    height: 2.2rem;
     padding-bottom: 1.3rem;
-    fill: $black-color;
+    fill: black;
 }
 
 .map-input-direction-container{

@@ -49,7 +49,6 @@ export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState, swip
                 photos.length!==0 && 
                 <>
                     {
-                        //swiperRef.current?.swiper.activeIndex===index? 
 
                         <EntryImgGallery
                         images={photos}
@@ -57,18 +56,7 @@ export const Entry = ({entry, fullscreen, setfullscreen, setEditModalState, swip
                         setfullscreen={setfullscreen}
                         prevswiperRef={swiperRef}
                         />
-                        /*
-                        :
-                        //Placeholder para mejorar el performance
-                        <div style={{   width: '100%', 
-                                        height: '42vh', 
-                                        backgroundPosition: 'center',
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundSize: 'cover',
-                                        backgroundImage: `url(${photos[0].photo})`
-                                        }}
-                        />
-                        */
+                
                     }
                 </>
             }

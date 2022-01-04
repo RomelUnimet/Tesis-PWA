@@ -19,42 +19,26 @@
     
     z-index: 4;
 
-    width: 80%;
+    width: 85%;
+    height: 40vh;
     background-color: white;
     bottom: 0;
     margin-bottom: 3rem;
     border-radius: 12px;
 
+    color: $black-color;
+
+
     --animate-duration: 0.5s;
 }
-.modal2{
 
-    
-    position: absolute;
-    
-    z-index: 2;
-
-    width: 80%;
-    background-color: white;
-    bottom: 0;
-    margin-bottom: 3rem;
-    border-radius: 12px;
-
-    --animate-duration: 0.5s;
-
-
-    opacity: 0;
-    transition: visibility 10s, opacity 20s ease-out ;
-    transition-duration: 0.25s;
-}
 .photo-container{
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     width: 100%;
-    margin-top: 1rem;
-    margin-bottom: 0.8rem;
+    margin: 1.1rem 0;
 
     & h1 {
         margin-left: 5%;
@@ -88,7 +72,7 @@ input[type="file"] {
 .color-title{
     width: 90%;
     & h1{
-        margin-bottom: 10px;
+        margin-bottom: 1rem;
         font-size: 1.1rem;
     }
 
@@ -103,8 +87,8 @@ input[type="file"] {
     width: 90%;
 }
 .color-icon{
-    height: 2.2rem;
-    width: 2.2rem;
+    height: 2.3rem;
+    width: 2.3rem;
     border-radius: 100rem;
     
 }

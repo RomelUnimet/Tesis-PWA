@@ -4,7 +4,7 @@
     width: 100%;
     position: fixed;
     top: 0;
-    height: 4rem;
+    height: 3rem;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -15,6 +15,9 @@
     & h1 {
         font-size: 1.1rem;
         color: $black-color;
+    }
+    & p {
+        color: black;
     }
 }
 .topbar-container-layout{
@@ -27,7 +30,7 @@
 
 }
 .search-svg{
-    height: 2rem;
+    height: 1.6rem;
     fill: $black-color;
 
 }

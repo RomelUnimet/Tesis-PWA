@@ -10,8 +10,8 @@ import { useSelector } from 'react-redux';
 
 export const CEModal = ({modalState, setModalState, selectedWeather, setSelectedWeather, tagsCE, setTagsCE, locationCE, setLocationCE}) => {
 
-    const iconStyles = { fontSize:'2.4rem', height:'2.4rem', width:'2.4rem', fill:'#757575', transition: 'ease-in-out', transitionDuration: '0.2s'} 
-    const iconStylesSmall = { fontSize:'2rem', height:'2rem', width:'2.4rem', fill:'#757575', transition: 'ease-in-out', transitionDuration: '0.2s' }
+    const iconStyles = { fontSize:'2.4rem', height:'2.4rem', width:'2.4rem', fill:'#818181', transition: 'ease-in-out', transitionDuration: '0.2s'} 
+    const iconStylesSmall = { fontSize:'2rem', height:'2rem', width:'2.4rem', fill:'#818181', transition: 'ease-in-out', transitionDuration: '0.2s' }
 
     const iconStylesSelected = { fontSize:'2.4rem', height:'2.4rem', width:'2.4rem', fill:'#3CDAFD', transition: 'ease-in-out', transitionDuration: '0.2s' } 
     const iconStylesSmallSelected = { fontSize:'2rem', height:'2rem', width:'2.4rem', fill:'#3CDAFD', transition: 'ease-in-out', transitionDuration: '0.2s' }

@@ -15,7 +15,7 @@
     
     z-index: 10;
 
-    width: 80%;
+    width: 84%;
     background-color: white;
     bottom: 0;
     margin-bottom: 3rem;
@@ -24,10 +24,10 @@
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 
-    margin-left: 10%;
+    margin-left: 8%;
 
     & svg {
-        width: 1.7rem;
+        width: 1.4rem;
     }
 
 }
@@ -45,7 +45,7 @@
 
     & p {
         margin-left: 5%;
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     & .remove-name-tag{
         color: $red-color;

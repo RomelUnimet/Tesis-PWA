@@ -21,13 +21,14 @@
 
 .entry-tag-loc-container{
 
-    border-top: 1px solid $grey-color;
+    border-top: 1px solid #e7e7e7;
     margin-top: 1.4rem;
     padding-top: 1.4rem;
 
     & svg {
         height: 1rem;
         fill: $black-color;
+        opacity: 80%;
     }
 }
 
@@ -43,6 +44,8 @@
     & label {
         color: $darker-grey;
         font-size: 0.7rem;
+        letter-spacing: 0.6px;
+
     }
 }
 

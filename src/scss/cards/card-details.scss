@@ -17,7 +17,7 @@
     width: 100%;
     position: fixed;
     top: 0;
-    height: 4.4rem;
+    height: 4rem;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -42,12 +42,16 @@
         height: 2.1rem;
         fill: $darker-grey;
     }
+
+    & p {
+        font-weight: 600;
+    }
 }
 
 .entrie-tabs-container{
     
     width: 100%;
-    padding-top: 4.9rem;
+    margin-top: 4rem;
     margin-bottom: 6rem;
     display: flex;
     flex-direction: column;
