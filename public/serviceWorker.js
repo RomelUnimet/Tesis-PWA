@@ -13,7 +13,7 @@ if (workbox) {
     // Check to see if the request is a navigation to a new page
     ({ request }) => request.mode === 'navigate',
     // Use a Network First caching strategy
-    new workbox.strategies.NetworkFirst({
+    new workbox.strategies.StaleWhileRevalidate({
       // Put all cached files in a cache named 'pages'
       cacheName: 'html-pages-cache',
       plugins: [
@@ -33,7 +33,7 @@ if (workbox) {
                          !url.pathname.startsWith('/maps-api-v3/') 
                          ,
     //Usarlo por ahora asi y cuando la app este lista lo cambiamos
-    new workbox.strategies.NetworkFirst({
+    new workbox.strategies.StaleWhileRevalidate({
       cacheName: 'css-and-js-assets-cache',
     })  
   );
@@ -44,7 +44,7 @@ if (workbox) {
   //DEJAR LAS IMAGENES Y DESPUES VER SI ES NECESARIO
   workbox.routing.registerRoute(
       '/icons/manifest-icon-192.png',  
-      new workbox.strategies.CacheFirst({
+      new workbox.strategies.StaleWhileRevalidate({
         cacheName:'images-cache',
         plugins: [
           new workbox.expiration.ExpirationPlugin({
@@ -58,7 +58,7 @@ if (workbox) {
 
   workbox.routing.registerRoute(
       '/manifest.json',  
-      new workbox.strategies.CacheFirst({
+      new workbox.strategies.StaleWhileRevalidate({
         cacheName:'manifest-cache',
       })
   );
@@ -89,7 +89,6 @@ if (workbox) {
     })
   );
   
-  //process.env.REACT_APP_API_URL
 
 //BACKGROUND SYNC
 
@@ -102,6 +101,14 @@ if (workbox) {
     maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
   });
 
+  const bgSyncPluginPut = new workbox.backgroundSync.BackgroundSyncPlugin('PUT_Queue', {
+    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
+  });
+
+  const bgSyncPluginDelete = new workbox.backgroundSync.BackgroundSyncPlugin('DELETE_Queue', {
+    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
+  });
+
   workbox.routing.registerRoute(
     ({ url }) => url.pathname.includes('/api/'),
     new workbox.strategies.NetworkOnly({
@@ -109,10 +116,6 @@ if (workbox) {
     }),
     'POST'
   );
-
-  const bgSyncPluginPut = new workbox.backgroundSync.BackgroundSyncPlugin('PUT_Queue', {
-    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
-  });
 
   workbox.routing.registerRoute(
     ({ url }) => url.pathname.includes('/api/'),
@@ -122,10 +125,6 @@ if (workbox) {
     'PUT'
   );
 
-  const bgSyncPluginDelete = new workbox.backgroundSync.BackgroundSyncPlugin('DELETE_Queue', {
-    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
-  });
-
   workbox.routing.registerRoute(
     ({ url }) => url.pathname.includes('/api/'),
     new workbox.strategies.NetworkOnly({
@@ -133,56 +132,6 @@ if (workbox) {
     }),
     'DELETE'
   );
-
-  
-/*
-  self.addEventListener('fetch', (event) => {
-    // Add in your own criteria here to return early if this
-    // isn't a request that should use background sync.
-
-    console.log(event)
-    console.log(event.request.url.startsWith('/api/'))
-
-    if (event.request.method === 'GET') {
-      return;
-    }
-  
-    const bgSyncLogic = async () => {
-      try {
-        const response = await fetch(event.request.clone());
-        return response;
-      } catch (error) {
-        await queue.pushRequest({request: event.request});
-        return error;
-      }
-    };
-    event.respondWith(bgSyncLogic());
-  });
-
-  */
-
-/*
-const queue = new workbox.backgroundSync.Queue('myQueueName');
-
-self.addEventListener('fetch', (event) => {
-  // Add in your own criteria here to return early if this
-  // isn't a request that should use background sync.
-  if (event.request.method === 'GET') {
-    return;
-  }
-
-  const bgSyncLogic = async () => {
-    try {
-      const response = await fetch(event.request.clone());
-      return response;
-    } catch (error) {
-      await queue.pushRequest({request: event.request});
-      return error;
-    }
-  };
-  event.respondWith(bgSyncLogic());
-});
-*/
 
 
   /*
