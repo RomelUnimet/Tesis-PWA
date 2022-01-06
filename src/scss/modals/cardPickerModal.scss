@@ -1,7 +1,7 @@
 @import '../variables.scss';
 
 .modal-container{
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.25);
@@ -15,7 +15,7 @@
 }
 .modal-card{
 
-    position: absolute;
+    position: fixed;
     
     z-index: 4;
     height: 30rem;
