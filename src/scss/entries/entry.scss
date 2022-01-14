@@ -37,6 +37,13 @@
     align-items: center;
     margin-bottom: 0.4rem;
 
+    & svg {
+        margin: 0 0.5rem 0 1.4rem;
+        fill: $black-color;
+    }
+    & path {
+        fill: $black-color;
+    }
 
     & label {
         color: $darker-grey;
