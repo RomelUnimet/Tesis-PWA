@@ -37,10 +37,6 @@
     align-items: center;
     margin-bottom: 0.4rem;
 
-    & svg {
-        margin: 0 0.5rem 0 1.4rem;
-        fill: $black-color;
-    }
 
     & label {
         color: $darker-grey;
@@ -48,6 +44,11 @@
         letter-spacing: 0.6px;
 
     }
+}
+
+.tag-loc-svg {
+    margin: 0 0.5rem 0 1.4rem;
+    fill: $black-color;
 }
 
 .detailed-entry-container-save-img{
