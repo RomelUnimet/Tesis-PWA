@@ -35,6 +35,15 @@ if (workbox) {
     //Usarlo por ahora asi y cuando la app este lista lo cambiamos
     new workbox.strategies.StaleWhileRevalidate({
       cacheName: 'css-and-js-assets-cache',
+      plugins: [
+        new workbox.cacheableResponse.CacheableResponsePlugin({
+          statuses: [0, 200],
+        }),
+        new workbox.expiration.ExpirationPlugin({
+          maxAgeSeconds: 60 * 60 * 24 * 60,
+          maxEntries: 30,
+        }),
+      ],
     })  
   );
 
@@ -60,6 +69,15 @@ if (workbox) {
       '/manifest.json',  
       new workbox.strategies.StaleWhileRevalidate({
         cacheName:'manifest-cache',
+        plugins: [
+          new workbox.cacheableResponse.CacheableResponsePlugin({
+            statuses: [0, 200],
+          }),
+          new workbox.expiration.ExpirationPlugin({
+            maxAgeSeconds: 60 * 60 * 24 * 60,
+            maxEntries: 30,
+          }),
+        ],
       })
   );
 
@@ -69,6 +87,15 @@ if (workbox) {
     ({url}) => url.origin === 'https://fonts.googleapis.com',
     new workbox.strategies.StaleWhileRevalidate({
       cacheName: 'google-fonts-stylesheets',
+      plugins: [
+        new workbox.cacheableResponse.CacheableResponsePlugin({
+          statuses: [0, 200],
+        }),
+        new workbox.expiration.ExpirationPlugin({
+          maxAgeSeconds: 60 * 60 * 24 * 60,
+          maxEntries: 30,
+        }),
+      ],
     })
   );
 
@@ -82,7 +109,7 @@ if (workbox) {
           statuses: [0, 200],
         }),
         new workbox.expiration.ExpirationPlugin({
-          maxAgeSeconds: 60 * 60 * 24 * 365,
+          maxAgeSeconds: 60 * 60 * 24 * 60,
           maxEntries: 30,
         }),
       ],
