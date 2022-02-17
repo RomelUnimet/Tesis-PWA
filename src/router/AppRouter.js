@@ -23,13 +23,13 @@ import { startTagStore } from '../actions/tag'
 import { startLocationStore } from '../actions/location'
 import { startEntryStore } from '../actions/entry'
 
-import Localbase from 'localbase';
-import { creteOptionsObject } from '../helpers/createOptionsCredential';
+//import Localbase from 'localbase';
+//import { creteOptionsObject } from '../helpers/createOptionsCredential';
 
 import { askForPermissionToReceiveNotifications } from '../notification';
 
 
-const db = new Localbase('pwa-card-diary');
+//const db = new Localbase('pwa-card-diary');
 
 
 export const AppRouter = () => {
@@ -52,6 +52,7 @@ export const AppRouter = () => {
         
     }, [dispatch])
 
+    /*
     useEffect(() => {
         //Funcion para trigger la Autenticacion de la pagina
         async function runAuth() {
@@ -81,6 +82,7 @@ export const AppRouter = () => {
                 
         runAuth();
     }, [])
+    */
 
 
 

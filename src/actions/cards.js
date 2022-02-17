@@ -64,7 +64,7 @@ export const cardUpdatePhoto = ( photo, card ) => {
         //Posible que haya un error aqui // Si llega a haber
         fetchWithToken(`card/${newCard.cid}`, newCard, 'PUT');
         
-        dispatch(startCardStore())   
+        dispatch(startCardStore())
     }
 }
 
