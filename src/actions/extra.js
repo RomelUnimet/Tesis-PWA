@@ -30,8 +30,10 @@ export const startGetWeather = () => {
     
                 const res = await fetch(apiUrl);
                 const {weather, wind} = await res.json()
+
                 
                 const weatherLabel = defineWeather(weather[0], wind)
+
     
                 dispatch( storeGeolocation({lat:lat, lng:lon}) )
                 dispatch( finishStoreWeather(weatherLabel) )
