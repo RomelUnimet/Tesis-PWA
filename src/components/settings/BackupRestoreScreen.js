@@ -132,17 +132,21 @@ export const BackupRestoreScreen = () => {
             })
             .then(() => {
                 console.log("Share was successful.")
-                alert("Share was successful")
+                //alert("Share was successful")
                 
             
             })
             .catch((error) =>{ 
+
+                console.error(error)
+                /*
                 const link = document.createElement('a');
                 link.href = href;
                 link.download = backUpData.backupName;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+                */
             });
         } else {
             let link = document.createElement('a');

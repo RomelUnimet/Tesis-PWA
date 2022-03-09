@@ -48,7 +48,7 @@ export const EntrySaveAsImg = ({entry, setSaveAsImgModal}) => {
                     console.log("Share was successful.")                
                 })
                 .catch((error) =>{ 
-                    alert(error)
+                    console.error(error)
                 });
         } else {
           alert("Your system doesn't support sharing files")
