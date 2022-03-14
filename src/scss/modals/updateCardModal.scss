@@ -86,11 +86,24 @@ input[type="file"] {
 
     width: 90%;
 }
-.color-icon{
+
+$small: 300px;
+$medium: 900px;
+
+.color-icon {
+
     height: 2.3rem;
     width: 2.3rem;
     border-radius: 100rem;
     
+}
+
+@media (max-width: 400px) {
+    .color-icon {
+        height: 1.8rem;
+        width: 1.8rem;
+        border-radius: 100rem;
+    }
 }
 
 hr{
